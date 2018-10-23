@@ -30,12 +30,20 @@
 		    <property name="hibernateProperties">
 		    	<props>
 		    		<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
-		    		<prop key="hibernate.show_sql">true</prop>
+		    		<prop key="hibernate.show_sql">false</prop>
 		    	</props>
 		    </property>
 		    <property name="annotatedClasses">
 		    	<list>		 
-		    		<value>com.appliedsni.channel.core.server.entity.UserEntity</value>   		
+		    		<value>com.appliedsni.channel.core.server.entity.UserEntity</value>   
+		    		<value>com.appliedsni.channel.core.server.entity.SimpleTransactionProductEntity</value>
+		    		<value>com.appliedsni.channel.core.server.entity.SimpleTransactionProductStepEntity</value>
+		    		<value>com.appliedsni.channel.core.server.entity.ComplexTransactionProductEntity</value>
+		    		<value>com.appliedsni.channel.core.server.entity.ComplexTransactionProductStepEntity</value>		    		
+		    		<value>com.appliedsni.channel.core.server.entity.ComplexTransactionEntity</value>
+		    		<value>com.appliedsni.channel.core.server.entity.ComplexTransactionStepEntity</value>
+		    		<value>com.appliedsni.channel.core.server.entity.SimpleTransactionEntity</value>
+		    		<value>com.appliedsni.channel.core.server.entity.SimpleTransactionStepEntity</value>		    				
 		    	</list>
 		    </property>
 		</bean>        
@@ -56,6 +64,18 @@
 		<context:component-scan base-package="com.appliedsni.channel.core.server.*"/>
 		<bean id="applicationContext" class="com.appliedsni.channel.core.server.config.ChannelApplicationContext"/>
 		<bean id="springAMQPRabbitSender" class="com.appliedsni.channel.core.server.queue.SpringAMQPRabbitSender"/>
+		
+		<bean id="complexTransactionHandler" class="com.appliedsni.channel.core.server.handler.ComplexTransactionHandler" >
+			<constructor-arg ref="serverDao" />
+		</bean>		
+
+		<bean id="simpleTransactionHandler" class="com.appliedsni.channel.core.server.handler.SimpleTransactionHandler" >
+			<constructor-arg ref="serverDao" />
+		</bean>
+
+		<bean id="functionHandler" class="com.appliedsni.channel.core.server.handler.FunctionHandler" >
+			<constructor-arg ref="serverDao" />
+		</bean>
 				
 
 </beans>		
