@@ -50,7 +50,7 @@ public class SimpleTransactionHandler {
 						
 						LOGGER.warn("Executing Simple Transaction Step : {}", sts.getSeqNo());
 
-						FunctionHandler.get().handle(sts.getFunction(), sts);
+						FunctionHandler.get().handle(sts.getFunction(), pCTStep, sts);
 						
 						//	Update data
 						pCTStep.setData(sts.getData());
