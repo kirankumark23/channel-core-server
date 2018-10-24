@@ -22,7 +22,7 @@
 	
 	<bean id="asyncListener" class="com.appliedsni.channel.core.server.queue.SpringAMQPRabbitAyncListener"/>
 	<rabbit:listener-container id="myListenerContainer" connection-factory="connectionFactory">
-		<rabbit:listener ref="asyncListener" queue-names="jms/TPQueue"/>
+		<rabbit:listener ref="asyncListener" queue-names="TPQueue"/>
 	</rabbit:listener-container>
 
 </beans>

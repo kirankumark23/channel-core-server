@@ -32,8 +32,8 @@ public class TestService {
 	@POST
 	@Path("/push")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getBasketProducts(UserEntity message){
-		springAMQPRabbitSender.pushMessage();
+	public String getBasketProducts(MessageEntity pMessage){
+		springAMQPRabbitSender.pushMessage(pMessage);
 		return "push sccess";
 		
 		
