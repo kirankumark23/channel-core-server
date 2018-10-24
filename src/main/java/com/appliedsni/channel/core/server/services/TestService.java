@@ -17,6 +17,13 @@ import com.appliedsni.channel.core.server.entity.MessageEntity;
 import com.appliedsni.channel.core.server.entity.UserEntity;
 import com.appliedsni.channel.core.server.handler.ComplexTransactionHandler;
 import com.appliedsni.channel.core.server.queue.SpringAMQPRabbitSender;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.jackson.JacksonFactory;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 
 @Path("/service")
 public class TestService {
@@ -41,6 +48,13 @@ public class TestService {
 			@QueryParam("accessToken") String pAccessToken,
 			@QueryParam("idToken") String pIdToken,
 			MessageEntity pMessage){
+		try {
+		googleLogin(pAccessToken);
+		} catch (IOException | GeneralSecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "invlaid token";
+		}
 
 //		if(pAccessToken == null){
 //			return "{\"status\":\"Access Token is missing\"}";			
@@ -56,6 +70,26 @@ public class TestService {
 		
 		return "Execution Completed";
 	}
-	
+	public void googleLogin(String tokenString) throws IOException, GeneralSecurityException{
+
+        JacksonFactory jacksonFactory = new JacksonFactory();
+        GoogleIdTokenVerifier googleIdTokenVerifier =
+                            new GoogleIdTokenVerifier(new NetHttpTransport(), jacksonFactory);
+
+        GoogleIdToken token = GoogleIdToken.parse(jacksonFactory, tokenString);
+        GoogleIdToken.Payload payload;
+        if (googleIdTokenVerifier.verify(token)) {
+        	payload = token.getPayload();
+            if (!tokenString.equals(payload.getAudience())) {
+                throw new IllegalArgumentException("Audience mismatch");
+            } else if (!tokenString.equals(payload.getAuthorizedParty())) {
+                throw new IllegalArgumentException("Client ID mismatch");
+            }
+            
+        } else {
+            throw new IllegalArgumentException("id token cannot be verified");
+        }
+	}
+
 	
 }
