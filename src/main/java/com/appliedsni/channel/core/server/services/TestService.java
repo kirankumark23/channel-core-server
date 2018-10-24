@@ -48,13 +48,6 @@ public class TestService {
 			@QueryParam("accessToken") String pAccessToken,
 			@QueryParam("idToken") String pIdToken,
 			MessageEntity pMessage){
-		try {
-		googleLogin(pAccessToken);
-		} catch (IOException | GeneralSecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return "invlaid token";
-		}
 
 //		if(pAccessToken == null){
 //			return "{\"status\":\"Access Token is missing\"}";			
@@ -66,9 +59,18 @@ public class TestService {
 //			return "{\"status\":\"Account balance is 100,000\"}";
 //		}
 		
+//		try{
+//			
+//			googleLogin(pAccessToken);
+//		} catch (IOException | GeneralSecurityException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//			return "invlaid token";
+//		}
+		
 		ComplexTransactionHandler.get().handle(pMessage);
 		
-		return "Execution Completed";
+		return "{\"response\" : \"Execution Completed\"}";
 	}
 	public void googleLogin(String tokenString) throws IOException, GeneralSecurityException{
 
