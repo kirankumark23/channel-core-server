@@ -84,9 +84,7 @@ public class FunctionHandler {
 	}
 	
 	public void fn_get_ac_balance(ComplexTransactionStepEntity pCTS, SimpleTransactionStepEntity pSTS){
-		//	TODO : Get Account from previous step
-		String ac = CustomThreadLocal.get("ACCOUNT").toString();
-		
+		//	Get Account from previous step				
 		ComplexTransactionStepEntity cts = (ComplexTransactionStepEntity)mServerDao.find("from ComplexTransactionStepEntity "
 				+ " where mComplexTransaction = ? "
 				+ " and mSeqNo = ? ", pCTS.getComplexTransaction(), 1).get(0);

@@ -22,9 +22,14 @@
         http://www.springframework.org/schema/jee/spring-jee-3.2.xsd">
         
         <jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/DataSource"/>
+        <jee:jndi-lookup id="interval" jndi-name="java:comp/env/interval"/>
+        <jee:jndi-lookup id="threadCount" jndi-name="java:comp/env/threadCount"/>
+        
         <context:component-scan base-package="com.appliedsni.channel.core.server" />
+		
 		<import resource="springamqp-rabbit-sender-context.xml"/>
 		<import resource="springamqp-rabbt-listener-context.xml"/>
+		
 		<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		    <property name="dataSource" ref="dataSource" />
 		    <property name="hibernateProperties">
@@ -59,9 +64,10 @@
 		
 		<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
 			<property name="transactionManager" ref="transactionManager"/>
-		</bean>			
+		</bean>
 		
 		<context:component-scan base-package="com.appliedsni.channel.core.server.*"/>
+		
 		<bean id="applicationContext" class="com.appliedsni.channel.core.server.config.ChannelApplicationContext"/>
 		<bean id="springAMQPRabbitSender" class="com.appliedsni.channel.core.server.queue.SpringAMQPRabbitSender"/>
 		
@@ -76,6 +82,15 @@
 		<bean id="functionHandler" class="com.appliedsni.channel.core.server.handler.FunctionHandler" >
 			<constructor-arg ref="serverDao" />
 		</bean>
+		
+		<bean id="recoverService" class="com.appliedsni.channel.core.server.handler.RecoverService">
+			<constructor-arg ref="serverDao" />
+		</bean>		
+		<task:scheduler id="scheduler" pool-size="#{threadCount}"/>
+		<task:scheduled-tasks scheduler="scheduler">
+			<task:scheduled ref="recoverService" method="recover" fixed-rate="#{interval}"/>
+		</task:scheduled-tasks>
+		
 				
 
 </beans>		

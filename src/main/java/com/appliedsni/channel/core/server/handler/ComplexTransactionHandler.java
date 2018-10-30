@@ -53,31 +53,7 @@ public class ComplexTransactionHandler {
 						ct = createTransaction(pMessage);
 					}					
 					
-					while(true){
-						ComplexTransactionStepEntity cts = getNextCTStep(ct);
-						
-						if(cts == null){
-							ct.setStatus(Status.COMLETED);
-							ct.setAdded(new Date());
-							LOGGER.warn("Complex Transaction : {} : {}", ct.getIdKey(), ct.getStatus());
-							break;
-						} else {
-							ct.setStatus(Status.IN_PROGRESS);
-							ct.setAdded(new Date());
-						}
-						
-						LOGGER.warn("Executing Complex Transaction Step : {}", cts.getSeqNo());
-
-						cts.setExecutionStatus(Status.IN_PROGRESS);						
-						SimpleTransactionHandler.get().handle(cts);
-						
-						if(!cts.getExecutionStatus().equals(Status.COMLETED)){
-							LOGGER.warn("Last step in Complex Transaction is in {}", cts.getExecutionStatus());
-							break;
-						}			
-						
-						LOGGER.warn("Complex Transaction Step : {} : {}", cts.getSeqNo(), cts.getExecutionStatus());
-					}
+					handle(ct);
 					
 				} catch(Exception e) {
 					LOGGER.error("Operation failed", e);
@@ -86,6 +62,35 @@ public class ComplexTransactionHandler {
 			}
 		});
 	}
+	
+	public void handle(ComplexTransactionEntity pCT){
+		while(true){
+			ComplexTransactionStepEntity cts = getNextCTStep(pCT);
+			
+			if(cts == null){
+				pCT.setStatus(Status.COMLETED);
+				pCT.setAdded(new Date());
+				LOGGER.warn("Complex Transaction : {} : {}", pCT.getIdKey(), pCT.getStatus());
+				break;
+			} else {
+				pCT.setStatus(Status.IN_PROGRESS);
+				pCT.setAdded(new Date());
+			}
+			
+			LOGGER.warn("Executing Complex Transaction Step : {}", cts.getSeqNo());
+
+			cts.setExecutionStatus(Status.IN_PROGRESS);						
+			SimpleTransactionHandler.get().handle(cts);
+			
+			if(!cts.getExecutionStatus().equals(Status.COMLETED)){
+				LOGGER.warn("Last step in Complex Transaction is in {}", cts.getExecutionStatus());
+				break;
+			}			
+			
+			LOGGER.warn("Complex Transaction Step : {} : {}", cts.getSeqNo(), cts.getExecutionStatus());
+		}
+	}
+
 		
 	/**
 	 * Create a transaction if it doesn't already exist
