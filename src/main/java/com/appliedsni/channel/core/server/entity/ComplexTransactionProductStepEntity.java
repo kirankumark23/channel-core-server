@@ -39,6 +39,9 @@ public class ComplexTransactionProductStepEntity implements Serializable{
 	@Column(name="xDecisionStatus")
 	@Enumerated(EnumType.STRING)
 	private Status mDecisionStatus;
+	
+	@Column(name="xDelay")
+	private int mDelay;	
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "xSimpleTransaction", nullable = false)
@@ -89,5 +92,13 @@ public class ComplexTransactionProductStepEntity implements Serializable{
 
 	public void setSimpleTransaction(SimpleTransactionProductEntity pSimpleTransaction) {
 		mSimpleTransaction = pSimpleTransaction;
+	}
+
+	public int getDelay() {
+		return mDelay;
+	}
+
+	public void setDelay(int pDelay) {
+		mDelay = pDelay;
 	}
 }

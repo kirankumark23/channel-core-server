@@ -11,7 +11,7 @@ public class SpringAMQPRabbitSender {
 	private static Gson mGson = new Gson();
       AmqpTemplate amqpTemplate = (AmqpTemplate)ChannelApplicationContext.get().getBean("amqpTemplate");
       public void pushMessage(MessageEntity pMessage){
-    	  amqpTemplate.convertAndSend("tp.routingkey.1", mGson.toJson(pMessage));
+    	  amqpTemplate.convertAndSend("channel.out", mGson.toJson(pMessage));
     	  System.out.println( " message(s) sent successfully.");
 	  }
 	 

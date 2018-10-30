@@ -13,5 +13,5 @@
 	<rabbit:admin connection-factory="connectionFactory"/>
 	
 	<rabbit:template id="amqpTemplate" connection-factory="connectionFactory"
-	exchange="tpExchange"/>	
+	exchange="channelExchange"/>	
 </beans>

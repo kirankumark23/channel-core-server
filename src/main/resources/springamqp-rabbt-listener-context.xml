@@ -11,18 +11,18 @@
               username="guest" password="guest"/>
 
 	<rabbit:admin connection-factory="connectionFactory"/>
-	<rabbit:queue id="TPQueue"/>
+	<rabbit:queue id="IN_QUEUE"/>
 	
-	<rabbit:topic-exchange id="tpExchange" name="tpExchange">
+	<rabbit:topic-exchange id="channelExchange" name="channelExchange">
 		<rabbit:bindings>
-			<rabbit:binding queue="TPQueue" pattern="tp.routingkey.1">
+			<rabbit:binding queue="IN_QUEUE" pattern="channel.in">
 			</rabbit:binding>
 		</rabbit:bindings>
 	</rabbit:topic-exchange>
 	
 	<bean id="asyncListener" class="com.appliedsni.channel.core.server.queue.SpringAMQPRabbitAyncListener"/>
 	<rabbit:listener-container id="myListenerContainer" connection-factory="connectionFactory">
-		<rabbit:listener ref="asyncListener" queue-names="TPQueue"/>
+		<rabbit:listener ref="asyncListener" queue-names="IN_QUEUE"/>
 	</rabbit:listener-container>
 
 </beans>

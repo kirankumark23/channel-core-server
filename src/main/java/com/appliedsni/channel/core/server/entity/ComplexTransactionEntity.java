@@ -1,5 +1,6 @@
 package com.appliedsni.channel.core.server.entity;
 
+import java.util.Date;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -11,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Type;
 
@@ -33,6 +36,10 @@ public class ComplexTransactionEntity {
 	@Column(name="xStatus")
 	@Enumerated(EnumType.STRING)
 	private Status mStatus;
+	
+	@Column(name="xAdded")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date mAdded = new Date();
 	
 	public ComplexTransactionEntity(){}
 	
@@ -66,4 +73,11 @@ public class ComplexTransactionEntity {
 		mStatus = pStatus;
 	}
 
+	public Date getAdded() {
+		return mAdded;
+	}
+
+	public void setAdded(Date pAdded) {
+		mAdded = pAdded;
+	}
 }

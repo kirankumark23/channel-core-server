@@ -47,6 +47,9 @@ public class SimpleTransactionProductStepEntity implements Serializable{
 
 	@Column(name="xFunction")
 	private String mFunction;
+	
+	@Column(name="xDelay")
+	private int mDelay;	
 
 	public SimpleTransactionProductStepEntity(){
 		mIdKey = UUID.randomUUID();
@@ -94,6 +97,14 @@ public class SimpleTransactionProductStepEntity implements Serializable{
 
 	public void setFunction(String pFunction) {
 		mFunction = pFunction;
-	}	
+	}
+
+	public int getDelay() {
+		return mDelay;
+	}
+
+	public void setDelay(int pDelay) {
+		mDelay = pDelay;
+	}
 
 }

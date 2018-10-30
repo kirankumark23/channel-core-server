@@ -1,6 +1,7 @@
 package com.appliedsni.channel.core.server.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -12,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Type;
 
@@ -40,6 +43,9 @@ public class ComplexTransactionStepEntity implements Serializable{
 	@Enumerated(EnumType.STRING)
 	private Status mDecisionStatus;
 	
+	@Column(name="xDelay")
+	private int mDelay;	
+	
 	@Column(name="xExecutionStatus")
 	@Enumerated(EnumType.STRING)
 	private Status mExecutionStatus;
@@ -50,6 +56,10 @@ public class ComplexTransactionStepEntity implements Serializable{
 	
 	@Column(name="xData")
 	private String mData;
+	
+	@Column(name="xAdded")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date mAdded = new Date();
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "xSimpleTransaction", nullable = false)
@@ -72,6 +82,7 @@ public class ComplexTransactionStepEntity implements Serializable{
 		mSimpleTransaction = pSimpleTransaction;
 		mExecutionStatus = Status.OPEN;
 		mResultStatus = Status.OPEN;
+		mDelay = pComplexTransactionProductStep.getDelay();
 	}
 
 	public UUID getIdKey() {
@@ -138,4 +149,19 @@ public class ComplexTransactionStepEntity implements Serializable{
 		mSimpleTransaction = pSimpleTransaction;
 	}
 
+	public int getDelay() {
+		return mDelay;
+	}
+
+	public void setDelay(int pDelay) {
+		mDelay = pDelay;
+	}
+
+	public Date getAdded() {
+		return mAdded;
+	}
+
+	public void setAdded(Date pAdded) {
+		mAdded = pAdded;
+	}
 }

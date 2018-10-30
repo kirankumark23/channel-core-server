@@ -3,6 +3,7 @@ package com.appliedsni.channel.core.server.handler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +30,12 @@ public class FunctionHandler {
 	
 	public void handle(String pMethodName, ComplexTransactionStepEntity pCTS, SimpleTransactionStepEntity pSTS){
 	    try {
-			Method targetMethod = Class.forName("com.appliedsni.channel.core.server.handler.FunctionHandler").getMethod(pMethodName, ComplexTransactionStepEntity.class, SimpleTransactionStepEntity.class);
-			targetMethod.invoke(this, pCTS, pSTS);
+	    	if(!pSTS.isExecute()){
+	    		pSTS.setExecutionStatus(Status.IN_PROGRESS);
+	    	} else {
+				Method targetMethod = Class.forName("com.appliedsni.channel.core.server.handler.FunctionHandler").getMethod(pMethodName, ComplexTransactionStepEntity.class, SimpleTransactionStepEntity.class);
+				targetMethod.invoke(this, pCTS, pSTS);
+	    	}
 		} catch (NoSuchMethodException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -55,6 +60,7 @@ public class FunctionHandler {
 	public void fn_ask_ac(ComplexTransactionStepEntity pCTS, SimpleTransactionStepEntity pSTS){
 		pSTS.setExecutionStatus(Status.COMLETED);
 		pSTS.setResultStatus(Status.SUCCESS);
+		pSTS.setAdded(new Date());
 		
 		if(CustomThreadLocal.get("ACCOUNT") == null){
 			LOGGER.warn("Sure, which account ?");
@@ -72,6 +78,7 @@ public class FunctionHandler {
 			pSTS.setExecutionStatus(Status.COMLETED);
 			pSTS.setResultStatus(Status.SUCCESS);			
 		}
+		pSTS.setAdded(new Date());
 		
 		LOGGER.warn("Completed");
 	}
@@ -91,18 +98,29 @@ public class FunctionHandler {
 		//	Update balance
 		pSTS.setData(balance.toString());
 		pSTS.setExecutionStatus(Status.COMLETED);
-		pSTS.setResultStatus(Status.SUCCESS);
+		pSTS.setResultStatus(Status.ERROR);
+		pSTS.setAdded(new Date());
 	}
 	
 	public void fn_send_info(ComplexTransactionStepEntity pCTS, SimpleTransactionStepEntity pSTS){
 		pSTS.setExecutionStatus(Status.COMLETED);
 		pSTS.setResultStatus(Status.SUCCESS);
+		pSTS.setAdded(new Date());
 		
 		ComplexTransactionStepEntity cts = (ComplexTransactionStepEntity)mServerDao.find("from ComplexTransactionStepEntity "
 				+ " where mComplexTransaction = ? "
 				+ " and mSeqNo = ? ", pCTS.getComplexTransaction(), 2).get(0);
 
 		LOGGER.warn("Your account balance is : {}", cts.getData());
+		
+		LOGGER.warn("Completed");
+	}
+	
+	public void fn_send_delay(ComplexTransactionStepEntity pCTS, SimpleTransactionStepEntity pSTS){
+		pSTS.setExecutionStatus(Status.COMLETED);
+		pSTS.setResultStatus(Status.SUCCESS);
+		
+		LOGGER.warn("Hi, I am working on it...will get the balance soon, Thanks for your patience ");
 		
 		LOGGER.warn("Completed");
 	}

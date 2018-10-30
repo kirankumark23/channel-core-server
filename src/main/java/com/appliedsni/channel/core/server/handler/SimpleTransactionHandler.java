@@ -1,5 +1,7 @@
 package com.appliedsni.channel.core.server.handler;
 
+import java.util.Date;
+
 import org.hibernate.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,13 +42,18 @@ public class SimpleTransactionHandler {
 						if(sts == null){
 							LOGGER.warn("No furter step to execute in Simple Transaction : {}", pCTStep.getSimpleTransaction().getIdKey());
 							
+							sts = getPreviousSTStep(pCTStep.getSimpleTransaction());
+							
 							pCTStep.getSimpleTransaction().setStatus(Status.COMLETED);
+							pCTStep.getSimpleTransaction().setAdded(new Date());
 							pCTStep.setExecutionStatus(Status.COMLETED);
-							pCTStep.setResultStatus(Status.SUCCESS);
+							//	TODO : Get status from last ST
+							pCTStep.setResultStatus(sts.getResultStatus());		
+							pCTStep.setAdded(new Date());
 							
 							LOGGER.warn("Complex Transaction : {} : {}", pCTStep.getSimpleTransaction().getIdKey(), pCTStep.getSimpleTransaction().getStatus());
 							break;
-						} 
+						}
 						
 						LOGGER.warn("Executing Simple Transaction Step : {}", sts.getSeqNo());
 
@@ -73,7 +80,9 @@ public class SimpleTransactionHandler {
 	
 	/**
 	 * Get next Simple Transaction Step, based on result of previous step
-	 *  
+	 * 
+	 * <p/>Decision Status and Function should not be same
+	 * 
 	 * @param pST
 	 * @return
 	 */
@@ -84,10 +93,26 @@ public class SimpleTransactionHandler {
 		SimpleTransactionStepEntity sts = null;
 		
 		try{
-			Query query = mServerDao.getSessionFactory().getCurrentSession().createQuery("from SimpleTransactionStepEntity "
-					+ " where mExecutionStatus != :ExecutionStatus "
-					+ " and mSimpleTransaction = :SimpleTransaction"
-					+ " order by mSeqNo ");
+			Query query = null;
+			
+			SimpleTransactionStepEntity previousStep = getPreviousSTStep(pST);
+			if(previousStep != null){
+				query = mServerDao.getSessionFactory().getCurrentSession().createQuery("from SimpleTransactionStepEntity "
+						+ " where mExecutionStatus != :ExecutionStatus "
+						+ " and mSimpleTransaction = :SimpleTransaction "
+						+ " and mDecisionStatus = :ResultStatus "
+						+ " and mFunction != :Function "
+						+ " order by mSeqNo ");
+				
+				query.setParameter("ResultStatus", previousStep.getResultStatus());
+				query.setParameter("Function", previousStep.getFunction());
+			} else {
+				query = mServerDao.getSessionFactory().getCurrentSession().createQuery("from SimpleTransactionStepEntity "
+						+ " where mExecutionStatus != :ExecutionStatus "
+						+ " and mSimpleTransaction = :SimpleTransaction "
+						+ " order by mSeqNo ");
+			}
+			
 			query.setParameter("ExecutionStatus", Status.COMLETED);
 			query.setParameter("SimpleTransaction", pST);
 			query.setMaxResults(1);
@@ -99,6 +124,34 @@ public class SimpleTransactionHandler {
 		}
 		
 		return sts;		
+	}
+	
+	/**
+	 * Get previous executed Step
+	 * 
+	 *<p/> Last executed step, irrespective of the result
+	 * 
+	 * @param pST
+	 * @return
+	 */
+	private SimpleTransactionStepEntity getPreviousSTStep(SimpleTransactionEntity pST){
+		SimpleTransactionStepEntity sts = null;
+		try{
+			Query query = mServerDao.getSessionFactory().getCurrentSession().createQuery("from SimpleTransactionStepEntity "
+					+ " where mExecutionStatus = :ExecutionStatus "
+					+ " and mSimpleTransaction = :SimpleTransaction"
+					+ " order by mSeqNo DESC ");
+			query.setParameter("ExecutionStatus", Status.COMLETED);
+			query.setParameter("SimpleTransaction", pST);
+			query.setMaxResults(1);
+			
+			sts = (SimpleTransactionStepEntity)query.list().get(0);
+			LOGGER.debug("STS : {}, {}",  sts.getSeqNo(), sts.getFunction());
+		}catch(IndexOutOfBoundsException e){
+			LOGGER.warn("No completed step found in Simple Transaction {}", pST.getIdKey());
+		}
+		
+		return sts;
 	}
 
 }

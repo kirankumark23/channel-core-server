@@ -1,6 +1,7 @@
 package com.appliedsni.channel.core.server.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -12,9 +13,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Type;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import com.appliedsni.channel.core.server.handler.SimpleTransactionHandler;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -22,6 +28,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Table(name="xSimpleTransactionStep")
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SimpleTransactionStepEntity implements Serializable{
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(SimpleTransactionStepEntity.class);
 
 	@Id
 	@Column(name="xIdkey")
@@ -53,6 +61,13 @@ public class SimpleTransactionStepEntity implements Serializable{
 	
 	@Column(name="xFunction")
 	private String mFunction;
+	
+	@Column(name="xDelay")
+	private int mDelay;	
+	
+	@Column(name="xAdded")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date mAdded = new Date();
 
 	public SimpleTransactionStepEntity(){
 		mIdKey = UUID.randomUUID();
@@ -69,6 +84,13 @@ public class SimpleTransactionStepEntity implements Serializable{
 		mSimpleTransaction = pSimpleTransaction;		
 		mExecutionStatus = Status.OPEN;
 		mResultStatus = Status.OPEN;
+		mDelay = pSimpleTransactionProductStep.getDelay();
+	}
+	
+	public boolean isExecute(){
+		//	Delay in minutes
+		LOGGER.warn("Time difference : {} : {}", (new Date()).getTime() - mAdded.getTime(), (mDelay * 60 * 1000));
+		return ((new Date()).getTime() - mAdded.getTime()) > (mDelay * 60 * 1000);
 	}
 
 	public UUID getIdKey() {
@@ -133,6 +155,22 @@ public class SimpleTransactionStepEntity implements Serializable{
 
 	public void setFunction(String pFunction) {
 		mFunction = pFunction;
+	}
+
+	public Date getAdded() {
+		return mAdded;
+	}
+
+	public void setAdded(Date pAdded) {
+		mAdded = pAdded;
+	}
+
+	public int getDelay() {
+		return mDelay;
+	}
+
+	public void setDelay(int pDelay) {
+		mDelay = pDelay;
 	}
 
 }

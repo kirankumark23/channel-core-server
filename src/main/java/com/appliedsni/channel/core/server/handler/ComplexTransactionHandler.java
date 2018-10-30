@@ -1,5 +1,6 @@
 package com.appliedsni.channel.core.server.handler;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.UUID;
@@ -57,8 +58,12 @@ public class ComplexTransactionHandler {
 						
 						if(cts == null){
 							ct.setStatus(Status.COMLETED);
+							ct.setAdded(new Date());
 							LOGGER.warn("Complex Transaction : {} : {}", ct.getIdKey(), ct.getStatus());
 							break;
+						} else {
+							ct.setStatus(Status.IN_PROGRESS);
+							ct.setAdded(new Date());
 						}
 						
 						LOGGER.warn("Executing Complex Transaction Step : {}", cts.getSeqNo());
@@ -81,7 +86,7 @@ public class ComplexTransactionHandler {
 			}
 		});
 	}
-	
+		
 	/**
 	 * Create a transaction if it doesn't already exist
 	 * 
@@ -136,11 +141,27 @@ public class ComplexTransactionHandler {
 	public ComplexTransactionStepEntity getNextCTStep(ComplexTransactionEntity pCT){
 		
 		ComplexTransactionStepEntity cts = null;
+		Query query = null;
 		try{
-			Query query = mServerDao.getSessionFactory().getCurrentSession().createQuery("from ComplexTransactionStepEntity "
-					+ " where mExecutionStatus != :ExecutionStatus "
-					+ " and mComplexTransaction = :ComplexTransaction"
-					+ " order by mSeqNo ");
+			ComplexTransactionStepEntity previousStep = getPreviousCTStep(pCT);
+			
+			if(previousStep != null){
+				query = mServerDao.getSessionFactory().getCurrentSession().createQuery("from ComplexTransactionStepEntity "
+						+ " where mExecutionStatus != :ExecutionStatus "
+						+ " and mComplexTransaction = :ComplexTransaction "
+						+ " and mDecisionStatus = :ResultStatus "
+						+ " and mSeqNo > :SeqNo "
+						+ " order by mSeqNo ");
+				
+				query.setParameter("ResultStatus", previousStep.getResultStatus());
+				query.setParameter("SeqNo", previousStep.getSeqNo());				
+			} else {
+				query = mServerDao.getSessionFactory().getCurrentSession().createQuery("from ComplexTransactionStepEntity "
+						+ " where mExecutionStatus != :ExecutionStatus "
+						+ " and mComplexTransaction = :ComplexTransaction"
+						+ " order by mSeqNo ");				
+			}
+			
 			query.setParameter("ExecutionStatus", Status.COMLETED);
 			query.setParameter("ComplexTransaction", pCT);
 			query.setMaxResults(1);
@@ -153,5 +174,33 @@ public class ComplexTransactionHandler {
 		
 		return cts;
 	}
+	
+	/**
+	 * Get previous executed Step
+	 * 
+	 *<p/> Last executed step, irrespective of the result
+	 * 
+	 * @param pST
+	 * @return
+	 */
+	private ComplexTransactionStepEntity getPreviousCTStep(ComplexTransactionEntity pCT){
+		ComplexTransactionStepEntity sts = null;
+		try{
+			Query query = mServerDao.getSessionFactory().getCurrentSession().createQuery("from ComplexTransactionStepEntity "
+					+ " where mExecutionStatus = :ExecutionStatus "
+					+ " and mComplexTransaction = :ComplexTransaction"
+					+ " order by mSeqNo DESC ");
+			query.setParameter("ExecutionStatus", Status.COMLETED);
+			query.setParameter("ComplexTransaction", pCT);
+			query.setMaxResults(1);
+			
+			sts = (ComplexTransactionStepEntity)query.list().get(0);
+		}catch(IndexOutOfBoundsException e){
+			LOGGER.warn("No completed step found in Simple Transaction {}", pCT.getIdKey());
+		}
+		
+		return sts;
+	}
+
 
 }
