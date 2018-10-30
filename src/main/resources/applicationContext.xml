@@ -48,7 +48,8 @@
 		    		<value>com.appliedsni.channel.core.server.entity.ComplexTransactionEntity</value>
 		    		<value>com.appliedsni.channel.core.server.entity.ComplexTransactionStepEntity</value>
 		    		<value>com.appliedsni.channel.core.server.entity.SimpleTransactionEntity</value>
-		    		<value>com.appliedsni.channel.core.server.entity.SimpleTransactionStepEntity</value>		    				
+		    		<value>com.appliedsni.channel.core.server.entity.SimpleTransactionStepEntity</value>
+		    		<value>com.appliedsni.channel.core.server.entity.CBSIntegrationEntity</value>			    			    				
 		    	</list>
 		    </property>
 		</bean>        

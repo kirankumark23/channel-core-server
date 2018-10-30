@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import com.appliedsni.channel.core.server.config.ChannelApplicationContext;
 import com.appliedsni.channel.core.server.dao.ServerDao;
+import com.appliedsni.channel.core.server.entity.CBSIntegrationEntity;
 import com.appliedsni.channel.core.server.entity.ComplexTransactionStepEntity;
 import com.appliedsni.channel.core.server.entity.ResponseMessageEntity;
 import com.appliedsni.channel.core.server.entity.SimpleTransactionStepEntity;
@@ -98,6 +99,11 @@ public class FunctionHandler {
 				+ " and mSeqNo = ? ", pCTS.getComplexTransaction(), 1).get(0);
 		
 		//	TODO : Call TDI / CBS service
+		
+		CBSIntegrationEntity cbs = (CBSIntegrationEntity)mServerDao.find("from CBSIntegrationEntity").get(0);
+		
+		LOGGER.warn("CBS Integration Online : {}", cbs.isOnline());
+		
 		LOGGER.warn("Getting balance for : {}", cts.getData());
 		BigDecimal balance = BigDecimal.valueOf(10000);
 		
