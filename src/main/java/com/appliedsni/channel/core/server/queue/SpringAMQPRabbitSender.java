@@ -1,5 +1,7 @@
 package com.appliedsni.channel.core.server.queue;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -8,11 +10,13 @@ import com.appliedsni.channel.core.server.entity.MessageEntity;
 import com.google.gson.Gson;
 
 public class SpringAMQPRabbitSender {
+	private static final Logger LOGGER = LoggerFactory.getLogger(SpringAMQPRabbitSender.class);
 	private static Gson mGson = new Gson();
-      AmqpTemplate amqpTemplate = (AmqpTemplate)ChannelApplicationContext.get().getBean("amqpTemplate");
-      public void pushMessage(MessageEntity pMessage){
-    	  amqpTemplate.convertAndSend("channel.out", mGson.toJson(pMessage));
-    	  System.out.println( " message(s) sent successfully.");
-	  }
+    private AmqpTemplate amqpTemplate = (AmqpTemplate)ChannelApplicationContext.get().getBean("amqpTemplate");
+    
+    public void pushMessage(MessageEntity pMessage){
+		amqpTemplate.convertAndSend("channel.out", mGson.toJson(pMessage));
+		LOGGER.warn("Message(s) sent : OUT_QUEUE.");
+	}
 	 
 }

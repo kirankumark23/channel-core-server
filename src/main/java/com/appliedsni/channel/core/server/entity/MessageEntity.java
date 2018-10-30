@@ -8,6 +8,11 @@ public class MessageEntity {
 	private UUID mIdKey;
 	private String mType;	
 	private Map<String, String> mData;
+	
+	public MessageEntity(){}
+	public MessageEntity(UUID pIdKey){
+		mIdKey = pIdKey;
+	}
 
 	public UUID getIdKey() {
 		return mIdKey;

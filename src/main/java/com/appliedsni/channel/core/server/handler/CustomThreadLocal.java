@@ -21,7 +21,11 @@ public class CustomThreadLocal {
     }
  
     public static Object get(String pKey) {
-        return threadMap.get(Thread.currentThread()).get(pKey);
+    	if(threadMap.get(Thread.currentThread()) != null){
+    		return threadMap.get(Thread.currentThread()).get(pKey);
+    	}
+        
+    	return null;
     }
 
 }

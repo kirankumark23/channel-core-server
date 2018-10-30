@@ -70,6 +70,10 @@
 		
 		<bean id="applicationContext" class="com.appliedsni.channel.core.server.config.ChannelApplicationContext"/>
 		<bean id="springAMQPRabbitSender" class="com.appliedsni.channel.core.server.queue.SpringAMQPRabbitSender"/>
+		<bean id="MQManager" class="com.appliedsni.channel.core.server.queue.MQManager" >
+			<constructor-arg ref="serverDao" />
+			<constructor-arg ref="springAMQPRabbitSender" />
+		</bean>		
 		
 		<bean id="complexTransactionHandler" class="com.appliedsni.channel.core.server.handler.ComplexTransactionHandler" >
 			<constructor-arg ref="serverDao" />

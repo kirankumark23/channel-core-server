@@ -11,8 +11,10 @@ import org.slf4j.LoggerFactory;
 import com.appliedsni.channel.core.server.config.ChannelApplicationContext;
 import com.appliedsni.channel.core.server.dao.ServerDao;
 import com.appliedsni.channel.core.server.entity.ComplexTransactionStepEntity;
+import com.appliedsni.channel.core.server.entity.ResponseMessageEntity;
 import com.appliedsni.channel.core.server.entity.SimpleTransactionStepEntity;
 import com.appliedsni.channel.core.server.entity.Status;
+import com.appliedsni.channel.core.server.queue.MQManager;
 
 public class FunctionHandler {
 	
@@ -63,7 +65,13 @@ public class FunctionHandler {
 		pSTS.setAdded(new Date());
 		
 		if(CustomThreadLocal.get("ACCOUNT") == null){
-			LOGGER.warn("Sure, which account ?");
+			ResponseMessageEntity response = new ResponseMessageEntity(pCTS);
+			response.setCode("STD-1");
+			response.setMessage("Sure, which account ?");
+			
+			MQManager.get().handle(response);
+
+			LOGGER.warn(response.getMessage());
 		}
 		
 		LOGGER.warn("Completed");
@@ -96,7 +104,7 @@ public class FunctionHandler {
 		//	Update balance
 		pSTS.setData(balance.toString());
 		pSTS.setExecutionStatus(Status.COMLETED);
-		pSTS.setResultStatus(Status.ERROR);
+		pSTS.setResultStatus(Status.SUCCESS);
 		pSTS.setAdded(new Date());
 	}
 	
@@ -109,7 +117,13 @@ public class FunctionHandler {
 				+ " where mComplexTransaction = ? "
 				+ " and mSeqNo = ? ", pCTS.getComplexTransaction(), 2).get(0);
 
-		LOGGER.warn("Your account balance is : {}", cts.getData());
+		ResponseMessageEntity response = new ResponseMessageEntity(pCTS);
+		response.setCode("STD-2");
+		response.setMessage("Your account balance is : " + cts.getData());
+		
+		MQManager.get().handle(response);
+
+		LOGGER.warn(response.getMessage());
 		
 		LOGGER.warn("Completed");
 	}
@@ -118,7 +132,13 @@ public class FunctionHandler {
 		pSTS.setExecutionStatus(Status.COMLETED);
 		pSTS.setResultStatus(Status.SUCCESS);
 		
-		LOGGER.warn("Hi, I am working on it...will get the balance soon, Thanks for your patience ");
+		ResponseMessageEntity response = new ResponseMessageEntity(pCTS);
+		response.setCode("STD-3");
+		response.setMessage("Hi, I am working on it...will get the balance soon, Thanks for your patience");
+		
+		MQManager.get().handle(response);
+
+		LOGGER.warn(response.getMessage());
 		
 		LOGGER.warn("Completed");
 	}

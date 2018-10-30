@@ -29,14 +29,13 @@ import java.security.GeneralSecurityException;
 public class TestService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(TestService.class);
 	SpringAMQPRabbitSender springAMQPRabbitSender=(SpringAMQPRabbitSender) ChannelApplicationContext.get().getBean("springAMQPRabbitSender");
+	
 	@POST
 	@Path("/push")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getBasketProducts(MessageEntity pMessage){
 		springAMQPRabbitSender.pushMessage(pMessage);
 		return "push sccess";
-		
-		
 	}
 	
 	@POST

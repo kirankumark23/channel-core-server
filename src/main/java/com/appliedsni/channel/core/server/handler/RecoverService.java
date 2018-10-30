@@ -48,6 +48,7 @@ public class RecoverService {
 						ComplexTransactionEntity ct = (ComplexTransactionEntity)ctObj;
 						LOGGER.warn("Attempting to recover CT : {}", ct.getIdKey());
 						ComplexTransactionHandler.get().handle(ct);
+						LOGGER.warn("Recoved CT : {}", ct.getIdKey());
 					}
 				} catch(Exception e) {
 					LOGGER.error("Operation failed", e);
