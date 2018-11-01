@@ -149,4 +149,24 @@ public class FunctionHandler {
 		LOGGER.warn("Completed");
 	}
 
+	public void fn_get_ac_list(ComplexTransactionStepEntity pCTS, SimpleTransactionStepEntity pSTS){
+		pSTS.setExecutionStatus(Status.COMLETED);
+		pSTS.setResultStatus(Status.SUCCESS);
+		
+		ResponseMessageEntity response = new ResponseMessageEntity(pCTS);
+		response.setCode("STD-4");
+		response.setMessage("Here is the list of your accounts");
+		response.getData().put("1", "A12345");
+		response.getData().put("2", "B12345");
+		response.getData().put("3", "C12345");
+		response.getData().put("4", "D12345");
+		response.getData().put("5", "E12345");
+		
+		MQManager.get().handle(response);
+
+		LOGGER.warn(response.getMessage());
+		
+		LOGGER.warn("Completed");
+	}
+
 }

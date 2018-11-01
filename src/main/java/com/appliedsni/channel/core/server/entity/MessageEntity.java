@@ -1,5 +1,6 @@
 package com.appliedsni.channel.core.server.entity;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -12,6 +13,7 @@ public class MessageEntity {
 	public MessageEntity(){}
 	public MessageEntity(UUID pIdKey){
 		mIdKey = pIdKey;
+		mData = new HashMap<String, String>();
 	}
 
 	public UUID getIdKey() {

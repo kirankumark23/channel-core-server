@@ -44,8 +44,10 @@ public class ComplexTransactionHandler {
 			@Override
 			protected void doInTransactionWithoutResult(TransactionStatus pStatus) {
 				try{
-					for(Entry<String, String> entry : pMessage.getData().entrySet()){
-						CustomThreadLocal.add(entry.getKey(), entry.getValue());
+					if(pMessage.getData() != null){
+						for(Entry<String, String> entry : pMessage.getData().entrySet()){
+							CustomThreadLocal.add(entry.getKey(), entry.getValue());
+						}
 					}
 
 					ComplexTransactionEntity ct = (ComplexTransactionEntity)mServerDao.get(ComplexTransactionEntity.class, pMessage.getIdKey());
