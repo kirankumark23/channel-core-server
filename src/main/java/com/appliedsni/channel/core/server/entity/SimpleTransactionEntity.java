@@ -36,7 +36,7 @@ public class SimpleTransactionEntity {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date mAdded = new Date();
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "xProduct", nullable = false)
 	@JsonIgnore(value=true)
 	private SimpleTransactionProductEntity mProduct;

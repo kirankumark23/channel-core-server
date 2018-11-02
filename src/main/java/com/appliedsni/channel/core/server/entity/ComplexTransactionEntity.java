@@ -28,9 +28,8 @@ public class ComplexTransactionEntity {
 	@Type(type="pg-uuid")
 	private UUID mIdKey;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "xProduct", nullable = false)
-	@JsonIgnore(value=true)
 	private ComplexTransactionProductEntity mProduct;
 	
 	@Column(name="xStatus")

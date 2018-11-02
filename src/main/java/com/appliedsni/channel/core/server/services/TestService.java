@@ -2,6 +2,7 @@ package com.appliedsni.channel.core.server.services;
 
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -13,8 +14,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.appliedsni.channel.core.server.config.ChannelApplicationContext;
+import com.appliedsni.channel.core.server.entity.ComplexTransactionEntity;
+import com.appliedsni.channel.core.server.entity.ComplexTransactionStepEntity;
 import com.appliedsni.channel.core.server.entity.MessageEntity;
+import com.appliedsni.channel.core.server.entity.SimpleTransactionStepEntity;
 import com.appliedsni.channel.core.server.entity.UserEntity;
+import com.appliedsni.channel.core.server.handler.CommonUtils;
 import com.appliedsni.channel.core.server.handler.ComplexTransactionHandler;
 import com.appliedsni.channel.core.server.queue.SpringAMQPRabbitSender;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
@@ -24,6 +29,8 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson.JacksonFactory;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.List;
+import java.util.UUID;
 
 @Path("/service")
 public class TestService {
@@ -71,6 +78,56 @@ public class TestService {
 		
 		return "{\"response\" : \"Execution Completed\"}";
 	}
+	
+	@GET
+	@Path("/complextransactions")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<ComplexTransactionEntity> getCTList(){
+		
+		 List<ComplexTransactionEntity> ctList = CommonUtils.get().getCTList();
+		
+		return ctList;
+	}
+
+	@GET
+	@Path("/complextransactions/{idkey}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ComplexTransactionEntity getCT(@PathParam("idkey") UUID pIdKey ){		
+		return CommonUtils.get().getCT(pIdKey);
+	}
+	
+	@GET
+	@Path("/complextransactions/{ctid}/complexsteps")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<ComplexTransactionStepEntity> getCTSteps(@PathParam("ctid") UUID pCTIdKey ){
+		
+		 List<ComplexTransactionStepEntity> ctsList = CommonUtils.get().getCTSteps(pCTIdKey);		
+		return ctsList;
+	}
+	
+	@GET
+	@Path("/complextransactions/{ctid}/complexsteps/{ctsid}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ComplexTransactionStepEntity getCTS(@PathParam("ctid") UUID pCTIdKey, @PathParam("ctsid") UUID pCTSIdKey ){
+		
+		ComplexTransactionStepEntity cts = CommonUtils.get().getCTS(pCTSIdKey);		
+		return cts;
+	}
+	
+	@GET
+	@Path("/complextransactions/{ctid}/complexsteps/{ctsid}/simplesteps")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<SimpleTransactionStepEntity> getSTSteps(@PathParam("ctid") UUID pCTIdKey, @PathParam("ctsid") UUID pCTSIdKey ){
+		
+		 List<SimpleTransactionStepEntity> stsList = CommonUtils.get().getSTSteps(pCTIdKey, pCTSIdKey);		
+		return stsList;
+	}
+
 
 	public void googleLogin(String tokenString) throws IOException, GeneralSecurityException{
 

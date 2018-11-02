@@ -104,14 +104,20 @@ public class FunctionHandler {
 		
 		LOGGER.warn("CBS Integration Online : {}", cbs.isOnline());
 		
-		LOGGER.warn("Getting balance for : {}", cts.getData());
-		BigDecimal balance = BigDecimal.valueOf(10000);
-		
-		//	Update balance
-		pSTS.setData(balance.toString());
-		pSTS.setExecutionStatus(Status.COMLETED);
-		pSTS.setResultStatus(Status.SUCCESS);
-		pSTS.setAdded(new Date());
+		if(cbs.isOnline()){
+			LOGGER.warn("Getting balance for : {}", cts.getData());
+			BigDecimal balance = BigDecimal.valueOf(10000);
+			
+			//	Update balance
+			pSTS.setData(balance.toString());
+			pSTS.setExecutionStatus(Status.COMLETED);
+			pSTS.setResultStatus(Status.SUCCESS);
+			pSTS.setAdded(new Date());			
+		} else {			
+			pSTS.setExecutionStatus(Status.COMLETED);
+			pSTS.setResultStatus(Status.ERROR);
+			pSTS.setAdded(new Date());			
+		}		
 	}
 	
 	public void fn_send_info(ComplexTransactionStepEntity pCTS, SimpleTransactionStepEntity pSTS){

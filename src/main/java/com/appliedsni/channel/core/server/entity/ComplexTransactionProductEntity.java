@@ -11,8 +11,12 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+
 @Entity
 @Table(name="xComplexTransactionProduct")
+@JsonAutoDetect(fieldVisibility = Visibility.ANY)
 public class ComplexTransactionProductEntity {
 
 	@Id
@@ -54,5 +58,13 @@ public class ComplexTransactionProductEntity {
 
 	public void setName(String pName) {
 		mName = pName;
+	}
+
+	public String getType() {
+		return mType;
+	}
+
+	public void setType(String pType) {
+		mType = pType;
 	}
 }

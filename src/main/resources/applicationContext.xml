@@ -49,7 +49,7 @@
 		    		<value>com.appliedsni.channel.core.server.entity.ComplexTransactionStepEntity</value>
 		    		<value>com.appliedsni.channel.core.server.entity.SimpleTransactionEntity</value>
 		    		<value>com.appliedsni.channel.core.server.entity.SimpleTransactionStepEntity</value>
-		    		<value>com.appliedsni.channel.core.server.entity.CBSIntegrationEntity</value>			    			    				
+		    		<value>com.appliedsni.channel.core.server.entity.CBSIntegrationEntity</value>
 		    	</list>
 		    </property>
 		</bean>        
@@ -85,6 +85,10 @@
 		</bean>
 
 		<bean id="functionHandler" class="com.appliedsni.channel.core.server.handler.FunctionHandler" >
+			<constructor-arg ref="serverDao" />
+		</bean>
+
+		<bean id="commonUtils" class="com.appliedsni.channel.core.server.handler.CommonUtils" >
 			<constructor-arg ref="serverDao" />
 		</bean>
 		

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
+import javax.persistence.Access;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -23,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import com.appliedsni.channel.core.server.handler.SimpleTransactionHandler;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name="xSimpleTransactionStep")
@@ -36,9 +38,8 @@ public class SimpleTransactionStepEntity implements Serializable{
 	@Type(type="pg-uuid")
 	private UUID mIdKey;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "xSimpleTransaction", nullable = false)
-	@JsonIgnore(value=true)
 	private SimpleTransactionEntity mSimpleTransaction;
 
 	@Column(name="xSeqNo")

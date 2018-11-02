@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
+import javax.persistence.Access;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -20,10 +21,11 @@ import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name="xComplexTransactionStep")
-@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonIgnoreProperties(value={"mComplexTransaction", "mSimpleTransaction"})
 public class ComplexTransactionStepEntity implements Serializable{
 
 	@Id
@@ -31,7 +33,7 @@ public class ComplexTransactionStepEntity implements Serializable{
 	@Type(type="pg-uuid")
 	private UUID mIdKey;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "xComplexTransaction", nullable = false)
 	@JsonIgnore(value=true)
 	private ComplexTransactionEntity mComplexTransaction;
@@ -61,9 +63,8 @@ public class ComplexTransactionStepEntity implements Serializable{
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date mAdded = new Date();
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "xSimpleTransaction", nullable = false)
-	@JsonIgnore(value=true)
 	private SimpleTransactionEntity mSimpleTransaction;
 
 	public ComplexTransactionStepEntity(){
