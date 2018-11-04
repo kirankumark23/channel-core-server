@@ -25,6 +25,7 @@
         <jee:jndi-lookup id="interval" jndi-name="java:comp/env/interval"/>
         <jee:jndi-lookup id="threadCount" jndi-name="java:comp/env/threadCount"/>
         
+        
         <context:component-scan base-package="com.appliedsni.channel.core.server" />
 		
 		<import resource="springamqp-rabbit-sender-context.xml"/>
@@ -40,7 +41,7 @@
 		    </property>
 		    <property name="annotatedClasses">
 		    	<list>		 
-		    		<value>com.appliedsni.channel.core.server.entity.UserEntity</value>   
+		    		<value>com.appliedsni.channel.core.server.user.domain.UserEntity</value>   
 		    		<value>com.appliedsni.channel.core.server.entity.SimpleTransactionProductEntity</value>
 		    		<value>com.appliedsni.channel.core.server.entity.SimpleTransactionProductStepEntity</value>
 		    		<value>com.appliedsni.channel.core.server.entity.ComplexTransactionProductEntity</value>
@@ -50,6 +51,15 @@
 		    		<value>com.appliedsni.channel.core.server.entity.SimpleTransactionEntity</value>
 		    		<value>com.appliedsni.channel.core.server.entity.SimpleTransactionStepEntity</value>
 		    		<value>com.appliedsni.channel.core.server.entity.CBSIntegrationEntity</value>
+		    		
+		    		<value>com.appliedsni.channel.core.server.user.domain.BranchEntity</value>  
+		    		<value>com.appliedsni.channel.core.server.user.domain.CompanyEntity</value>  
+		    		<value>com.appliedsni.channel.core.server.user.domain.MenuEntity</value>  
+		    		<value>com.appliedsni.channel.core.server.user.domain.RoleEntity</value>  
+		    		<value>com.appliedsni.channel.core.server.user.domain.RoleActionsEntity</value>  
+		    		<value>com.appliedsni.channel.core.server.user.domain.RoleMenuEntity</value> 
+		    		<value>com.appliedsni.channel.core.server.user.domain.UserRoleEntity</value>  
+		    		
 		    	</list>
 		    </property>
 		</bean>        
@@ -92,9 +102,12 @@
 			<constructor-arg ref="serverDao" />
 		</bean>
 		
+		
 		<bean id="recoverService" class="com.appliedsni.channel.core.server.handler.RecoverService">
 			<constructor-arg ref="serverDao" />
 		</bean>		
+		       
+        
 		<task:scheduler id="scheduler" pool-size="#{threadCount}"/>
 		<task:scheduled-tasks scheduler="scheduler">
 			<task:scheduled ref="recoverService" method="recover" fixed-rate="#{interval}"/>
