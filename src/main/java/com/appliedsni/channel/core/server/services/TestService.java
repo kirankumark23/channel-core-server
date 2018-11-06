@@ -76,7 +76,7 @@ public class TestService {
 		
 		ComplexTransactionHandler.get().handle(pMessage);
 		
-		return "{\"response\" : \"Execution Completed\"}";
+		return "{\"response\" : \"Execution Completed !\"}";
 	}
 	
 	@GET
