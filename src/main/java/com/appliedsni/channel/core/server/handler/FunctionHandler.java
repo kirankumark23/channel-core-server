@@ -17,6 +17,9 @@ import com.appliedsni.channel.core.server.entity.SimpleTransactionStepEntity;
 import com.appliedsni.channel.core.server.entity.Status;
 import com.appliedsni.channel.core.server.queue.MQManager;
 
+import channel.client.function.AbstractIntegration;
+import channel.client.function.IntegratonInterface;
+
 public class FunctionHandler {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(FunctionHandler.class);
@@ -38,6 +41,22 @@ public class FunctionHandler {
 	    	} else {
 				Method targetMethod = Class.forName("com.appliedsni.channel.core.server.handler.FunctionHandler").getMethod(pMethodName, ComplexTransactionStepEntity.class, SimpleTransactionStepEntity.class);
 				targetMethod.invoke(this, pCTS, pSTS);
+
+//	    		AbstractIntegration abstractClass = (AbstractIntegration) Class.forName("channel.server.client.AbstractIntegration").newInstance();
+//	    		abstractClass.ping();
+	    		
+				Method pingMethod = Class.forName("cbs.integration.Test").getMethod("ping");
+				pingMethod.invoke(Class.forName("cbs.integration.Test").newInstance());
+	    		
+//	    		Object obj = Class.forName("cbs.integration.CASA").newInstance();
+//	    		boolean check1 = IntegratonInterface.class.isInstance(obj);
+//	    		IntegratonInterface concreteClass = (IntegratonInterface) obj;
+//	    		concreteClass.ping();	    		
+
+	    		Method concreteClass2 = Class.forName("cbs.integration.LOAN").getMethod("ping");
+	    		concreteClass2.invoke(Class.forName("cbs.integration.LOAN").newInstance());
+	    		
+
 	    	}
 		} catch (NoSuchMethodException e) {
 			// TODO Auto-generated catch block
@@ -55,6 +74,9 @@ public class FunctionHandler {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

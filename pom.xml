@@ -30,6 +30,12 @@
       <scope>test</scope>
     </dependency>
     
+    <dependency>
+	  <groupId>channel-client-function</groupId>
+	  <artifactId>channel-client-function</artifactId>
+	  <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    
       <dependency>
          <groupId>org.glassfish.jersey.ext</groupId>
          <artifactId>jersey-spring3</artifactId>
