@@ -18,7 +18,6 @@ import com.appliedsni.channel.core.server.entity.ComplexTransactionEntity;
 import com.appliedsni.channel.core.server.entity.ComplexTransactionStepEntity;
 import com.appliedsni.channel.core.server.entity.MessageEntity;
 import com.appliedsni.channel.core.server.entity.SimpleTransactionStepEntity;
-import com.appliedsni.channel.core.server.entity.UserEntity;
 import com.appliedsni.channel.core.server.handler.CommonUtils;
 import com.appliedsni.channel.core.server.handler.ComplexTransactionHandler;
 import com.appliedsni.channel.core.server.queue.SpringAMQPRabbitSender;

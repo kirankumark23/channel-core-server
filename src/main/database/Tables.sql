@@ -98,7 +98,7 @@ create table xBranch(
 	xName				character varying(200),
 	xversion 			integer NOT NULL,
 	xAdded				timestamp,
-	xAddedBy			UUID,
+	xAddedBy			UUID references xUser(xidKey),
 	xlastupdate 		timestamp NULL,	
 	primary key (xCompany, xIdKey)
 );
@@ -114,7 +114,7 @@ create table xMenu(
 	xURL				character varying(200),
 	xversion 			integer NOT NULL,
 	xAdded				timestamp,
-	xAddedBy			UUID,
+	xAddedBy			UUID references xUser(xidKey),
 	xlastupdate 		timestamp NULL	
 );
 
@@ -125,7 +125,7 @@ create table xRole(
 	xName				character varying(200),
 	xversion 			integer NOT NULL,
 	xAdded				timestamp,
-	xAddedBy			UUID,
+	xAddedBy			UUID references xUser(xidKey),
 	xlastupdate 		timestamp NULL	
 );
 
@@ -137,7 +137,7 @@ create table xRoleMenu(
 	xMenu			UUID references xmenu(xidkey),
 	xversion 		integer NOT NULL,
 	xAdded			timestamp,
-	xAddedBy		UUID,
+	xAddedBy		UUID references xUser(xidKey),
 	xlastupdate 	timestamp null,	
 	unique (xRole, xMenu)
 );
@@ -149,7 +149,7 @@ create table xEntity(
 	xName 			character varying(200),
 	xversion 		integer NOT NULL,
 	xAdded			timestamp,
-	xAddedBy		UUID,
+	xAddedBy		UUID references xUser(xidKey),
 	xlastupdate 	timestamp NULL	
 );
 
@@ -161,7 +161,7 @@ create table xRoleActions(
 	xAction			character varying(200),
 	xversion 		integer NOT NULL,
 	xAdded			timestamp,
-	xAddedBy		UUID,
+	xAddedBy		UUID references xUser(xidKey),
 	xlastupdate 	timestamp NULL	
 );
 
@@ -173,26 +173,44 @@ create table xUserRole(
 	xRole			character varying(200) references xRole(xIdKey),
 	xversion 		integer NOT NULL,
 	xAdded			timestamp,
-	xAddedBy		UUID,
+	xAddedBy		UUID references xUser(xidKey),
 	xlastupdate 	timestamp null,	
 	unique (xUser, xCompany, xBranch, xRole)
 );
 
 
 create table xUser(
-
+	xidkey 				uuid NOT NULL primary key,
+	xemailaddress 		varchar(200) NOT NULL,
+	xfailloginattempts 	int4 NULL,
+	xfirstname 			varchar(40) NULL,
+	xlastname 			varchar(40) NULL,
+	xlockuserindicator 	bool NOT NULL,
+	xmobilenumber 		varchar(12) NULL,
+	xpasswordhash 		varchar(40) NULL,
+	xversion 			integer NOT NULL,
+	xAdded				timestamp,
+	xAddedBy			UUID references xUser(xidKey),
+	xlastupdate 		timestamp NULL
 );
+
+
 
 create table xUserSession(
 
 );
 
-create table xUserSession(
-
-);
 
 create table xCompany(
-
+	xidkey 			uuid NOT NULL,
+	xemail 			varchar(255) NULL,
+	xname 			varchar(255) NOT NULL,
+	xphonenumber 	varchar(255) NULL,
+	xstatus 		bool NULL,
+	xversion 		integer NOT NULL,
+	xAdded			timestamp,
+	xAddedBy		UUID references xUser(xidKey),
+	xlastupdate 	timestamp NULL
 );
 
 
