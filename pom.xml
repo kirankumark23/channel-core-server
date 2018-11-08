@@ -9,27 +9,38 @@
   <url>http://maven.apache.org</url>
   
    <properties>
-   	 <slf4j.version>1.6.4</slf4j.version>
-	 <logback.version>1.0.1</logback.version>
-      <jersey.version>2.8</jersey.version>
-      <spring.version>4.0.3.RELEASE</spring.version>
-      <hibernate.version>4.0.0.Final</hibernate.version>
-      <glassfish.version>3.1.1</glassfish.version>
-      <jodatime.version>2.0</jodatime.version>
-      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-      <maven.compiler.source>1.8</maven.compiler.source>
-  	  <maven.compiler.target>1.8</maven.compiler.target>
-  	  <java.version>1.8</java.version>
+		<slf4j.version>1.6.4</slf4j.version>
+		<logback.version>1.0.1</logback.version>
+		<jersey.version>2.8</jersey.version>
+		<spring.version>4.0.3.RELEASE</spring.version>
+		<hibernate.version>4.0.0.Final</hibernate.version>
+		<glassfish.version>3.1.1</glassfish.version>
+		<jodatime.version>2.0</jodatime.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<java.version>1.8</java.version>
+		<jackson.version>2.9.6</jackson.version>
+		<jjwt.version>0.9.1</jjwt.version>
+		<hamcrest.version>1.3</hamcrest.version>
+		<jbcrypt.version>0.4.1</jbcrypt.version>
    </properties>
      
   <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
+	<dependency>
+	  <groupId>junit</groupId>
+	  <artifactId>junit</artifactId>
+	  <version>3.8.1</version>
+	  <scope>test</scope>
+	</dependency>
     
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-test</artifactId>
+		<version>${spring.version}</version>
+		<scope>test</scope>
+	</dependency>
+	
     <dependency>
 	  <groupId>channel-client-function</groupId>
 	  <artifactId>channel-client-function</artifactId>
@@ -272,6 +283,34 @@
 			<groupId>org.springframework.amqp</groupId>
 			<artifactId>spring-amqp</artifactId>
 			<version>1.1.4.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.module</groupId>
+			<artifactId>jackson-module-parameter-names</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jdk8</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>de.svenkubiak</groupId>
+			<artifactId>jBCrypt</artifactId>
+			<version>${jbcrypt.version}</version>
+		</dependency>
+		<!-- JJWT -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>${jjwt.version}</version>
 		</dependency>
 	</dependencies>
 
