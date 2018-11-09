@@ -3,6 +3,7 @@ package com.appliedsni.channel.core.server.user.dao;
 
 
 
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,13 +34,26 @@ public class UserDaoImpl {
      * @return
      */
     public UserEntity findByUsernameOrEmail(String identifier) {
-    	Session session =mServerDao.getSessionFactory().openSession();
-    	Query query=session.createQuery("SELECT u FROM UserEntity u WHERE u.mEmailaddress = :identifier OR u.mEmailaddress = :identifier");
-    	query.setParameter("identifier", identifier);
-    	List<UserEntity> users =query.list();
-        if (users.isEmpty()) {
-            return null;
-        }
+    	List<UserEntity> users=null;
+    	Session session=null;
+		try {
+			session =mServerDao.getSessionFactory().openSession();
+			Query query=session.createQuery("SELECT u FROM UserEntity u WHERE u.mEmailaddress = :identifier OR u.mEmailaddress = :identifier");
+			query.setParameter("identifier", identifier);
+			users = query.list();
+			if (users.isEmpty()) {
+			    return null;
+			}
+		} catch (HibernateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			if(session!=null)
+			{
+				session.close();
+			}
+		}
         return users.get(0);
     }
 
