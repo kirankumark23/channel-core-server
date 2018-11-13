@@ -14,6 +14,7 @@ create table xSimpleTransactionProductStep(
 	xSimpleTransaction 	UUID references xSimpleTransactionProduct (xIdKey),
 	xDecisionStatus 	character varying(200),
 	xDelay				integer check(xDelay >= 0),
+	xClass				character varying(200),
 	xFunction			character varying(200),
 	unique(xSeqNo, xSimpleTransaction)
 );
@@ -55,6 +56,7 @@ create table xSimpleTransactionStep (
 	xIdKey 				UUID primary key,
 	xSeqNo 				integer,
 	xSimpleTransaction 	UUID references xSimpleTransaction(xidkey),
+	xClass				character varying(200),
 	xFunction			character varying(200),
 	xDecisionStatus 	character varying(200),
 	xDelay				integer check (xdelay >= 0),
@@ -187,7 +189,7 @@ create table xUser(
 	xlastname 			varchar(40) NULL,
 	xlockuserindicator 	bool NOT NULL,
 	xmobilenumber 		varchar(12) NULL,
-	xpasswordhash 		varchar(40) NULL,
+	xpasswordhash 		varchar(200) NULL,
 	xversion 			integer NOT NULL,
 	xAdded				timestamp,
 	xAddedBy			UUID references xUser(xidKey),
@@ -214,4 +216,8 @@ create table xCompany(
 );
 
 
+create table xCBSIntegration(
+xIdKey 				UUID primary key,
+xOnline				boolean
+);
 

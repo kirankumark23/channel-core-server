@@ -18,12 +18,14 @@ import com.appliedsni.channel.core.server.entity.ComplexTransactionEntity;
 import com.appliedsni.channel.core.server.entity.ComplexTransactionProductEntity;
 import com.appliedsni.channel.core.server.entity.ComplexTransactionProductStepEntity;
 import com.appliedsni.channel.core.server.entity.ComplexTransactionStepEntity;
-import com.appliedsni.channel.core.server.entity.MessageEntity;
 import com.appliedsni.channel.core.server.entity.SimpleTransactionEntity;
 import com.appliedsni.channel.core.server.entity.SimpleTransactionProductEntity;
 import com.appliedsni.channel.core.server.entity.SimpleTransactionProductStepEntity;
 import com.appliedsni.channel.core.server.entity.SimpleTransactionStepEntity;
-import com.appliedsni.channel.core.server.entity.Status;
+
+import channel.client.function.CustomThreadLocal;
+import channel.client.function.MessageEntity;
+import channel.client.function.Status;
 
 public class ComplexTransactionHandler {
 	
@@ -54,6 +56,8 @@ public class ComplexTransactionHandler {
 					if(ct == null){
 						ct = createTransaction(pMessage);
 					}					
+					
+					CustomThreadLocal.add("CT", ct.getIdKey());
 					
 					handle(ct);
 					

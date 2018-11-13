@@ -14,7 +14,8 @@ import com.appliedsni.channel.core.server.dao.ServerDao;
 import com.appliedsni.channel.core.server.entity.ComplexTransactionStepEntity;
 import com.appliedsni.channel.core.server.entity.SimpleTransactionEntity;
 import com.appliedsni.channel.core.server.entity.SimpleTransactionStepEntity;
-import com.appliedsni.channel.core.server.entity.Status;
+
+import channel.client.function.Status;
 
 public class SimpleTransactionHandler {
 	
@@ -57,7 +58,7 @@ public class SimpleTransactionHandler {
 						
 						LOGGER.warn("Executing Simple Transaction Step : {}", sts.getSeqNo());
 
-						FunctionHandler.get().handle(sts.getFunction(), pCTStep, sts);
+						FunctionHandler.get().handle(pCTStep, sts);
 						
 						//	Update data
 						pCTStep.setData(sts.getData());

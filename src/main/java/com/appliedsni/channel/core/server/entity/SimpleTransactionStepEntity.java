@@ -26,6 +26,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import channel.client.function.Status;
+
 @Entity
 @Table(name="xSimpleTransactionStep")
 @JsonIgnoreProperties(ignoreUnknown=true)
@@ -60,6 +62,9 @@ public class SimpleTransactionStepEntity implements Serializable{
 	@Column(name="xData")
 	private String mData;
 	
+	@Column(name="xClass")
+	private String mFunctionClass;	
+	
 	@Column(name="xFunction")
 	private String mFunction;
 	
@@ -81,6 +86,7 @@ public class SimpleTransactionStepEntity implements Serializable{
 		mIdKey = pIdKey;
 		mSeqNo = pSimpleTransactionProductStep.getSeqNo();
 		mDecisionStatus = pSimpleTransactionProductStep.getStatus();
+		mFunctionClass = pSimpleTransactionProductStep.getFunctionClass();
 		mFunction = pSimpleTransactionProductStep.getFunction();
 		mSimpleTransaction = pSimpleTransaction;		
 		mExecutionStatus = Status.OPEN;
@@ -174,4 +180,11 @@ public class SimpleTransactionStepEntity implements Serializable{
 		mDelay = pDelay;
 	}
 
+	public String getFunctionClass() {
+		return mFunctionClass;
+	}
+
+	public void setFunctionClass(String pFunctionClass) {
+		mFunctionClass = pFunctionClass;
+	}
 }

@@ -18,6 +18,8 @@ import org.hibernate.annotations.Type;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import channel.client.function.Status;
+
 @Entity
 @Table(name="xComplexTransactionProductStep")
 @JsonIgnoreProperties(ignoreUnknown=true)

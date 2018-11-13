@@ -3,7 +3,13 @@ package com.appliedsni.channel.core.server.handler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,13 +18,14 @@ import com.appliedsni.channel.core.server.config.ChannelApplicationContext;
 import com.appliedsni.channel.core.server.dao.ServerDao;
 import com.appliedsni.channel.core.server.entity.CBSIntegrationEntity;
 import com.appliedsni.channel.core.server.entity.ComplexTransactionStepEntity;
-import com.appliedsni.channel.core.server.entity.ResponseMessageEntity;
 import com.appliedsni.channel.core.server.entity.SimpleTransactionStepEntity;
-import com.appliedsni.channel.core.server.entity.Status;
 import com.appliedsni.channel.core.server.queue.MQManager;
 
 import channel.client.function.AbstractIntegration;
+import channel.client.function.CustomThreadLocal;
 import channel.client.function.IntegratonInterface;
+import channel.client.function.ResponseMessageEntity;
+import channel.client.function.Status;
 
 public class FunctionHandler {
 	
@@ -34,29 +41,37 @@ public class FunctionHandler {
 	}
 
 	
-	public void handle(String pMethodName, ComplexTransactionStepEntity pCTS, SimpleTransactionStepEntity pSTS){
+	public void handle(ComplexTransactionStepEntity pCTS, SimpleTransactionStepEntity pSTS){
 	    try {
+	    	LOGGER.warn("Thread : {}", Thread.currentThread());
+	    	ResponseMessageEntity response = new ResponseMessageEntity(pCTS.getComplexTransaction().getIdKey());
+	    	CustomThreadLocal customThreadLocal = new CustomThreadLocal();
+	    	
 	    	if(!pSTS.isExecute()){
 	    		pSTS.setExecutionStatus(Status.IN_PROGRESS);
 	    	} else {
-				Method targetMethod = Class.forName("com.appliedsni.channel.core.server.handler.FunctionHandler").getMethod(pMethodName, ComplexTransactionStepEntity.class, SimpleTransactionStepEntity.class);
-				targetMethod.invoke(this, pCTS, pSTS);
+	    		pSTS.setExecutionStatus(Status.IN_PROGRESS);
 
-//	    		AbstractIntegration abstractClass = (AbstractIntegration) Class.forName("channel.server.client.AbstractIntegration").newInstance();
-//	    		abstractClass.ping();
+	    		Method targetMethod = null;
 	    		
-				Method pingMethod = Class.forName("cbs.integration.Test").getMethod("ping");
-				pingMethod.invoke(Class.forName("cbs.integration.Test").newInstance());
-	    		
-//	    		Object obj = Class.forName("cbs.integration.CASA").newInstance();
-//	    		boolean check1 = IntegratonInterface.class.isInstance(obj);
-//	    		IntegratonInterface concreteClass = (IntegratonInterface) obj;
-//	    		concreteClass.ping();	    		
+	    		try{
+					targetMethod = Class.forName(pSTS.getFunctionClass()).getMethod(pSTS.getFunction(), ResponseMessageEntity.class, CustomThreadLocal.class);
+					targetMethod.invoke((pSTS.getFunctionClass().contains("FunctionHandler") ? this : Class.forName(pSTS.getFunctionClass()).newInstance()), response, customThreadLocal);
+	    		}catch(ClassNotFoundException e){
+		    		URLClassLoader loader = new URLClassLoader(new URL[] { new URL("file:/Users/prashantpolshettiwar/appliedsni/apache-tomcat-8.0.28/CBS/cbs-integration-0.0.1-SNAPSHOT-jar-with-dependencies.jar") }, this.getClass().getClassLoader());
+					Class targetClass = Class.forName(pSTS.getFunctionClass(), true, loader);
+		    		targetMethod = targetClass.getDeclaredMethod(pSTS.getFunction(), ResponseMessageEntity.class, CustomThreadLocal.class);				
+					targetMethod.invoke(targetClass.newInstance(), response, customThreadLocal);
+	    		}
 
-	    		Method concreteClass2 = Class.forName("cbs.integration.LOAN").getMethod("ping");
-	    		concreteClass2.invoke(Class.forName("cbs.integration.LOAN").newInstance());
+				pSTS.setExecutionStatus(response.getExecutionStatus());
+	    		pSTS.setResultStatus(response.getResultStatus());
+	    		pSTS.setData(response.getData().size()>0?response.getData().values().iterator().next() :null);
+	    		pSTS.setAdded(new Date());
 	    		
-
+	    		if(response.getMessage() != null){
+	    			MQManager.get().handle(response);
+	    		}
 	    	}
 		} catch (NoSuchMethodException e) {
 			// TODO Auto-generated catch block
@@ -79,46 +94,49 @@ public class FunctionHandler {
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
-	public void fn_ask_ac(ComplexTransactionStepEntity pCTS, SimpleTransactionStepEntity pSTS){
-		pSTS.setExecutionStatus(Status.COMLETED);
-		pSTS.setResultStatus(Status.SUCCESS);
-		pSTS.setAdded(new Date());
-		
-		if(CustomThreadLocal.get("ACCOUNT") == null){
-			ResponseMessageEntity response = new ResponseMessageEntity(pCTS);
-			response.setCode("STD-1");
-			response.setMessage("Sure, which account ?");
-			
-			MQManager.get().handle(response);
+//	public void fn_ask_ac(ComplexTransactionStepEntity pCTS, SimpleTransactionStepEntity pSTS){
+//		pSTS.setExecutionStatus(Status.COMLETED);
+//		pSTS.setResultStatus(Status.SUCCESS);
+//		pSTS.setAdded(new Date());
+//		
+//		if(CustomThreadLocal.get("ACCOUNT") == null){
+//			ResponseMessageEntity response = new ResponseMessageEntity(pCTS.getComplexTransaction().getIdKey());
+//			response.setCode("STD-1");
+//			response.setMessage("Sure, which account ?");
+//			
+//			MQManager.get().handle(response);
+//
+//			LOGGER.warn(response.getMessage());
+//		}
+//		
+//		LOGGER.warn("Completed");
+//	}
 
-			LOGGER.warn(response.getMessage());
-		}
-		
-		LOGGER.warn("Completed");
-	}
-
-	public void fn_extract_ac(ComplexTransactionStepEntity pCTS, SimpleTransactionStepEntity pSTS){
-		
-		if(CustomThreadLocal.get("ACCOUNT") == null){
-			pSTS.setExecutionStatus(Status.IN_PROGRESS);
-		} else {
-			pSTS.setData(CustomThreadLocal.get("ACCOUNT").toString());
-			pSTS.setExecutionStatus(Status.COMLETED);
-			pSTS.setResultStatus(Status.SUCCESS);			
-		}
-		pSTS.setAdded(new Date());
-		
-		LOGGER.warn("Completed");
-	}
+//	public void fn_extract_ac(ComplexTransactionStepEntity pCTS, SimpleTransactionStepEntity pSTS){
+//		
+//		if(CustomThreadLocal.get("ACCOUNT") == null){
+//			pSTS.setExecutionStatus(Status.IN_PROGRESS);
+//		} else {
+//			pSTS.setData(CustomThreadLocal.get("ACCOUNT").toString());
+//			pSTS.setExecutionStatus(Status.COMLETED);
+//			pSTS.setResultStatus(Status.SUCCESS);			
+//		}
+//		pSTS.setAdded(new Date());
+//		
+//		LOGGER.warn("Completed");
+//	}
 	
-	public void fn_get_ac_balance(ComplexTransactionStepEntity pCTS, SimpleTransactionStepEntity pSTS){
+	public void fn_get_ac_balance(ResponseMessageEntity pResponse, CustomThreadLocal pCustomThreadLocal){
 		//	Get Account from previous step				
 		ComplexTransactionStepEntity cts = (ComplexTransactionStepEntity)mServerDao.find("from ComplexTransactionStepEntity "
-				+ " where mComplexTransaction = ? "
-				+ " and mSeqNo = ? ", pCTS.getComplexTransaction(), 1).get(0);
+				+ " where mComplexTransaction.mIdKey = ? "
+				+ " and mSeqNo = ? ", CustomThreadLocal.get("CT") , 1).get(0);
 		
 		//	TODO : Call TDI / CBS service
 		
@@ -131,33 +149,34 @@ public class FunctionHandler {
 			BigDecimal balance = BigDecimal.valueOf(10000);
 			
 			//	Update balance
-			pSTS.setData(balance.toString());
-			pSTS.setExecutionStatus(Status.COMLETED);
-			pSTS.setResultStatus(Status.SUCCESS);
-			pSTS.setAdded(new Date());			
+			Map<String, String> data = new HashMap<String, String>();
+			data.put("BALANCE", balance.toString());
+
+			pResponse.setExecutionStatus(Status.COMLETED);
+			pResponse.setResultStatus(Status.SUCCESS);
+			pResponse.setData(data);
 		} else {			
-			pSTS.setExecutionStatus(Status.COMLETED);
-			pSTS.setResultStatus(Status.ERROR);
-			pSTS.setAdded(new Date());			
+			pResponse.setExecutionStatus(Status.COMLETED);
+			pResponse.setResultStatus(Status.ERROR);
 		}		
 	}
 	
-	public void fn_send_info(ComplexTransactionStepEntity pCTS, SimpleTransactionStepEntity pSTS){
-		pSTS.setExecutionStatus(Status.COMLETED);
-		pSTS.setResultStatus(Status.SUCCESS);
-		pSTS.setAdded(new Date());
+	public void fn_send_info(ResponseMessageEntity pResponse, CustomThreadLocal pCustomThreadLocal){
 		
 		ComplexTransactionStepEntity cts = (ComplexTransactionStepEntity)mServerDao.find("from ComplexTransactionStepEntity "
-				+ " where mComplexTransaction = ? "
-				+ " and mSeqNo = ? ", pCTS.getComplexTransaction(), 2).get(0);
+				+ " where mComplexTransaction.mIdKey = ? "
+				+ " and mSeqNo = ? ", CustomThreadLocal.get("CT"), 2).get(0);
 
-		ResponseMessageEntity response = new ResponseMessageEntity(pCTS);
-		response.setCode("STD-2");
-		response.setMessage("Your account balance is : " + cts.getData());
-		
-		MQManager.get().handle(response);
+//		ResponseMessageEntity response = new ResponseMessageEntity((UUID)CustomThreadLocal.get("CT"));
+		pResponse.setCode("STD-2");
+		pResponse.setMessage("Your account balance is : " + cts.getData());
 
-		LOGGER.warn(response.getMessage());
+		pResponse.setExecutionStatus(Status.COMLETED);
+		pResponse.setResultStatus(Status.SUCCESS);
+
+//		MQManager.get().handle(pResponse);
+
+		LOGGER.warn(pResponse.getMessage());
 		
 		LOGGER.warn("Completed");
 	}
@@ -166,11 +185,11 @@ public class FunctionHandler {
 		pSTS.setExecutionStatus(Status.COMLETED);
 		pSTS.setResultStatus(Status.SUCCESS);
 		
-		ResponseMessageEntity response = new ResponseMessageEntity(pCTS);
+		ResponseMessageEntity response = new ResponseMessageEntity(pCTS.getComplexTransaction().getIdKey());
 		response.setCode("STD-3");
 		response.setMessage("Hi, I am working on it...will get the balance soon, Thanks for your patience");
 		
-		MQManager.get().handle(response);
+//		MQManager.get().handle(response);
 
 		LOGGER.warn(response.getMessage());
 		
@@ -181,7 +200,7 @@ public class FunctionHandler {
 		pSTS.setExecutionStatus(Status.COMLETED);
 		pSTS.setResultStatus(Status.SUCCESS);
 		
-		ResponseMessageEntity response = new ResponseMessageEntity(pCTS);
+		ResponseMessageEntity response = new ResponseMessageEntity(pCTS.getComplexTransaction().getIdKey());
 		response.setCode("STD-4");
 		response.setMessage("Here is the list of your accounts");
 		response.getData().put("1", "A12345");
@@ -190,7 +209,7 @@ public class FunctionHandler {
 		response.getData().put("4", "D12345");
 		response.getData().put("5", "E12345");
 		
-		MQManager.get().handle(response);
+//		MQManager.get().handle(response);
 
 		LOGGER.warn(response.getMessage());
 		

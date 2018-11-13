@@ -6,8 +6,9 @@ import org.slf4j.LoggerFactory;
 import com.appliedsni.channel.core.server.config.ChannelApplicationContext;
 import com.appliedsni.channel.core.server.dao.ServerDao;
 import com.appliedsni.channel.core.server.entity.RequestMessageEntity;
-import com.appliedsni.channel.core.server.entity.ResponseMessageEntity;
 import com.appliedsni.channel.core.server.handler.ComplexTransactionHandler;
+
+import channel.client.function.ResponseMessageEntity;
 
 /**
  * MQ Manager provides services to PUSH and PULL messages from IN & OUT queues

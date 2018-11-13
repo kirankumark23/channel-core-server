@@ -12,7 +12,8 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.appliedsni.channel.core.server.config.ChannelApplicationContext;
 import com.appliedsni.channel.core.server.dao.ServerDao;
 import com.appliedsni.channel.core.server.entity.ComplexTransactionEntity;
-import com.appliedsni.channel.core.server.entity.Status;
+
+import channel.client.function.Status;
 
 /**
  * Identify Simple transaction steps that are in progress for 1 min or more

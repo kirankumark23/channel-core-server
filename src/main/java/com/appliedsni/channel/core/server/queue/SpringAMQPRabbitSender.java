@@ -6,8 +6,9 @@ import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.appliedsni.channel.core.server.config.ChannelApplicationContext;
-import com.appliedsni.channel.core.server.entity.MessageEntity;
 import com.google.gson.Gson;
+
+import channel.client.function.MessageEntity;
 
 public class SpringAMQPRabbitSender {
 	private static final Logger LOGGER = LoggerFactory.getLogger(SpringAMQPRabbitSender.class);

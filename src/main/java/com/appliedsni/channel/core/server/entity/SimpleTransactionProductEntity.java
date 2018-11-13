@@ -11,6 +11,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 
+import channel.client.function.Status;
+
 @Entity
 @Table(name="xSimpleTransactionProduct")
 public class SimpleTransactionProductEntity {

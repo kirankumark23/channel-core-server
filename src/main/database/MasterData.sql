@@ -25,4 +25,5 @@ insert into xRoleMenu values ('7fb52f1f-1d7e-4bc3-9faf-2660255ffc20', 'db82d2a4-
 insert into xRoleMenu values ('7fb52f2f-1d7e-4bc3-9faf-2660255ffc20', 'db82d2a4-6df3-4dc7-8cbb-c9ea057fcaa6', '1bc601c5-274e-432c-b623-bf92816aa10e');
 insert into xRoleMenu values ('7fb52f3f-1d7e-4bc3-9faf-2660255ffc20', 'db82d2a4-6df3-4dc7-8cbb-c9ea057fcaa6', '1bc601c6-274e-432c-b623-bf92816aa10e');
 
-/*	
+/*	xCBSIntegration */
+insert into xCBSIntegration values ('fee3aa47-3e60-420e-9025-23600acef3d4', true);

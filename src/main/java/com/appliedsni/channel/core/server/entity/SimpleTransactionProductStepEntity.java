@@ -23,6 +23,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.gson.annotations.Expose;
 
+import channel.client.function.Status;
+
 @Entity
 @Table(name="xSimpleTransactionProductStep")
 @JsonIgnoreProperties(ignoreUnknown=true)
@@ -44,6 +46,9 @@ public class SimpleTransactionProductStepEntity implements Serializable{
 	@Column(name="xDecisionStatus")
 	@Enumerated(EnumType.STRING)
 	private Status mStatus;
+	
+	@Column(name="xClass")
+	private String mFunctionClass;	
 
 	@Column(name="xFunction")
 	private String mFunction;
@@ -105,6 +110,14 @@ public class SimpleTransactionProductStepEntity implements Serializable{
 
 	public void setDelay(int pDelay) {
 		mDelay = pDelay;
+	}
+
+	public String getFunctionClass() {
+		return mFunctionClass;
+	}
+
+	public void setFunctionClass(String pFunctionClass) {
+		mFunctionClass = pFunctionClass;
 	}
 
 }

@@ -4,9 +4,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageListener;
 
-import com.appliedsni.channel.core.server.entity.MessageEntity;
 import com.appliedsni.channel.core.server.handler.ComplexTransactionHandler;
 import com.google.gson.Gson;
+
+import channel.client.function.MessageEntity;
 // Spirng MDP(Message Driven POJO)
 public class SpringAMQPRabbitAyncListener implements MessageListener {
 	private static Gson mGson = new Gson();

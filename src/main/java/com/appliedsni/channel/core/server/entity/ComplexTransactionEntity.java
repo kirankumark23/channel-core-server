@@ -19,6 +19,8 @@ import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import channel.client.function.Status;
+
 @Entity
 @Table(name="xComplexTransaction")
 public class ComplexTransactionEntity {

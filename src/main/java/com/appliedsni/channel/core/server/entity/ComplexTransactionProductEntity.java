@@ -14,6 +14,8 @@ import org.hibernate.annotations.Type;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 
+import channel.client.function.Status;
+
 @Entity
 @Table(name="xComplexTransactionProduct")
 @JsonAutoDetect(fieldVisibility = Visibility.ANY)
