@@ -14,8 +14,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.appliedsni.channel.core.server.config.ChannelApplicationContext;
+import com.appliedsni.channel.core.server.entity.ActionEntity;
 import com.appliedsni.channel.core.server.entity.ComplexTransactionEntity;
+import com.appliedsni.channel.core.server.entity.ComplexTransactionProductEntity;
+import com.appliedsni.channel.core.server.entity.ComplexTransactionProductStepEntity;
 import com.appliedsni.channel.core.server.entity.ComplexTransactionStepEntity;
+import com.appliedsni.channel.core.server.entity.SimpleTransactionProductEntity;
+import com.appliedsni.channel.core.server.entity.SimpleTransactionProductStepEntity;
 import com.appliedsni.channel.core.server.entity.SimpleTransactionStepEntity;
 import com.appliedsni.channel.core.server.handler.CommonUtils;
 import com.appliedsni.channel.core.server.handler.ComplexTransactionHandler;
@@ -128,8 +133,93 @@ public class TestService {
 		 List<SimpleTransactionStepEntity> stsList = CommonUtils.get().getSTSteps(pCTIdKey, pCTSIdKey);		
 		return stsList;
 	}
+	
+	//	PRODUCTs
+	
+	@GET
+	@Path("/complextransactionproducts")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List <ComplexTransactionProductEntity> getCTPList(){		
+		return CommonUtils.get().getCTPList();
+	}
 
+	@GET
+	@Path("/complextransactionproducts/{ctpid}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ComplexTransactionProductEntity getCTP(@PathParam("ctpid") UUID pCTPIdKey){	
+		ComplexTransactionProductEntity ctp = CommonUtils.get().getCTP(pCTPIdKey);
+		ActionEntity action1 = new ActionEntity();
+		action1.setCode("ADD");
+		action1.setDisplay(true);
+		action1.setRedirect(true);
+		action1.setName("Add Step");
+		action1.setURL("/complex_transaction_add_step/{ctpid}".replace("{ctpid}", pCTPIdKey.toString()));
+		
+		ctp.addAction(action1);
 
+		ActionEntity action2 = new ActionEntity();
+		action2.setCode("EDIT");
+		action2.setDisplay(true);
+		action2.setRedirect(true);
+		action2.setName("Edit");
+		action2.setURL("/complex_transaction_edit_step/{ctpid}".replace("{ctpid}", pCTPIdKey.toString()));
+		
+		ctp.addAction(action2);
+
+		ActionEntity action3 = new ActionEntity();
+		action3.setCode("ACTIVATE");
+		action3.setDisplay(true);
+		action3.setRedirect(false);
+		action3.setName("Activate");
+		action3.setURL("/complextransactionproducts/{ctpid}/activate".replace("{ctpid}", pCTPIdKey.toString()));
+		
+		ctp.addAction(action3);
+
+		return ctp;
+	}
+
+	@POST
+	@Path("/complextransactionproducts/{ctpid}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void createCTP(ComplexTransactionProductEntity pCTP){
+		CommonUtils.get().create(pCTP);
+	}
+
+	@POST
+	@Path("/complextransactionproducts/{ctpid}/activate")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void activateCTP(@PathParam("ctpid") UUID pCTPIdKey){
+		CommonUtils.get().activateCTP(pCTPIdKey);
+	}
+
+	@GET
+	@Path("/complextransactionproducts/{ctpid}/complexsteps")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<ComplexTransactionProductStepEntity> getCTPSteps(@PathParam("ctpid") UUID pCTPIdKey){
+		return CommonUtils.get().getCTPSteps(pCTPIdKey);
+	}
+
+	@GET
+	@Path("/simpletransactionproducts")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<SimpleTransactionProductEntity> getSTPList(){
+		return CommonUtils.get().getSTPList();
+	}
+	
+	@GET
+	@Path("/simpletransactionproducts/{stpid}/simplesteps")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<SimpleTransactionProductStepEntity> getSTPSteps(@PathParam("stpid") UUID pSTPIdKey){
+		return CommonUtils.get().getSTPSteps(pSTPIdKey);
+	}
+	
 	public void googleLogin(String tokenString) throws IOException, GeneralSecurityException{
 
         JacksonFactory jacksonFactory = new JacksonFactory();

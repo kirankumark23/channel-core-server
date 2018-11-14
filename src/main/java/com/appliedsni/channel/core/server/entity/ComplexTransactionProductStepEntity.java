@@ -30,7 +30,7 @@ public class ComplexTransactionProductStepEntity implements Serializable{
 	@Type(type="pg-uuid")
 	private UUID mIdKey;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "xComplexTransaction", nullable = false)
 	@JsonIgnore(value=true)
 	private ComplexTransactionProductEntity mComplexTransaction;
@@ -45,9 +45,8 @@ public class ComplexTransactionProductStepEntity implements Serializable{
 	@Column(name="xDelay")
 	private int mDelay;	
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "xSimpleTransaction", nullable = false)
-	@JsonIgnore(value=true)
 	private SimpleTransactionProductEntity mSimpleTransaction;
 
 	public ComplexTransactionProductStepEntity(){}
@@ -64,6 +63,7 @@ public class ComplexTransactionProductStepEntity implements Serializable{
 		mIdKey = pIdKey;
 	}
 
+	@JsonIgnore
 	public ComplexTransactionProductEntity getComplexTransaction() {
 		return mComplexTransaction;
 	}

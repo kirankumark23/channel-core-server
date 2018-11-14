@@ -1,5 +1,7 @@
 package com.appliedsni.channel.core.server.entity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -8,17 +10,20 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import channel.client.function.Status;
 
 @Entity
+@JsonInclude(value=Include.NON_NULL)
 @Table(name="xComplexTransactionProduct")
-@JsonAutoDetect(fieldVisibility = Visibility.ANY)
 public class ComplexTransactionProductEntity {
 
 	@Id
@@ -35,6 +40,9 @@ public class ComplexTransactionProductEntity {
 
 	@Column(name="xName")
 	private String mName;
+	
+	@Transient
+	private List<ActionEntity> mActions;
 	
 	public ComplexTransactionProductEntity(){}
 
@@ -68,5 +76,20 @@ public class ComplexTransactionProductEntity {
 
 	public void setType(String pType) {
 		mType = pType;
+	}
+
+	public List<ActionEntity> getActions() {
+		return mActions;
+	}
+
+	public void setActions(List<ActionEntity> pActions) {
+		mActions = pActions;
+	}
+	
+	public void addAction(ActionEntity pAction){
+		if(mActions == null){
+			mActions = new ArrayList<ActionEntity>();
+		}
+		mActions.add(pAction);
 	}
 }

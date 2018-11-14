@@ -37,7 +37,6 @@ public class SimpleTransactionProductStepEntity implements Serializable{
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "xSimpleTransaction", nullable = false)
-	@JsonIgnore(value=true)
 	private SimpleTransactionProductEntity mSimpleTransaction;
 
 	@Column(name="xSeqNo")
@@ -72,6 +71,7 @@ public class SimpleTransactionProductStepEntity implements Serializable{
 		mIdKey = pIdKey;
 	}
 
+	@JsonIgnore
 	public SimpleTransactionProductEntity getSimpleTransaction() {
 		return mSimpleTransaction;
 	}

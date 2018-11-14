@@ -6,12 +6,22 @@ import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.appliedsni.channel.core.server.config.ChannelApplicationContext;
 import com.appliedsni.channel.core.server.dao.ServerDao;
+import com.appliedsni.channel.core.server.entity.ActionEntity;
 import com.appliedsni.channel.core.server.entity.ComplexTransactionEntity;
+import com.appliedsni.channel.core.server.entity.ComplexTransactionProductEntity;
+import com.appliedsni.channel.core.server.entity.ComplexTransactionProductStepEntity;
 import com.appliedsni.channel.core.server.entity.ComplexTransactionStepEntity;
+import com.appliedsni.channel.core.server.entity.SimpleTransactionProductEntity;
+import com.appliedsni.channel.core.server.entity.SimpleTransactionProductStepEntity;
 import com.appliedsni.channel.core.server.entity.SimpleTransactionStepEntity;
+
+import channel.client.function.Status;
 
 public class CommonUtils {
 	
@@ -43,6 +53,10 @@ public class CommonUtils {
 		return (ComplexTransactionEntity)mServerDao.get(ComplexTransactionEntity.class, pIdKey);
 	}
 	
+	public ComplexTransactionProductEntity getCTP(UUID pIdKey){
+		return (ComplexTransactionProductEntity)mServerDao.get(ComplexTransactionProductEntity.class, pIdKey);
+	}
+
 	public ComplexTransactionStepEntity getCTS(UUID pIdKey){
 		return (ComplexTransactionStepEntity)mServerDao.get(ComplexTransactionStepEntity.class, pIdKey);
 	}
@@ -69,6 +83,84 @@ public class CommonUtils {
 		}
 		
 		return stsList;
+	}
+	
+	public List<ComplexTransactionProductEntity> getCTPList(){
+		List<Object> objList = mServerDao.find("from ComplexTransactionProductEntity order by mIdKey");
+		
+		List<ComplexTransactionProductEntity> ctpList = new ArrayList<ComplexTransactionProductEntity>();
+		
+		for(Object obj : objList){
+			ComplexTransactionProductEntity ctp = (ComplexTransactionProductEntity)obj;
+			ctpList.add(ctp);
+		}
+		
+		return ctpList;
+	}
+		
+	public void create(ComplexTransactionProductEntity pCTP){
+		ChannelApplicationContext.get().getBean("transactionTemplate", TransactionTemplate.class).execute(new TransactionCallbackWithoutResult() {
+			@Override
+			protected void doInTransactionWithoutResult(TransactionStatus pStatus) {
+				try{
+					mServerDao.save(pCTP);
+				} catch(Exception e) {
+					LOGGER.error("Operation failed", e);
+					pStatus.setRollbackOnly();
+				}		
+			}
+		});
+	}
+
+	public void activateCTP(UUID pCTP){
+		ChannelApplicationContext.get().getBean("transactionTemplate", TransactionTemplate.class).execute(new TransactionCallbackWithoutResult() {
+			@Override
+			protected void doInTransactionWithoutResult(TransactionStatus pStatus) {
+				try{
+					ComplexTransactionProductEntity ctp = getCTP(pCTP);
+					ctp.setStatus(Status.CLOSE);
+				} catch(Exception e) {
+					LOGGER.error("Operation failed", e);
+					pStatus.setRollbackOnly();
+				}		
+			}
+		});
+	}
+
+	public List<ComplexTransactionProductStepEntity> getCTPSteps(UUID pCTP){
+		List<Object> objList = mServerDao.find("from ComplexTransactionProductStepEntity where mComplexTransaction = ? order by mSeqNo", getCTP(pCTP));
+		
+		List<ComplexTransactionProductStepEntity> ctpsList = new ArrayList<ComplexTransactionProductStepEntity>();
+		
+		for(Object obj : objList){
+			ctpsList.add((ComplexTransactionProductStepEntity)obj);
+		}
+		
+		return ctpsList;
+	}
+
+	public List<SimpleTransactionProductEntity> getSTPList(){
+		List<Object> objList = mServerDao.find("from SimpleTransactionProductEntity order by mIdKey");
+		
+		List<SimpleTransactionProductEntity> stpList = new ArrayList<SimpleTransactionProductEntity>();
+		
+		for(Object obj : objList){
+			stpList.add((SimpleTransactionProductEntity)obj);
+		}
+		
+		return stpList;
+	}
+
+	public List<SimpleTransactionProductStepEntity> getSTPSteps(UUID pSTP){
+		List<Object> objList = mServerDao.find("from SimpleTransactionProductStepEntity where mSimpleTransaction.mIdKey = ? order by mSeqNo", pSTP);
+		
+		List<SimpleTransactionProductStepEntity> stpsList = new ArrayList<SimpleTransactionProductStepEntity>();
+		
+		for(Object obj : objList){
+			stpsList.add((SimpleTransactionProductStepEntity)obj);
+		}
+		
+		return stpsList;
 	}
 
 
