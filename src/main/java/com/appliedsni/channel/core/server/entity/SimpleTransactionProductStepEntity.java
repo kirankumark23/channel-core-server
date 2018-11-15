@@ -28,7 +28,7 @@ import channel.client.function.Status;
 @Entity
 @Table(name="xSimpleTransactionProductStep")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SimpleTransactionProductStepEntity implements Serializable{
+public class SimpleTransactionProductStepEntity extends AbstractEntity implements Serializable{
 
 	@Id
 	@Column(name="xIdkey")

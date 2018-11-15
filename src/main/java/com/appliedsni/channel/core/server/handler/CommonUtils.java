@@ -69,6 +69,9 @@ public class CommonUtils {
 		return (SimpleTransactionProductEntity)mServerDao.get(SimpleTransactionProductEntity.class, pIdKey);
 	}
 
+	public SimpleTransactionProductStepEntity getSTPS(UUID pIdKey){
+		return (SimpleTransactionProductStepEntity)mServerDao.get(SimpleTransactionProductStepEntity.class, pIdKey);
+	}
 	
 
 	public List<ComplexTransactionStepEntity> getCTSteps(UUID pCT){

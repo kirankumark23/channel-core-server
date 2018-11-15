@@ -266,7 +266,7 @@ public class TestService {
 
 		return stp;
 	}
-
+	
 	@POST
 	@Path("/simpletransactionproducts/{stpid}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -281,6 +281,26 @@ public class TestService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public List<SimpleTransactionProductStepEntity> getSTPSteps(@PathParam("stpid") UUID pSTPIdKey){
 		return CommonUtils.get().getSTPSteps(pSTPIdKey);
+	}
+	
+	@GET
+	@Path("/simpletransactionproducts/{stpid}/simplesteps/{stpsid}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public SimpleTransactionProductStepEntity getSTPS(@PathParam("stpid") UUID pSTPIdKey, @PathParam("stpsid") UUID pSTPSIdKey){
+		
+		SimpleTransactionProductStepEntity stps = CommonUtils.get().getSTPS(pSTPSIdKey);
+		
+		ActionEntity action1 = new ActionEntity();
+		action1.setCode("EDIT");
+		action1.setDisplay(true);
+		action1.setRedirect(true);
+		action1.setName("Edit");
+		action1.setURL("/simple_transaction_step_edit/{stpsid}".replace("{ctpsid}", pSTPSIdKey.toString()));
+		
+		stps.addAction(action1);
+
+		return stps;
 	}
 	
 	public void googleLogin(String tokenString) throws IOException, GeneralSecurityException{
