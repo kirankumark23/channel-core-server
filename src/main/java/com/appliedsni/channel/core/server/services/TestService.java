@@ -308,7 +308,7 @@ public class TestService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void create(SimpleTransactionProductStepEntity pCTPS){
-		
+		CommonUtils.get().create(pCTPS);
 	}
 
 	
