@@ -24,7 +24,7 @@ import channel.client.function.Status;
 @Entity
 @JsonInclude(value=Include.NON_NULL)
 @Table(name="xComplexTransactionProduct")
-public class ComplexTransactionProductEntity {
+public class ComplexTransactionProductEntity extends AbstractEntity{
 
 	@Id
 	@Column(name="xIdkey")
@@ -40,10 +40,7 @@ public class ComplexTransactionProductEntity {
 
 	@Column(name="xName")
 	private String mName;
-	
-	@Transient
-	private List<ActionEntity> mActions;
-	
+		
 	public ComplexTransactionProductEntity(){}
 
 	public UUID getIdKey() {
@@ -76,20 +73,5 @@ public class ComplexTransactionProductEntity {
 
 	public void setType(String pType) {
 		mType = pType;
-	}
-
-	public List<ActionEntity> getActions() {
-		return mActions;
-	}
-
-	public void setActions(List<ActionEntity> pActions) {
-		mActions = pActions;
-	}
-	
-	public void addAction(ActionEntity pAction){
-		if(mActions == null){
-			mActions = new ArrayList<ActionEntity>();
-		}
-		mActions.add(pAction);
 	}
 }

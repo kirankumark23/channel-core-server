@@ -61,6 +61,11 @@ public class CommonUtils {
 		return (ComplexTransactionStepEntity)mServerDao.get(ComplexTransactionStepEntity.class, pIdKey);
 	}
 
+	public ComplexTransactionProductStepEntity getCTPS(UUID pCTPS){
+		return (ComplexTransactionProductStepEntity)mServerDao.get(ComplexTransactionProductStepEntity.class, pCTPS);
+	}
+	
+
 	public List<ComplexTransactionStepEntity> getCTSteps(UUID pCT){
 		List<Object> objList = mServerDao.find("from ComplexTransactionStepEntity where mComplexTransaction = ? order by mSeqNo", getCT(pCT));
 		
@@ -103,13 +108,42 @@ public class CommonUtils {
 			@Override
 			protected void doInTransactionWithoutResult(TransactionStatus pStatus) {
 				try{
-					mServerDao.save(pCTP);
+					ComplexTransactionProductEntity ctp = getCTP(pCTP.getIdKey());
+					if(ctp == null){
+						mServerDao.save(pCTP);						
+					} else {
+						ctp.setName(pCTP.getName());
+						ctp.setType(pCTP.getType());
+						ctp.setStatus(pCTP.getStatus());
+					}
 				} catch(Exception e) {
 					LOGGER.error("Operation failed", e);
 					pStatus.setRollbackOnly();
 				}		
 			}
 		});
+	}
+	
+	public void create(ComplexTransactionProductStepEntity pCTPS){
+		ChannelApplicationContext.get().getBean("transactionTemplate", TransactionTemplate.class).execute(new TransactionCallbackWithoutResult() {
+			@Override
+			protected void doInTransactionWithoutResult(TransactionStatus pStatus) {
+				try{
+					ComplexTransactionProductStepEntity ctps = getCTPS(pCTPS.getIdKey());
+					if(ctps == null){
+						mServerDao.save(pCTPS);
+					} else {
+						ctps.setDecisionStatus(pCTPS.getDecisionStatus());
+						ctps.setDelay(pCTPS.getDelay());
+						ctps.setSeqNo(pCTPS.getSeqNo());
+						ctps.setSimpleTransaction(pCTPS.getSimpleTransaction());
+					}
+				} catch(Exception e) {
+					LOGGER.error("Operation failed", e);
+					pStatus.setRollbackOnly();
+				}		
+			}
+		});		
 	}
 
 	public void activateCTP(UUID pCTP){
@@ -138,7 +172,7 @@ public class CommonUtils {
 		
 		return ctpsList;
 	}
-
+	
 	public List<SimpleTransactionProductEntity> getSTPList(){
 		List<Object> objList = mServerDao.find("from SimpleTransactionProductEntity order by mIdKey");
 		

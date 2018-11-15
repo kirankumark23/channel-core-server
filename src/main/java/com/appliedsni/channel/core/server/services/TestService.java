@@ -164,7 +164,7 @@ public class TestService {
 		action2.setDisplay(true);
 		action2.setRedirect(true);
 		action2.setName("Edit");
-		action2.setURL("/complex_transaction_edit_step/{ctpid}".replace("{ctpid}", pCTPIdKey.toString()));
+		action2.setURL("/complex_transaction_edit/{ctpid}".replace("{ctpid}", pCTPIdKey.toString()));
 		
 		ctp.addAction(action2);
 
@@ -204,6 +204,33 @@ public class TestService {
 		return CommonUtils.get().getCTPSteps(pCTPIdKey);
 	}
 
+	@GET
+	@Path("/complextransactionproducts/{ctpid}/complexsteps/{ctpsid}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ComplexTransactionProductStepEntity getCTPS(@PathParam("ctpid") UUID pCTPIdKey, @PathParam("ctpsid") UUID pCTPSIdKey){
+		ComplexTransactionProductStepEntity ctps = CommonUtils.get().getCTPS(pCTPSIdKey);
+		
+		ActionEntity action1 = new ActionEntity();
+		action1.setCode("EDIT");
+		action1.setDisplay(true);
+		action1.setRedirect(true);
+		action1.setName("Edit");
+		action1.setURL("/complex_transaction_step_edit/{ctpsid}".replace("{ctpsid}", pCTPSIdKey.toString()));
+		
+		ctps.addAction(action1);
+
+		return ctps;
+	}	
+
+	@POST
+	@Path("/complextransactionproducts/{ctpid}/complexsteps/{ctpsid}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void createCTPS(ComplexTransactionProductStepEntity pCTPS){
+		CommonUtils.get().create(pCTPS);
+	}
+	
 	@GET
 	@Path("/simpletransactionproducts")
 	@Produces(MediaType.APPLICATION_JSON)

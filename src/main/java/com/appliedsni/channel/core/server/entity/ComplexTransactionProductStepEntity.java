@@ -17,22 +17,23 @@ import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import channel.client.function.Status;
 
 @Entity
 @Table(name="xComplexTransactionProductStep")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ComplexTransactionProductStepEntity implements Serializable{
+@JsonDeserialize(using=ObjectDeserializer.class)
+public class ComplexTransactionProductStepEntity extends AbstractEntity implements Serializable{
 
 	@Id
 	@Column(name="xIdkey")
 	@Type(type="pg-uuid")
 	private UUID mIdKey;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "xComplexTransaction", nullable = false)
-	@JsonIgnore(value=true)
 	private ComplexTransactionProductEntity mComplexTransaction;
 
 	@Column(name="xSeqNo")
