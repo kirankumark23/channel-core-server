@@ -153,6 +153,26 @@ public class CommonUtils {
 			}
 		});		
 	}
+	
+	public void create(SimpleTransactionProductEntity pSTP){
+		ChannelApplicationContext.get().getBean("transactionTemplate", TransactionTemplate.class).execute(new TransactionCallbackWithoutResult() {
+			@Override
+			protected void doInTransactionWithoutResult(TransactionStatus pStatus) {
+				try{
+					SimpleTransactionProductEntity stps = getSTP(pSTP.getIdKey());
+					if(stps == null){
+						mServerDao.save(pSTP);
+					} else {
+						stps.setName(pSTP.getName());
+						stps.setStatus(pSTP.getStatus());
+					}
+				} catch(Exception e) {
+					LOGGER.error("Operation failed", e);
+					pStatus.setRollbackOnly();
+				}		
+			}
+		});				
+	}
 
 	public void activateCTP(UUID pCTP){
 		ChannelApplicationContext.get().getBean("transactionTemplate", TransactionTemplate.class).execute(new TransactionCallbackWithoutResult() {

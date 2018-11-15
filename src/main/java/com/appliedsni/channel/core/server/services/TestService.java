@@ -271,8 +271,8 @@ public class TestService {
 	@Path("/simpletransactionproducts/{stpid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void create(SimpleTransactionProductEntity pCTP){
-		
+	public void create(SimpleTransactionProductEntity pSTP){
+		CommonUtils.get().create(pSTP);
 	}
 	
 	@GET
@@ -302,6 +302,15 @@ public class TestService {
 
 		return stps;
 	}
+	
+	@POST
+	@Path("/simpletransactionproducts/{stpid}/simplesteps/{stpsid}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void create(SimpleTransactionProductStepEntity pCTPS){
+		
+	}
+
 	
 	public void googleLogin(String tokenString) throws IOException, GeneralSecurityException{
 
