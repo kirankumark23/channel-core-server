@@ -43,6 +43,7 @@ public class ObjectDeserializer extends JsonDeserializer<ComplexTransactionProdu
 		ctps.setDecisionStatus(mDecisionStatus);
 		
 		LOGGER.warn("Deserializing ComplexTransactionStepEntity !!");
+		
 		return ctps;
 	}
 }

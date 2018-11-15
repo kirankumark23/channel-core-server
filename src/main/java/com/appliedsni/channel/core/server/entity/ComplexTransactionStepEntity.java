@@ -27,7 +27,6 @@ import channel.client.function.Status;
 
 @Entity
 @Table(name="xComplexTransactionStep")
-@JsonIgnoreProperties(value={"mComplexTransaction", "mSimpleTransaction"})
 public class ComplexTransactionStepEntity implements Serializable{
 
 	@Id
@@ -35,9 +34,8 @@ public class ComplexTransactionStepEntity implements Serializable{
 	@Type(type="pg-uuid")
 	private UUID mIdKey;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "xComplexTransaction", nullable = false)
-	@JsonIgnore(value=true)
 	private ComplexTransactionEntity mComplexTransaction;
 
 	@Column(name="xSeqNo")
@@ -96,6 +94,7 @@ public class ComplexTransactionStepEntity implements Serializable{
 		mIdKey = pIdKey;
 	}
 
+	@JsonIgnore
 	public ComplexTransactionEntity getComplexTransaction() {
 		return mComplexTransaction;
 	}

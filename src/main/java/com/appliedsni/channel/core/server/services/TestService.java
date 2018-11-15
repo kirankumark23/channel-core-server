@@ -238,6 +238,42 @@ public class TestService {
 	public List<SimpleTransactionProductEntity> getSTPList(){
 		return CommonUtils.get().getSTPList();
 	}
+
+	@GET
+	@Path("/simpletransactionproducts/{stpid}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public SimpleTransactionProductEntity getSTP(@PathParam("stpid") UUID pSTPIdKey){
+		SimpleTransactionProductEntity stp = CommonUtils.get().getSTP(pSTPIdKey);
+		
+		ActionEntity action1 = new ActionEntity();
+		action1.setCode("ADD");
+		action1.setDisplay(true);
+		action1.setRedirect(true);
+		action1.setName("Add Step");
+		action1.setURL("/simple_transaction_add_step/{stpid}".replace("{stpid}", pSTPIdKey.toString()));
+		
+		stp.addAction(action1);
+
+		ActionEntity action2 = new ActionEntity();
+		action2.setCode("EDIT");
+		action2.setDisplay(true);
+		action2.setRedirect(true);
+		action2.setName("Edit");
+		action2.setURL("/simple_transaction_edit/{stpid}".replace("{stpid}", pSTPIdKey.toString()));
+		
+		stp.addAction(action2);
+
+		return stp;
+	}
+
+	@POST
+	@Path("/simpletransactionproducts/{stpid}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void create(SimpleTransactionProductEntity pCTP){
+		
+	}
 	
 	@GET
 	@Path("/simpletransactionproducts/{stpid}/simplesteps")

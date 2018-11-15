@@ -65,6 +65,11 @@ public class CommonUtils {
 		return (ComplexTransactionProductStepEntity)mServerDao.get(ComplexTransactionProductStepEntity.class, pCTPS);
 	}
 	
+	public SimpleTransactionProductEntity getSTP(UUID pIdKey){
+		return (SimpleTransactionProductEntity)mServerDao.get(SimpleTransactionProductEntity.class, pIdKey);
+	}
+
+	
 
 	public List<ComplexTransactionStepEntity> getCTSteps(UUID pCT){
 		List<Object> objList = mServerDao.find("from ComplexTransactionStepEntity where mComplexTransaction = ? order by mSeqNo", getCT(pCT));
