@@ -12,9 +12,10 @@
 
 	<jee:jndi-lookup id="mongoPort" jndi-name="java:comp/env/mongoPort" />
 	<jee:jndi-lookup id="mongoIp" jndi-name="java:comp/env/mongoIp" />
+	<jee:jndi-lookup id="mongoDBName" jndi-name="java:comp/env/mongoDBName" />
 
 	<mongo:mongo host="#{mongoIp}" port="#{mongoPort}" id="mongo" />
-	<mongo:db-factory dbname="channel" mongo-ref="mongo"
+	<mongo:db-factory dbname="#{mongoDBName}" mongo-ref="mongo"
 		id="mongoDbFactory" />
 
 	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
