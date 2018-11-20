@@ -14,31 +14,31 @@ insert into xSimpleTransactionProduct values ('f626ef32-dcdd-11e8-b568-0800200c9
 /* xSimpleTransactionProductStep */
 
 --Prod 1-Step 1
-insert into xSimpleTransactionProductStep values ('e52c68af-7ee6-45c9-8e73-236784554114', 1, '4c690fe6-6883-44f4-be3f-3b7cb220f500', 'SUCCESS', 0, 'fn_ask_ac');
-insert into xSimpleTransactionProductStep values ('09284752-d543-11e8-9f8b-f2801f1b9fd1', 2, '4c690fe6-6883-44f4-be3f-3b7cb220f500', 'SUCCESS', 0, 'fn_extract_ac');
+insert into xSimpleTransactionProductStep values ('e52c68af-7ee6-45c9-8e73-236784554114', 1, '4c690fe6-6883-44f4-be3f-3b7cb220f500', 'SUCCESS', 0, 'cbs.integration.CASA', 'fn_ask_ac');
+insert into xSimpleTransactionProductStep values ('09284752-d543-11e8-9f8b-f2801f1b9fd1', 2, '4c690fe6-6883-44f4-be3f-3b7cb220f500', 'SUCCESS', 0, 'cbs.integration.CASA', 'fn_extract_ac');
 
 --Prod 1-Step 2
-insert into xSimpleTransactionProductStep values ('bd26f1f7-7d64-4dba-bcb4-038ae00d7422', 1, '826b48d6-d112-4019-93f9-e0e53c2cc896', 'SUCCESS', 0, 'fn_get_ac_balance');
-insert into xSimpleTransactionProductStep values ('89607a88-4b1b-49d5-b7b8-52e56ba0b775', 2, '826b48d6-d112-4019-93f9-e0e53c2cc896', 'ERROR', 0, 'fn_send_delay');
-insert into xSimpleTransactionProductStep values ('30cec84b-4a82-49b5-8b40-2f8b7ee56827', 3, '826b48d6-d112-4019-93f9-e0e53c2cc896', 'SUCCESS', 1, 'fn_get_ac_balance');
+insert into xSimpleTransactionProductStep values ('bd26f1f7-7d64-4dba-bcb4-038ae00d7422', 1, '826b48d6-d112-4019-93f9-e0e53c2cc896', 'SUCCESS', 0, 'com.appliedsni.channel.core.server.handler.FunctionHandler', 'fn_get_ac_balance');
+insert into xSimpleTransactionProductStep values ('89607a88-4b1b-49d5-b7b8-52e56ba0b775', 2, '826b48d6-d112-4019-93f9-e0e53c2cc896', 'ERROR', 	0, 'com.appliedsni.channel.core.server.handler.FunctionHandler', 'fn_send_delay');
+insert into xSimpleTransactionProductStep values ('30cec84b-4a82-49b5-8b40-2f8b7ee56827', 3, '826b48d6-d112-4019-93f9-e0e53c2cc896', 'SUCCESS', 1, 'com.appliedsni.channel.core.server.handler.FunctionHandler', 'fn_get_ac_balance');
 
 --Prod 1-Step 3
-insert into xSimpleTransactionProductStep values ('616abaef-c49a-484a-8384-a83b1d6180c2', 1, '30614b40-dea1-46f9-af41-30d65e1d233a', 'SUCCESS', 0, 'fn_send_info');
+insert into xSimpleTransactionProductStep values ('616abaef-c49a-484a-8384-a83b1d6180c2', 1, '30614b40-dea1-46f9-af41-30d65e1d233a', 'SUCCESS', 0, 'com.appliedsni.channel.core.server.handler.FunctionHandler', 'fn_send_info');
 
 --Prod 2-Step 1
-insert into xSimpleTransactionProductStep values ('acd24ca0-dc5e-11e8-b568-0800200c9a66', 1, '530fa190-dc5e-11e8-b568-0800200c9a66', 'SUCCESS', 0, 'fn_ask_ac');
-insert into xSimpleTransactionProductStep values ('acd24ca1-dc5e-11e8-b568-0800200c9a66', 2, '530fa190-dc5e-11e8-b568-0800200c9a66', 'SUCCESS', 0, 'fn_extract_ac');
+insert into xSimpleTransactionProductStep values ('acd24ca0-dc5e-11e8-b568-0800200c9a66', 1, '530fa190-dc5e-11e8-b568-0800200c9a66', 'SUCCESS', 0, 'cbs.integration.CASA', 'fn_ask_ac');
+insert into xSimpleTransactionProductStep values ('acd24ca1-dc5e-11e8-b568-0800200c9a66', 2, '530fa190-dc5e-11e8-b568-0800200c9a66', 'SUCCESS', 0, 'cbs.integration.CASA', 'fn_extract_ac');
 
 --Prod 2-Step 2
-insert into xSimpleTransactionProductStep values ('acd24ca2-dc5e-11e8-b568-0800200c9a66', 1, '530fa191-dc5e-11e8-b568-0800200c9a66', 'SUCCESS', 0, 'fn_get_ac_balance');
-insert into xSimpleTransactionProductStep values ('acd24ca3-dc5e-11e8-b568-0800200c9a66', 2, '530fa191-dc5e-11e8-b568-0800200c9a66', 'ERROR', 0, 'fn_send_delay');
-insert into xSimpleTransactionProductStep values ('acd24ca4-dc5e-11e8-b568-0800200c9a66', 3, '530fa191-dc5e-11e8-b568-0800200c9a66', 'SUCCESS', 1, 'fn_get_ac_balance');
+insert into xSimpleTransactionProductStep values ('acd24ca2-dc5e-11e8-b568-0800200c9a66', 1, '530fa191-dc5e-11e8-b568-0800200c9a66', 'SUCCESS', 0, 'com.appliedsni.channel.core.server.handler.FunctionHandler', 'fn_get_ac_balance');
+insert into xSimpleTransactionProductStep values ('acd24ca3-dc5e-11e8-b568-0800200c9a66', 2, '530fa191-dc5e-11e8-b568-0800200c9a66', 'ERROR', 	0, 'com.appliedsni.channel.core.server.handler.FunctionHandler', 'fn_send_delay');
+insert into xSimpleTransactionProductStep values ('acd24ca4-dc5e-11e8-b568-0800200c9a66', 3, '530fa191-dc5e-11e8-b568-0800200c9a66', 'SUCCESS', 1, 'com.appliedsni.channel.core.server.handler.FunctionHandler', 'fn_get_ac_balance');
 
 --Prod 2-Step 3
-insert into xSimpleTransactionProductStep values ('acd24ca5-dc5e-11e8-b568-0800200c9a66', 1, '530fa192-dc5e-11e8-b568-0800200c9a66', 'SUCCESS', 0, 'fn_send_info');
+insert into xSimpleTransactionProductStep values ('acd24ca5-dc5e-11e8-b568-0800200c9a66', 1, '530fa192-dc5e-11e8-b568-0800200c9a66', 'SUCCESS', 0, 'com.appliedsni.channel.core.server.handler.FunctionHandler', 'fn_send_info');
 
 --Prod 3-Step 1
-insert into xSimpleTransactionProductStep values ('f626ef33-dcdd-11e8-b568-0800200c9a66', 1, 'f626ef32-dcdd-11e8-b568-0800200c9a66', 'SUCCESS', 0, 'fn_get_ac_list');
+insert into xSimpleTransactionProductStep values ('f626ef33-dcdd-11e8-b568-0800200c9a66', 1, 'f626ef32-dcdd-11e8-b568-0800200c9a66', 'SUCCESS', 0, 'cbs.integration.CASA', 'fn_get_ac_list');
 
 /* xComplexTransactionProduct */
 

@@ -42,6 +42,9 @@ public class ComplexTransactionHandler {
 	}
 	
 	public void handle(MessageEntity pMessage){
+		
+		Thread.currentThread().setName(pMessage.getIdKey().toString());
+		
 		ChannelApplicationContext.get().getBean("transactionTemplate", TransactionTemplate.class).execute(new TransactionCallbackWithoutResult() {
 			@Override
 			protected void doInTransactionWithoutResult(TransactionStatus pStatus) {
