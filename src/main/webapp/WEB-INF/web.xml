@@ -34,7 +34,10 @@
  	 <param-name>com.sun.jersey.spi.container.ContainerResponseFilters</param-name>
  	 <param-value>com.appliedsni.channel.core.server.filter.CORSFilter</param-value>
 	</init-param>
-	
+	<init-param>
+ 	 <param-name>com.sun.jersey.spi.container.ContainerResponseFilters</param-name>
+ 	 <param-value>com.appliedsni.channel.core.server.security.api.filter.CustomLoggingFilter</param-value>
+	</init-param>
 	<init-param>
  	 <param-name>com.sun.jersey.spi.container.ContainerResponseFilters</param-name>
  	 <param-value>com.appliedsni.channel.core.server.security.api.filter.AuthorizationFilter</param-value>
