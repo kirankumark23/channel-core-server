@@ -11,6 +11,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,9 +34,18 @@ public class FunctionHandler {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(FunctionHandler.class);
 	private ServerDao mServerDao;
+	private String mCompanyLibPath;
 	
 	public FunctionHandler(ServerDao pServerDao){
 		mServerDao = pServerDao;
+
+		InitialContext initialContext;
+		try {
+			initialContext = new InitialContext();
+			mCompanyLibPath = (String) initialContext.lookup("java:comp/env/companyLibPath");
+		} catch (NamingException e) {
+			LOGGER.error("Failed to get mCompanyLibPath", e);
+		}
 	}
 	
 	public static FunctionHandler get(){
@@ -58,7 +70,7 @@ public class FunctionHandler {
 					targetMethod = Class.forName(pSTS.getFunctionClass()).getMethod(pSTS.getFunction(), ResponseMessageEntity.class, CustomThreadLocal.class);					
 					targetMethod.invoke((pSTS.getFunctionClass().contains("FunctionHandler") ? this : Class.forName(pSTS.getFunctionClass()).newInstance()), response, customThreadLocal);
 	    		}catch(ClassNotFoundException e){
-		    		URLClassLoader loader = new URLClassLoader(new URL[] { new URL("file:/Users/prashantpolshettiwar/appliedsni/apache-tomcat-8.0.28/demo/channel-demo-company-0.0.1-SNAPSHOT-jar-with-dependencies.jar") }, this.getClass().getClassLoader());
+		    		URLClassLoader loader = new URLClassLoader(new URL[] { new URL("file:" + mCompanyLibPath) }, this.getClass().getClassLoader());
 					Class targetClass = Class.forName(pSTS.getFunctionClass(), true, loader);
 					
 		    		targetMethod = targetClass.getDeclaredMethod("prolog", ResponseMessageEntity.class, CustomThreadLocal.class);
