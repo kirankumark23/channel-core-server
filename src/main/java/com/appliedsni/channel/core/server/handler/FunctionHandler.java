@@ -15,12 +15,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.appliedsni.channel.core.server.config.ChannelApplicationContext;
-import com.appliedsni.channel.core.server.dao.ServerDao;
 import com.appliedsni.channel.core.server.entity.CBSIntegrationEntity;
 import com.appliedsni.channel.core.server.entity.ComplexTransactionStepEntity;
 import com.appliedsni.channel.core.server.entity.SimpleTransactionStepEntity;
 import com.appliedsni.channel.core.server.queue.MQManager;
 
+import channel.client.dao.ServerDao;
 import channel.client.function.AbstractIntegration;
 import channel.client.function.CustomThreadLocal;
 import channel.client.function.IntegratonInterface;
@@ -55,13 +55,20 @@ public class FunctionHandler {
 	    		Method targetMethod = null;
 	    		
 	    		try{
-					targetMethod = Class.forName(pSTS.getFunctionClass()).getMethod(pSTS.getFunction(), ResponseMessageEntity.class, CustomThreadLocal.class);
+					targetMethod = Class.forName(pSTS.getFunctionClass()).getMethod(pSTS.getFunction(), ResponseMessageEntity.class, CustomThreadLocal.class);					
 					targetMethod.invoke((pSTS.getFunctionClass().contains("FunctionHandler") ? this : Class.forName(pSTS.getFunctionClass()).newInstance()), response, customThreadLocal);
 	    		}catch(ClassNotFoundException e){
-		    		URLClassLoader loader = new URLClassLoader(new URL[] { new URL("file:/Users/prashantpolshettiwar/appliedsni/apache-tomcat-8.0.28/CBS/cbs-integration-0.0.1-SNAPSHOT-jar-with-dependencies.jar") }, this.getClass().getClassLoader());
+		    		URLClassLoader loader = new URLClassLoader(new URL[] { new URL("file:/Users/prashantpolshettiwar/appliedsni/apache-tomcat-8.0.28/demo/channel-demo-company-0.0.1-SNAPSHOT-jar-with-dependencies.jar") }, this.getClass().getClassLoader());
 					Class targetClass = Class.forName(pSTS.getFunctionClass(), true, loader);
+					
+		    		targetMethod = targetClass.getDeclaredMethod("prolog", ResponseMessageEntity.class, CustomThreadLocal.class);
+		    		targetMethod.invoke(targetClass.newInstance(), response, customThreadLocal);
+					
 		    		targetMethod = targetClass.getDeclaredMethod(pSTS.getFunction(), ResponseMessageEntity.class, CustomThreadLocal.class);				
 					targetMethod.invoke(targetClass.newInstance(), response, customThreadLocal);
+
+					targetMethod = targetClass.getDeclaredMethod("epilog", ResponseMessageEntity.class, CustomThreadLocal.class);
+		    		targetMethod.invoke(targetClass.newInstance(), response, customThreadLocal);
 	    		}
 
 				pSTS.setExecutionStatus(response.getExecutionStatus());
@@ -100,37 +107,6 @@ public class FunctionHandler {
 		}
 	}
 	
-//	public void fn_ask_ac(ComplexTransactionStepEntity pCTS, SimpleTransactionStepEntity pSTS){
-//		pSTS.setExecutionStatus(Status.COMLETED);
-//		pSTS.setResultStatus(Status.SUCCESS);
-//		pSTS.setAdded(new Date());
-//		
-//		if(CustomThreadLocal.get("ACCOUNT") == null){
-//			ResponseMessageEntity response = new ResponseMessageEntity(pCTS.getComplexTransaction().getIdKey());
-//			response.setCode("STD-1");
-//			response.setMessage("Sure, which account ?");
-//			
-//			MQManager.get().handle(response);
-//
-//			LOGGER.warn(response.getMessage());
-//		}
-//		
-//		LOGGER.warn("Completed");
-//	}
-
-//	public void fn_extract_ac(ComplexTransactionStepEntity pCTS, SimpleTransactionStepEntity pSTS){
-//		
-//		if(CustomThreadLocal.get("ACCOUNT") == null){
-//			pSTS.setExecutionStatus(Status.IN_PROGRESS);
-//		} else {
-//			pSTS.setData(CustomThreadLocal.get("ACCOUNT").toString());
-//			pSTS.setExecutionStatus(Status.COMLETED);
-//			pSTS.setResultStatus(Status.SUCCESS);			
-//		}
-//		pSTS.setAdded(new Date());
-//		
-//		LOGGER.warn("Completed");
-//	}
 	
 	public void fn_get_ac_balance(ResponseMessageEntity pResponse, CustomThreadLocal pCustomThreadLocal){
 		//	Get Account from previous step				

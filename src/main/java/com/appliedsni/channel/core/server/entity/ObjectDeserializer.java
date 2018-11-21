@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.appliedsni.channel.core.server.config.ChannelApplicationContext;
-import com.appliedsni.channel.core.server.dao.ServerDao;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.ObjectCodec;
@@ -15,6 +14,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import channel.client.dao.ServerDao;
 import channel.client.function.Status;
 
 public class ObjectDeserializer extends JsonDeserializer<ComplexTransactionProductStepEntity>{

@@ -4,10 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.appliedsni.channel.core.server.config.ChannelApplicationContext;
-import com.appliedsni.channel.core.server.dao.ServerDao;
 import com.appliedsni.channel.core.server.entity.RequestMessageEntity;
 import com.appliedsni.channel.core.server.handler.ComplexTransactionHandler;
 
+import channel.client.dao.ServerDao;
 import channel.client.function.ResponseMessageEntity;
 
 /**

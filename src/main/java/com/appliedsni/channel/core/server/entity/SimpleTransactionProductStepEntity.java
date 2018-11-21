@@ -20,7 +20,6 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.Type;
 
 import com.appliedsni.channel.core.server.config.ChannelApplicationContext;
-import com.appliedsni.channel.core.server.dao.ServerDao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonParser;
@@ -33,6 +32,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.gson.annotations.Expose;
 
+import channel.client.dao.ServerDao;
 import channel.client.function.Status;
 
 @Entity

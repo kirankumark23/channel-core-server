@@ -64,7 +64,7 @@
 		    </property>
 		</bean>        
 		
-		<bean id="serverDao" class="com.appliedsni.channel.core.server.dao.ServerDao">
+		<bean id="serverDao" class="channel.client.dao.ServerDao">
 		    <property name="sessionFactory" ref="sessionFactory" />
 		</bean>        
 		
@@ -101,8 +101,7 @@
 		<bean id="commonUtils" class="com.appliedsni.channel.core.server.handler.CommonUtils" >
 			<constructor-arg ref="serverDao" />
 		</bean>
-		
-		
+				
 		<bean id="recoverService" class="com.appliedsni.channel.core.server.handler.RecoverService">
 			<constructor-arg ref="serverDao" />
 		</bean>		
