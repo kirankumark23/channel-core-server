@@ -10,8 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
-import com.appliedsni.channel.core.server.dao.ServerDao;
 import com.appliedsni.channel.core.server.user.domain.UserEntity;
+
+import channel.client.dao.ServerDao;
 
 import java.util.List;
 import java.util.Optional;

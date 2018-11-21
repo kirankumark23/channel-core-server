@@ -13,7 +13,6 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.appliedsni.channel.core.server.config.ChannelApplicationContext;
-import com.appliedsni.channel.core.server.dao.ServerDao;
 import com.appliedsni.channel.core.server.entity.ComplexTransactionEntity;
 import com.appliedsni.channel.core.server.entity.ComplexTransactionProductEntity;
 import com.appliedsni.channel.core.server.entity.ComplexTransactionProductStepEntity;
@@ -23,6 +22,7 @@ import com.appliedsni.channel.core.server.entity.SimpleTransactionProductEntity;
 import com.appliedsni.channel.core.server.entity.SimpleTransactionProductStepEntity;
 import com.appliedsni.channel.core.server.entity.SimpleTransactionStepEntity;
 
+import channel.client.dao.ServerDao;
 import channel.client.function.CustomThreadLocal;
 import channel.client.function.MessageEntity;
 import channel.client.function.Status;
@@ -49,6 +49,8 @@ public class ComplexTransactionHandler {
 			@Override
 			protected void doInTransactionWithoutResult(TransactionStatus pStatus) {
 				try{
+					CustomThreadLocal.setServerDao(mServerDao);
+					
 					if(pMessage.getData() != null){
 						for(Entry<String, String> entry : pMessage.getData().entrySet()){
 							CustomThreadLocal.add(entry.getKey(), entry.getValue());
