@@ -221,3 +221,11 @@ xIdKey 				UUID primary key,
 xOnline				boolean
 );
 
+create table xAuditLog (
+	xIdKey 				UUID primary key,
+	xPreviousState 		character varying(400),
+	xCurrentState 		character varying(400),
+	xVersion 			int,
+	xRefIdKey 			UUID,
+	xEntityName 		character varying(400)
+);

@@ -31,8 +31,10 @@
 		<import resource="springamqp-rabbit-sender-context.xml"/>
 		<import resource="springamqp-rabbt-listener-context.xml"/>
 		
+		
 		<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		    <property name="dataSource" ref="dataSource" />
+		    <property name="entityInterceptor" ><bean  class="com.appliedsni.channel.core.server.config.EntityAuditLogInterceptor" /></property>
 		    <property name="hibernateProperties">
 		    	<props>
 		    		<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
@@ -58,7 +60,8 @@
 		    		<value>com.appliedsni.channel.core.server.user.domain.RoleEntity</value>  
 		    		<value>com.appliedsni.channel.core.server.user.domain.RoleActionsEntity</value>  
 		    		<value>com.appliedsni.channel.core.server.user.domain.RoleMenuEntity</value> 
-		    		<value>com.appliedsni.channel.core.server.user.domain.UserRoleEntity</value>  
+		    		<value>com.appliedsni.channel.core.server.user.domain.UserRoleEntity</value> 
+		    		<value>com.appliedsni.channel.core.server.entity.AuditLogEntity</value>   
 		    		
 		    	</list>
 		    </property>
