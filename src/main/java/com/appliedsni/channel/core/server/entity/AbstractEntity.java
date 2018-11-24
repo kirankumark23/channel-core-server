@@ -14,12 +14,15 @@ public abstract class AbstractEntity {
 	
 	@Column(name = "XVERSION", nullable = false)
     private int mVersion;
+
 	@Temporal(TemporalType.TIMESTAMP)
     @Column(name = "xlastupdate", nullable = true)
-    private Date mLastUpdate;
-    public AbstractEntity(){}
+    private Date mLastUpdate = new Date();
+
 	@Transient
 	private List<ActionEntity> mActions;
+	
+	public AbstractEntity(){}
 	
 	public List<ActionEntity> getActions() {
 		return mActions;

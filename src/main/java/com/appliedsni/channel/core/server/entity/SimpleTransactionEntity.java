@@ -23,7 +23,7 @@ import channel.client.function.Status;
 
 @Entity
 @Table(name="xSimpleTransaction")
-public class SimpleTransactionEntity {
+public class SimpleTransactionEntity  extends AbstractEntity {
 
 	@Id
 	@Column(name="xIdkey")

@@ -27,3 +27,7 @@ insert into xRoleMenu values ('7fb52f3f-1d7e-4bc3-9faf-2660255ffc20', 'db82d2a4-
 
 /*	xCBSIntegration */
 insert into xCBSIntegration values ('fee3aa47-3e60-420e-9025-23600acef3d4', true);
+
+/*	xUser */
+insert into xuser values ('464d5a07-5ee9-429b-852d-6a0e47bdc286', 'user@company.com', 0, 'User', 'User', false, '9999999999', '$2a$10$8zeuMun9s1Gb7oNcbL6gaulwRDVkFKAFpSu3AGyXrubH0oonR.aZK', 0, current_timestamp, null, current_timestamp);
+

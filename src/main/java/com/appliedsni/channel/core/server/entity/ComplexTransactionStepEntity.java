@@ -27,7 +27,7 @@ import channel.client.function.Status;
 
 @Entity
 @Table(name="xComplexTransactionStep")
-public class ComplexTransactionStepEntity implements Serializable{
+public class ComplexTransactionStepEntity  extends AbstractEntity implements Serializable{
 
 	@Id
 	@Column(name="xIdkey")

@@ -31,7 +31,7 @@ import channel.client.function.Status;
 @Entity
 @Table(name="xSimpleTransactionStep")
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SimpleTransactionStepEntity implements Serializable{
+public class SimpleTransactionStepEntity extends AbstractEntity implements Serializable{
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SimpleTransactionStepEntity.class);
 

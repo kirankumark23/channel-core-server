@@ -3,7 +3,9 @@
 create table xSimpleTransactionProduct(
 	xIdKey 				UUID primary key,
 	xStatus 			character varying(20),
-	xName 				character varying(200)
+	xName 				character varying(200),
+	xversion 			integer NOT NULL,
+	xlastupdate 		timestamp default current_timestamp
 );
 
 --drop table xSimpleTransactionProductStep;
@@ -16,6 +18,8 @@ create table xSimpleTransactionProductStep(
 	xDelay				integer check(xDelay >= 0),
 	xClass				character varying(200),
 	xFunction			character varying(200),
+	xversion 			integer NOT NULL,
+	xlastupdate 		timestamp  default current_timestamp,
 	unique(xSeqNo, xSimpleTransaction)
 );
 
@@ -26,6 +30,8 @@ create table xComplexTransactionProduct (
 	xType 				character varying(20),
 	xStatus 			character varying(20),
 	xName 				character varying(200),
+	xversion 			integer NOT NULL,
+	xlastupdate 		timestamp default current_timestamp,
 	unique(xType, xStatus)
 );
 
@@ -38,6 +44,8 @@ create table xComplexTransactionProductStep (
 	xDecisionStatus 	character varying(200),
 	xDelay				integer check (xdelay >= 0),
 	xSimpleTransaction 	UUID references xSimpleTransactionProduct(xidkey),
+	xversion 			integer NOT NULL,
+	xlastupdate 		timestamp default current_timestamp,
 	unique(xSeqNo, xComplexTransaction)
 );
 
@@ -47,7 +55,9 @@ create table xSimpleTransaction(
 	xIdKey 				UUID primary key,
 	xProduct 			UUID references xSimpleTransactionProduct(xidkey),
 	xStatus 			character varying(20),
-	xAdded 				timestamp
+	xAdded 				timestamp,
+	xversion 			integer NOT NULL,
+	xlastupdate 		timestamp default current_timestamp
 );
 
 --drop table xSimpleTransactionStep;
@@ -64,6 +74,8 @@ create table xSimpleTransactionStep (
 	xResultStatus 		character varying(200),
 	xData 				character varying(2000),
 	xadded 				timestamp,
+	xversion 			integer NOT NULL,
+	xlastupdate 		timestamp default current_timestamp,
 	unique(xSimpleTransaction, xSeqNo)
 );
 
@@ -73,7 +85,9 @@ create table xComplexTransaction(
 	xIdKey 				UUID primary key,
 	xProduct 			UUID references xComplexTransactionProduct(xidkey),
 	xStatus 			character varying(20),
-	xAdded 				timestamp
+	xAdded 				timestamp,
+	xversion 			integer NOT NULL,
+	xlastupdate 		timestamp default current_timestamp
 );
 
 
@@ -90,6 +104,8 @@ create table xComplexTransactionStep(
 	xResultStatus 		character varying(200),
 	xData 				character varying(2000),
 	xAdded 				timestamp,
+	xversion 			integer NOT NULL,
+	xlastupdate 		timestamp default current_timestamp,
 	unique(xComplexTransaction, xSeqNo)
 );
 
