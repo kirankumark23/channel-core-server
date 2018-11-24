@@ -226,6 +226,8 @@ create table xAuditLog (
 	xPreviousState 		character varying(400),
 	xCurrentState 		character varying(400),
 	xVersion 			int,
-	xRefIdKey 			UUID,
-	xEntityName 		character varying(400)
+	xEntityIdKey 		UUID,
+	xEntityName 		character varying(400),
+	xUser 				character varying(50),
+	xlastupdate 		timestamp
 );

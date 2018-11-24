@@ -8,7 +8,7 @@ import org.hibernate.EmptyInterceptor;
 import org.hibernate.type.Type;
 
 import com.appliedsni.channel.core.server.common.annotations.AuditIgnore;
-import com.appliedsni.channel.core.server.common.annotations.EntityAudit;
+import com.appliedsni.channel.core.server.common.annotations.Auditable;
 import com.appliedsni.channel.core.server.entity.AuditLogEntity;
 /**
  * @author Gauri
@@ -32,7 +32,7 @@ public class EntityAuditLogInterceptor extends EmptyInterceptor {
 		Class aClass = entity.getClass();
 		StringBuilder previous = new StringBuilder();
 		StringBuilder current = new StringBuilder();
-		if (aClass.isAnnotationPresent(EntityAudit.class)) {
+		if (aClass.isAnnotationPresent(Auditable.class)) {
 			int version=0;
 			int i = 0;
 			for (String propertyName : propertyNames) {
@@ -66,7 +66,7 @@ public class EntityAuditLogInterceptor extends EmptyInterceptor {
 		Class aClass = entity.getClass();
 		StringBuilder previous = new StringBuilder();
 		StringBuilder current = new StringBuilder();
-		if (aClass.isAnnotationPresent(EntityAudit.class)) {
+		if (aClass.isAnnotationPresent(Auditable.class)) {
 			System.out.println("true");
 
 			int i = 0;
