@@ -19,6 +19,9 @@ import com.appliedsni.channel.core.server.security.service.AuthenticationTokenSe
 import com.appliedsni.channel.core.server.user.dao.UserDaoImpl;
 import com.appliedsni.channel.core.server.user.domain.UserEntity;
 
+import channel.client.function.CommonConstants;
+import channel.client.function.CustomThreadLocal;
+
 import java.io.IOException;
 
 /**
@@ -52,7 +55,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         AuthenticationTokenDetails authenticationTokenDetails = authenticationTokenService.parseToken(authenticationToken);
         UserEntity user = userDao.findByUsernameOrEmail(authenticationTokenDetails.getUsername());
         AuthenticatedUserDetails authenticatedUserDetails = new AuthenticatedUserDetails(user.getEmailaddress(), user.getRoleActionses());
-
+        CustomThreadLocal.add(CommonConstants.CURRENT_USER, user.getEmailaddress());
         boolean isSecure = requestContext.getSecurityContext().isSecure();
         SecurityContext securityContext = new TokenBasedSecurityContext(authenticatedUserDetails, authenticationTokenDetails, isSecure);
         requestContext.setSecurityContext(securityContext);

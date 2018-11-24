@@ -21,9 +21,9 @@ public class AuditLogEntity {
 	private String mCurrentState;
 	@Column(name = "xVersion")
 	private int mVersion;
-	@Column(name = "xRefIdKey")
+	@Column(name = "xEntityIdKey")
 	@Type(type="pg-uuid")
-	private UUID mRefIdKey;
+	private UUID mEntityIdKey;
 	@Column(name = "xEntityName", length = 400)
 	private String mEntityName;
 	public AuditLogEntity(){
@@ -37,7 +37,7 @@ public class AuditLogEntity {
 		mPreviousState = pPreviousState;
 		mCurrentState = pCurrentState;
 		mVersion = pVersion;
-		mRefIdKey = pRefIdKey;
+		mEntityIdKey = pRefIdKey;
 		mEntityName = pEntityName;
 	}
 
@@ -65,11 +65,11 @@ public class AuditLogEntity {
 	public void setVersion(int pVersion) {
 		mVersion = pVersion;
 	}
-	public UUID getRefIdKey() {
-		return mRefIdKey;
+	public UUID getEntityIdKey() {
+		return mEntityIdKey;
 	}
-	public void setRefIdKey(UUID pRefIdKey) {
-		mRefIdKey = pRefIdKey;
+	public void setEntityIdKey(UUID pRefIdKey) {
+		mEntityIdKey = pRefIdKey;
 	}
 	public String getEntityName() {
 		return mEntityName;
