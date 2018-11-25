@@ -21,6 +21,7 @@ import com.appliedsni.channel.core.server.entity.SimpleTransactionEntity;
 import com.appliedsni.channel.core.server.entity.SimpleTransactionProductEntity;
 import com.appliedsni.channel.core.server.entity.SimpleTransactionProductStepEntity;
 import com.appliedsni.channel.core.server.entity.SimpleTransactionStepEntity;
+import com.appliedsni.channel.core.server.security.exception.AccessDeniedException;
 
 import channel.client.dao.ServerDao;
 import channel.client.function.CustomThreadLocal;
@@ -44,7 +45,9 @@ public class ComplexTransactionHandler {
 	public void handle(MessageEntity pMessage){
 		
 		Thread.currentThread().setName(pMessage.getIdKey().toString());
-		
+		if(!isTransactionAllowed()){
+			throw new AccessDeniedException("Transaction not Allowed");
+		}
 		ChannelApplicationContext.get().getBean("transactionTemplate", TransactionTemplate.class).execute(new TransactionCallbackWithoutResult() {
 			@Override
 			protected void doInTransactionWithoutResult(TransactionStatus pStatus) {
@@ -218,5 +221,8 @@ public class ComplexTransactionHandler {
 		return sts;
 	}
 
-
+	private boolean isTransactionAllowed(){
+		return true;
+		
+	}
 }
