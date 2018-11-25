@@ -5,6 +5,7 @@
 	xmlns:tx="http://www.springframework.org/schema/tx"	
 	xmlns:jee="http://www.springframework.org/schema/jee"
 	xmlns:task="http://www.springframework.org/schema/task"	
+	xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="
 		http://www.springframework.org/schema/beans	
 		http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -19,7 +20,9 @@
         http://www.springframework.org/schema/task/spring-task-3.2.xsd		
 		
 		http://www.springframework.org/schema/jee 
-        http://www.springframework.org/schema/jee/spring-jee-3.2.xsd">
+        http://www.springframework.org/schema/jee/spring-jee-3.2.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
         
         <jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/DataSource"/>
         <jee:jndi-lookup id="interval" jndi-name="java:comp/env/interval"/>
@@ -27,10 +30,26 @@
         
         
         <context:component-scan base-package="com.appliedsni.channel.core.server" />
+        <!-- Activates various annotations to be detected in bean classes e.g: @Autowired -->
+		<context:annotation-config />
 		<import resource="mongoApplicationContext.xml"/>
 		<import resource="springamqp-rabbit-sender-context.xml"/>
 		<import resource="springamqp-rabbt-listener-context.xml"/>
-		
+		<!-- AOP Configuration for profiling -->
+
+		<!-- Our profiler class that we want to use to measure process time of service methods. -->
+		<bean id="profiler" class="com.appliedsni.channel.core.server.config.Profiler" />
+
+		<!-- Spring AOP -->
+		<aop:config>
+			<aop:aspect ref="profiler">
+				<!-- Catch all method in the service package through AOP. -->
+				<aop:pointcut id="serviceMethod" 
+					expression="execution(* com.appliedsni.channel.core.server.*.*(..))" />
+				<!-- For these methods use the profile named method in the profiler class we defined below. -->
+				<aop:around pointcut-ref="serviceMethod" method="profile" />
+			</aop:aspect>
+		</aop:config>
 		
 		<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		    <property name="dataSource" ref="dataSource" />
