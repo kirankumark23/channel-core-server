@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("singleton")
-class AuthenticationTokenSettings {
+public class AuthenticationTokenSettings {
 
 	/**
 	 * Secret for signing and verifying the token signature.
