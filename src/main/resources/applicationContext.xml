@@ -45,7 +45,7 @@
 			<aop:aspect ref="profiler">
 				<!-- Catch all method in the service package through AOP. -->
 				<aop:pointcut id="serviceMethod" 
-					expression="execution(* com.appliedsni.channel.core.server.*.*(..))" />
+					expression="execution(* com.appliedsni.channel.core.server.handler.*.*(..))" />
 				<!-- For these methods use the profile named method in the profiler class we defined below. -->
 				<aop:around pointcut-ref="serviceMethod" method="profile" />
 			</aop:aspect>
