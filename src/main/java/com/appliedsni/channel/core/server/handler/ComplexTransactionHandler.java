@@ -12,6 +12,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.appliedsni.channel.core.server.common.utils.CommonUtilsImpl;
 import com.appliedsni.channel.core.server.config.ChannelApplicationContext;
 import com.appliedsni.channel.core.server.entity.ComplexTransactionEntity;
 import com.appliedsni.channel.core.server.entity.ComplexTransactionProductEntity;
@@ -51,9 +52,7 @@ public class ComplexTransactionHandler {
 		ChannelApplicationContext.get().getBean("transactionTemplate", TransactionTemplate.class).execute(new TransactionCallbackWithoutResult() {
 			@Override
 			protected void doInTransactionWithoutResult(TransactionStatus pStatus) {
-				try{
-					CustomThreadLocal.setServerDao(mServerDao);
-					
+				try{					
 					if(pMessage.getData() != null){
 						for(Entry<String, String> entry : pMessage.getData().entrySet()){
 							CustomThreadLocal.add(entry.getKey(), entry.getValue());
@@ -64,9 +63,7 @@ public class ComplexTransactionHandler {
 					if(ct == null){
 						ct = createTransaction(pMessage);
 					}					
-					
-					CustomThreadLocal.add("CT", ct.getIdKey());
-					
+										
 					handle(ct);
 					
 				} catch(Exception e) {
@@ -78,6 +75,11 @@ public class ComplexTransactionHandler {
 	}
 	
 	public void handle(ComplexTransactionEntity pCT){
+
+		CustomThreadLocal.add("CT", pCT.getIdKey());
+		CustomThreadLocal.setServerDao(mServerDao);
+		CustomThreadLocal.setCommonUtils(CommonUtilsImpl.get());
+
 		while(true){
 			ComplexTransactionStepEntity cts = getNextCTStep(pCT);
 			

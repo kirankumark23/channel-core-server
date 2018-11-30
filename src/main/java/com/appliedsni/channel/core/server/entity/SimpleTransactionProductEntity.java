@@ -11,6 +11,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 
+import com.appliedsni.channel.core.server.common.annotations.Auditable;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -19,6 +20,7 @@ import channel.client.function.Status;
 @Entity
 @JsonInclude(value=Include.NON_NULL)
 @Table(name="xSimpleTransactionProduct")
+@Auditable
 public class SimpleTransactionProductEntity extends AbstractEntity{
 
 	@Id

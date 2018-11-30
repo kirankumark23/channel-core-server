@@ -49,7 +49,7 @@ public class SimpleTransactionHandler {
 							pCTStep.getSimpleTransaction().setAdded(new Date());
 							pCTStep.setExecutionStatus(Status.COMLETED);
 							//	TODO : Get status from last ST
-							pCTStep.setResultStatus(sts.getResultStatus());		
+							pCTStep.setResultStatus(sts.getResultStatus());
 							pCTStep.setAdded(new Date());
 							
 							LOGGER.warn("Complex Transaction : {} : {}", pCTStep.getSimpleTransaction().getIdKey(), pCTStep.getSimpleTransaction().getStatus());
@@ -102,11 +102,11 @@ public class SimpleTransactionHandler {
 						+ " where mExecutionStatus != :ExecutionStatus "
 						+ " and mSimpleTransaction = :SimpleTransaction "
 						+ " and mDecisionStatus = :ResultStatus "
-						+ " and mFunction != :Function "
+						+ " and mFunctionClass != :FunctionClass "
 						+ " order by mSeqNo ");
 				
 				query.setParameter("ResultStatus", previousStep.getResultStatus());
-				query.setParameter("Function", previousStep.getFunction());
+				query.setParameter("FunctionClass", previousStep.getFunctionClass());
 			} else {
 				query = mServerDao.getSessionFactory().getCurrentSession().createQuery("from SimpleTransactionStepEntity "
 						+ " where mExecutionStatus != :ExecutionStatus "

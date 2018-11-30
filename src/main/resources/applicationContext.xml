@@ -123,6 +123,10 @@
 		<bean id="commonUtils" class="com.appliedsni.channel.core.server.handler.CommonUtils" >
 			<constructor-arg ref="serverDao" />
 		</bean>
+
+		<bean id="commonUtilsImpl" class="com.appliedsni.channel.core.server.common.utils.CommonUtilsImpl" >
+			<constructor-arg ref="serverDao" />
+		</bean>
 				
 		<bean id="recoverService" class="com.appliedsni.channel.core.server.handler.RecoverService">
 			<constructor-arg ref="serverDao" />
