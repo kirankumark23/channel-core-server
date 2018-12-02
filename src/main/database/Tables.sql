@@ -173,7 +173,7 @@ create table xRoleMenu(
 	unique (xRole, xMenu)
 );
 
-drop table xEntity;
+--drop table xEntity;
 create table xEntity(
 	xCompany		character varying(20),
 	xIdKey			character varying(200) primary key,
@@ -238,17 +238,6 @@ xOnline				boolean
 );
 
 create table xAuditLog (
-	xIdKey 				UUID primary key,
-	xPreviousState 		character varying(400),
-	xCurrentState 		character varying(400),
-	xVersion 			int,
-	xEntityIdKey 		UUID,
-	xEntityName 		character varying(400),
-	xUser 				character varying(50),
-	xlastupdate 		timestamp
-);
-
-create table xAuditLog1 (
 	xIdKey 				UUID primary key,
 	xPreviousState 		character varying(400),
 	xCurrentState 		character varying(400),
