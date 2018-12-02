@@ -108,7 +108,20 @@ create table xComplexTransactionStep(
 	xlastupdate 		timestamp default current_timestamp,
 	unique(xComplexTransaction, xSeqNo)
 );
-
+create table xUser(
+	xidkey 				uuid NOT NULL primary key,
+	xemailaddress 		varchar(200) NOT NULL,
+	xfailloginattempts 	int4 NULL,
+	xfirstname 			varchar(40) NULL,
+	xlastname 			varchar(40) NULL,
+	xlockuserindicator 	bool NOT NULL,
+	xmobilenumber 		varchar(12) NULL,
+	xpasswordhash 		varchar(200) NULL,
+	xversion 			integer NOT NULL,
+	xAdded				timestamp,
+	xAddedBy			UUID references xUser(xidKey),
+	xlastupdate 		timestamp NULL
+);
 --drop table xBranch;
 create table xBranch(
 	xCompany			character varying(20),
@@ -197,20 +210,7 @@ create table xUserRole(
 );
 
 
-create table xUser(
-	xidkey 				uuid NOT NULL primary key,
-	xemailaddress 		varchar(200) NOT NULL,
-	xfailloginattempts 	int4 NULL,
-	xfirstname 			varchar(40) NULL,
-	xlastname 			varchar(40) NULL,
-	xlockuserindicator 	bool NOT NULL,
-	xmobilenumber 		varchar(12) NULL,
-	xpasswordhash 		varchar(200) NULL,
-	xversion 			integer NOT NULL,
-	xAdded				timestamp,
-	xAddedBy			UUID references xUser(xidKey),
-	xlastupdate 		timestamp NULL
-);
+
 
 
 
@@ -238,6 +238,17 @@ xOnline				boolean
 );
 
 create table xAuditLog (
+	xIdKey 				UUID primary key,
+	xPreviousState 		character varying(400),
+	xCurrentState 		character varying(400),
+	xVersion 			int,
+	xEntityIdKey 		UUID,
+	xEntityName 		character varying(400),
+	xUser 				character varying(50),
+	xlastupdate 		timestamp
+);
+
+create table xAuditLog1 (
 	xIdKey 				UUID primary key,
 	xPreviousState 		character varying(400),
 	xCurrentState 		character varying(400),

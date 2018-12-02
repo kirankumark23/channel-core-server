@@ -1,6 +1,7 @@
 package com.appliedsni.channel.core.server.handler;
 
 import java.lang.reflect.InvocationTargetException;
+
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
@@ -16,7 +17,9 @@ import javax.naming.NamingException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import com.appliedsni.channel.core.server.common.utils.PropertiesCache;
 import com.appliedsni.channel.core.server.config.ChannelApplicationContext;
 import com.appliedsni.channel.core.server.entity.CBSIntegrationEntity;
 import com.appliedsni.channel.core.server.entity.ComplexTransactionStepEntity;
@@ -35,15 +38,13 @@ public class FunctionHandler {
 	private static final Logger LOGGER = LoggerFactory.getLogger(FunctionHandler.class);
 	private ServerDao mServerDao;
 	private String mCompanyLibPath;
-	
 	public FunctionHandler(ServerDao pServerDao){
 		mServerDao = pServerDao;
 
-		InitialContext initialContext;
+		
 		try {
-			initialContext = new InitialContext();
-			mCompanyLibPath = (String) initialContext.lookup("java:comp/env/companyLibPath");
-		} catch (NamingException e) {
+			mCompanyLibPath = PropertiesCache.getInstance().getProperty("companyLibPath");
+		} catch (Exception e) {
 			LOGGER.error("Failed to get mCompanyLibPath", e);
 		}
 	}
