@@ -43,8 +43,22 @@ public class DataBaseSetup {
 			String pwd = PropertiesCache.getInstance().getProperty("password");
 			connection = DriverManager.getConnection(url, user, pwd);
 
-			stmt = connection.createStatement();
-
+		      stmt = connection.createStatement();
+		      LOGGER.warn("Deleting table/schema in given database...");
+		      String sql = "DROP SCHEMA public CASCADE;";
+		      stmt.executeUpdate(sql);
+		      LOGGER.warn("Table/schema  deleted in given database...");
+		      
+		      LOGGER.warn("Creating schema in given database...");
+		      String createSql = "CREATE SCHEMA public;";
+		      String grantRights = "GRANT ALL ON SCHEMA public TO postgres;";
+		      String grantRightsSql = "GRANT ALL ON SCHEMA public TO public;";
+		 
+		 
+		      stmt.executeUpdate(createSql);
+		      stmt.executeUpdate(grantRights);
+		      stmt.executeUpdate(grantRightsSql);
+		      LOGGER.warn("schema  createded in given database...");
 			LOGGER.warn("Creating tables in given database...");
 
 			File tableFile = new File(filePath+"/Tables.sql");
