@@ -20,7 +20,7 @@ public class DataBaseSetup {
 	public static boolean dbSetup=false;
 	public static void test() {
 		LOGGER.warn("-------- PostgreSQL " + "JDBC Connection Testing ------------");
-		String filePath=System.getenv("FILE_PATH");
+		String filePath=System.getenv("/opt/buildAgent/work/6d5b60433dbb7e35/src/main/database");
 		try {
 
 			Class.forName("org.postgresql.Driver");
@@ -47,22 +47,22 @@ public class DataBaseSetup {
 
 			LOGGER.warn("Creating tables in given database...");
 
-			File tableFile = new File(filePath+"\\Tables.sql");
+			File tableFile = new File(filePath+"/Tables.sql");
 			String tableFilestr = FileUtils.readFileToString(tableFile);
 			stmt.executeUpdate(tableFilestr);
 			LOGGER.warn("created  table in given database...");
 			
 			LOGGER.warn("inserting data in given database...");
 			
-			File dataFile = new File(filePath+"\\MasterData.sql");
+			File dataFile = new File(filePath+"/MasterData.sql");
 			String dataFilestr = FileUtils.readFileToString(dataFile);
 			stmt.executeUpdate(dataFilestr);
 
-			dataFile = new File(filePath+"\\ProductData.sql");
+			dataFile = new File(filePath+"/ProductData.sql");
 			dataFilestr = FileUtils.readFileToString(dataFile);
 			stmt.executeUpdate(dataFilestr);
 
-			dataFile = new File(filePath+"\\Queries.sql");
+			dataFile = new File(filePath+"/Queries.sql");
 			dataFilestr = FileUtils.readFileToString(dataFile);
 			stmt.executeUpdate(dataFilestr);
 			
