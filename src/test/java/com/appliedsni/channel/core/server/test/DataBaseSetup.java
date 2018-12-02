@@ -20,7 +20,7 @@ public class DataBaseSetup {
 	public static boolean dbSetup=false;
 	public static void test() {
 		LOGGER.warn("-------- PostgreSQL " + "JDBC Connection Testing ------------");
-		String filePath=System.getenv("/opt/buildAgent/work/6d5b60433dbb7e35/src/main/database");
+		String filePath="/opt/buildAgent/work/6d5b60433dbb7e35/src/main/database";
 		try {
 
 			Class.forName("org.postgresql.Driver");
