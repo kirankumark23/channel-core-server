@@ -36,9 +36,9 @@
 		<bean id="dataSource"
 	        class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 	        <property name="driverClassName" value="org.postgresql.Driver" />
-	        <property name="url" value="jdbc:postgresql://localhost:5432/test?stringtype=unspecified" />
+	        <property name="url" value="jdbc:postgresql://localhost:5432/channel_junit?stringtype=unspecified" />
 	        <property name="username" value="postgres" />
-	        <property name="password" value="root1234" />
+	        <property name="password" value="abcd1234" />
 	    </bean>
 		<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		    <property name="dataSource" ref="dataSource" />
