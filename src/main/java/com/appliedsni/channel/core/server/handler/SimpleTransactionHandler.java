@@ -135,7 +135,7 @@ public class SimpleTransactionHandler {
 	 * @param pST
 	 * @return
 	 */
-	private SimpleTransactionStepEntity getPreviousSTStep(SimpleTransactionEntity pST){
+	public SimpleTransactionStepEntity getPreviousSTStep(SimpleTransactionEntity pST){
 		SimpleTransactionStepEntity sts = null;
 		try{
 			Query query = mServerDao.getSessionFactory().getCurrentSession().createQuery("from SimpleTransactionStepEntity "

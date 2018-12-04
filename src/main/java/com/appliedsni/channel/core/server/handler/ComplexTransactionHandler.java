@@ -78,7 +78,7 @@ public class ComplexTransactionHandler {
 
 		CustomThreadLocal.add("CT", pCT.getIdKey());
 		CustomThreadLocal.setServerDao(mServerDao);
-		CustomThreadLocal.setCommonUtils(CommonUtilsImpl.get());
+//		CustomThreadLocal.set(CommonUtilsImpl.get());
 
 		while(true){
 			ComplexTransactionStepEntity cts = getNextCTStep(pCT);
@@ -204,7 +204,7 @@ public class ComplexTransactionHandler {
 	 * @param pST
 	 * @return
 	 */
-	private ComplexTransactionStepEntity getPreviousCTStep(ComplexTransactionEntity pCT){
+	public ComplexTransactionStepEntity getPreviousCTStep(ComplexTransactionEntity pCT){
 		ComplexTransactionStepEntity sts = null;
 		try{
 			Query query = mServerDao.getSessionFactory().getCurrentSession().createQuery("from ComplexTransactionStepEntity "
