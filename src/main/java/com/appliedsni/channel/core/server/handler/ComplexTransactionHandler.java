@@ -78,7 +78,7 @@ public class ComplexTransactionHandler {
 
 		CustomThreadLocal.add("CT", pCT.getIdKey());
 		CustomThreadLocal.setServerDao(mServerDao);
-//		CustomThreadLocal.set(CommonUtilsImpl.get());
+		CustomThreadLocal.setCommonUtils(CommonUtilsImpl.get());
 
 		while(true){
 			ComplexTransactionStepEntity cts = getNextCTStep(pCT);
