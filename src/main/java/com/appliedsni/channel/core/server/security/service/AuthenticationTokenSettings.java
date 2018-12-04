@@ -12,8 +12,7 @@ import org.springframework.stereotype.Component;
  *
  * @author gauri
  */
-@Component
-@Scope("singleton")
+
 public class AuthenticationTokenSettings {
 
 	/**
@@ -61,24 +60,21 @@ public class AuthenticationTokenSettings {
 	 */
 	private Integer refreshLimit;
 
-	@PostConstruct
-	private void init() {
-		try {
-			InitialContext initialContext = new InitialContext();
-			secret = (String) initialContext.lookup("java:comp/env/secret");
-			authoritiesClaimName = (String) initialContext.lookup("java:comp/env/authoritiesClaimName");
-			issuer = (String) initialContext.lookup("java:comp/env/issuer");
-			audience = (String) initialContext.lookup("java:comp/env/audience");
-			clockSkew = (Long) initialContext.lookup("java:comp/env/clockSkew");
-			authoritiesClaimName = (String) initialContext.lookup("java:comp/env/authoritiesClaimName");
-			refreshCountClaimName = (String) initialContext.lookup("java:comp/env/refreshCountClaimName");
-			refreshLimitClaimName = (String) initialContext.lookup("java:comp/env/refreshLimitClaimName");
-			validFor = (Long) initialContext.lookup("java:comp/env/validFor");
-			refreshLimit = (Integer) initialContext.lookup("java:comp/env/refreshLimit");
-		} catch (NamingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	
+
+	public AuthenticationTokenSettings(String pSecret, Long pClockSkew, String pAudience, String pIssuer,
+			String pAuthoritiesClaimName, String pRefreshCountClaimName, String pRefreshLimitClaimName, Long pValidFor,
+			Integer pRefreshLimit) {
+		super();
+		secret = pSecret;
+		clockSkew = pClockSkew;
+		audience = pAudience;
+		issuer = pIssuer;
+		authoritiesClaimName = pAuthoritiesClaimName;
+		refreshCountClaimName = pRefreshCountClaimName;
+		refreshLimitClaimName = pRefreshLimitClaimName;
+		validFor = pValidFor;
+		refreshLimit = pRefreshLimit;
 	}
 
 	public String getSecret() {

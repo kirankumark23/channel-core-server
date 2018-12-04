@@ -1,40 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:tx="http://www.springframework.org/schema/tx"	
-	xmlns:jee="http://www.springframework.org/schema/jee"
-	xmlns:task="http://www.springframework.org/schema/task"	
-	xmlns:aop="http://www.springframework.org/schema/aop"
-	xsi:schemaLocation="
-		http://www.springframework.org/schema/beans	
-		http://www.springframework.org/schema/beans/spring-beans.xsd
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
 
-		http://www.springframework.org/schema/tx 
-		http://www.springframework.org/schema/tx/spring-tx.xsd
-
-		http://www.springframework.org/schema/context
-		http://www.springframework.org/schema/context/spring-context.xsd
-
-		http://www.springframework.org/schema/task
-        http://www.springframework.org/schema/task/spring-task-3.2.xsd		
-		
-		http://www.springframework.org/schema/jee 
-        http://www.springframework.org/schema/jee/spring-jee-3.2.xsd
-        http://www.springframework.org/schema/aop
-        http://www.springframework.org/schema/aop/spring-aop.xsd">
         
-        <jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/DataSource"/>
-        <jee:jndi-lookup id="interval" jndi-name="java:comp/env/interval"/>
-        <jee:jndi-lookup id="threadCount" jndi-name="java:comp/env/threadCount"/>
         <bean class="com.appliedsni.channel.core.server.common.utils.EnvPropertyPlaceholderConfigurer">
         	<property name="location" value="classpath:app.properties" />
     	</bean>
-        
-        <context:component-scan base-package="com.appliedsni.channel.core.server" />
+       
         <!-- Activates various annotations to be detected in bean classes e.g: @Autowired -->
 		<context:annotation-config />
-		<import resource="mongoApplicationContext.xml"/>
+		<import resource="testMongoApplicationContext.xml"/>
 		<import resource="springamqp-rabbit-sender-context.xml"/>
 		<import resource="springamqp-rabbt-listener-context.xml"/>
 		<!-- AOP Configuration for profiling -->
@@ -43,23 +24,32 @@
 		<bean id="profiler" class="com.appliedsni.channel.core.server.config.Profiler" />
 
 		<!-- Spring AOP -->
-		<aop:config>
+		<!-- <aop:config>
 			<aop:aspect ref="profiler">
-				<!-- Catch all method in the service package through AOP. -->
+				Catch all method in the service package through AOP.
 				<aop:pointcut id="serviceMethod" 
 					expression="execution(* com.appliedsni.channel.core.server.handler.*.*(..))" />
-				<!-- For these methods use the profile named method in the profiler class we defined below. -->
+				For these methods use the profile named method in the profiler class we defined below.
 				<aop:around pointcut-ref="serviceMethod" method="profile" />
 			</aop:aspect>
-		</aop:config>
-		
+		</aop:config> -->
+		<bean id="dataSource"
+	        class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	        <property name="driverClassName" value="org.postgresql.Driver" />
+	        <property name="url" value="jdbc:postgresql://localhost:5432/channel_junit?stringtype=unspecified" />
+	        <property name="username" value="postgres" />
+	        <property name="password" value="abcd1234" />
+	    </bean>
 		<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		    <property name="dataSource" ref="dataSource" />
 		    <property name="entityInterceptor" ><bean  class="com.appliedsni.channel.core.server.config.EntityAuditLogInterceptor" /></property>
 		    <property name="hibernateProperties">
 		    	<props>
-		    		<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
 		    		<prop key="hibernate.show_sql">false</prop>
+		    		<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+	                <!-- <prop key="hibernate.hbm2ddl.auto">update</prop>  -->
+	                <prop key="hibernate.hbm2ddl.import_files">\import.sql</prop>
+	                <prop key="hibernate.format_sql">true</prop>
 		    	</props>
 		    </property>
 		    <property name="annotatedClasses">
@@ -117,7 +107,7 @@
 		<bean id="simpleTransactionHandler" class="com.appliedsni.channel.core.server.handler.SimpleTransactionHandler" >
 			<constructor-arg ref="serverDao" />
 		</bean>
-
+ 		
 		<bean id="functionHandler" class="com.appliedsni.channel.core.server.handler.FunctionHandler" >
 			<constructor-arg ref="serverDao" />
 		</bean>
@@ -125,15 +115,12 @@
 		<bean id="commonUtils" class="com.appliedsni.channel.core.server.handler.CommonUtils" >
 			<constructor-arg ref="serverDao" />
 		</bean>
-
-		<bean id="commonUtilsImpl" class="com.appliedsni.channel.core.server.common.utils.CommonUtilsImpl" >
-			<constructor-arg ref="serverDao" />
-		</bean>
 				
 		<bean id="recoverService" class="com.appliedsni.channel.core.server.handler.RecoverService">
 			<constructor-arg ref="serverDao" />
 		</bean>		
-		<bean id="authenticationTokenSettings" class="com.appliedsni.channel.core.server.security.service.AuthenticationTokenSettings">
+		<context:component-scan base-package="com.appliedsni.channel.core.server" />   
+      	<bean id="authenticationTokenSettings" class="com.appliedsni.channel.core.server.security.service.AuthenticationTokenSettings">
       		<constructor-arg name="pSecret" value="${secret}" />
       		<constructor-arg name="pClockSkew" value="${clockSkew}" />
       		<constructor-arg name="pAudience" value="${audience}"/>
@@ -143,13 +130,6 @@
       		<constructor-arg name="pRefreshLimitClaimName" value="${refreshLimitClaimName}" />
       		<constructor-arg name="pValidFor" value="${validFor}" />
       		<constructor-arg name="pRefreshLimit" value="${refreshLimit}" />
-      	</bean>      
-        
-		<task:scheduler id="scheduler" pool-size="#{threadCount}"/>
-		<task:scheduled-tasks scheduler="scheduler">
-			<task:scheduled ref="recoverService" method="recover" fixed-rate="#{interval}"/>
-		</task:scheduled-tasks>
-		
-				
-
-</beans>		
+      	</bean>
+	 
+</beans>

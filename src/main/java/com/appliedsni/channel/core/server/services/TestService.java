@@ -1,6 +1,7 @@
 package com.appliedsni.channel.core.server.services;
 
 
+import javax.annotation.PostConstruct;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -12,6 +13,8 @@ import javax.ws.rs.core.MediaType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.appliedsni.channel.core.server.config.ChannelApplicationContext;
 import com.appliedsni.channel.core.server.entity.ActionEntity;
@@ -37,11 +40,12 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.UUID;
-
+@Component
 @Path("/service")
 public class TestService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(TestService.class);
-	SpringAMQPRabbitSender springAMQPRabbitSender=(SpringAMQPRabbitSender) ChannelApplicationContext.get().getBean("springAMQPRabbitSender");
+	@Autowired
+	SpringAMQPRabbitSender springAMQPRabbitSender;
 	
 	@POST
 	@Path("/push")

@@ -19,6 +19,7 @@ import com.appliedsni.channel.core.server.entity.ComplexTransactionStepEntity;
 import com.appliedsni.channel.core.server.entity.SimpleTransactionProductEntity;
 import com.appliedsni.channel.core.server.entity.SimpleTransactionProductStepEntity;
 import com.appliedsni.channel.core.server.entity.SimpleTransactionStepEntity;
+import com.appliedsni.channel.core.server.queue.SpringAMQPRabbitSender;
 
 import channel.client.dao.ServerDao;
 import channel.client.function.Status;
