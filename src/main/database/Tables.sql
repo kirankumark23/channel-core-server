@@ -102,12 +102,13 @@ create table xComplexTransactionStep(
 	xDelay				integer check (xdelay >= 0),
 	xExecutionStatus 	character varying(200),
 	xResultStatus 		character varying(200),
-	xData 				character varying(2000),
+	xData 				bytea,
 	xAdded 				timestamp,
 	xversion 			integer NOT NULL,
 	xlastupdate 		timestamp default current_timestamp,
 	unique(xComplexTransaction, xSeqNo)
 );
+
 create table xUser(
 	xidkey 				uuid NOT NULL primary key,
 	xemailaddress 		varchar(200) NOT NULL,
