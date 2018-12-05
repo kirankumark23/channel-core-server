@@ -204,7 +204,7 @@ public class ComplexTransactionHandler {
 	 * @param pST
 	 * @return
 	 */
-	private ComplexTransactionStepEntity getPreviousCTStep(ComplexTransactionEntity pCT){
+	public ComplexTransactionStepEntity getPreviousCTStep(ComplexTransactionEntity pCT){
 		ComplexTransactionStepEntity sts = null;
 		try{
 			Query query = mServerDao.getSessionFactory().getCurrentSession().createQuery("from ComplexTransactionStepEntity "
