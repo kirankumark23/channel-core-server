@@ -17,6 +17,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -55,7 +56,9 @@ public class ComplexTransactionStepEntity  extends AbstractEntity implements Ser
 	@Column(name="xResultStatus")
 	@Enumerated(EnumType.STRING)
 	private Status mResultStatus;
-	
+	@ColumnTransformer(
+		    read =  "pgp_sym_decrypt(  xData,   'appliedsni')",
+		    write = "pgp_sym_encrypt(     ?,     'appliedsni') ")
 	@Column(name="xData")
 	private String mData;
 	
