@@ -22,12 +22,16 @@ import com.appliedsni.channel.core.server.entity.ComplexTransactionEntity;
 import com.appliedsni.channel.core.server.entity.ComplexTransactionProductEntity;
 import com.appliedsni.channel.core.server.entity.ComplexTransactionProductStepEntity;
 import com.appliedsni.channel.core.server.entity.ComplexTransactionStepEntity;
+import com.appliedsni.channel.core.server.entity.CustomerEntity;
+import com.appliedsni.channel.core.server.entity.CustomerMandateEntity;
+import com.appliedsni.channel.core.server.entity.ProductRoleAccessEntity;
 import com.appliedsni.channel.core.server.entity.SimpleTransactionProductEntity;
 import com.appliedsni.channel.core.server.entity.SimpleTransactionProductStepEntity;
 import com.appliedsni.channel.core.server.entity.SimpleTransactionStepEntity;
 import com.appliedsni.channel.core.server.handler.CommonUtils;
 import com.appliedsni.channel.core.server.handler.ComplexTransactionHandler;
 import com.appliedsni.channel.core.server.queue.SpringAMQPRabbitSender;
+import com.appliedsni.channel.core.server.user.domain.RoleEntity;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
@@ -337,5 +341,69 @@ public class TestService {
         }
 	}
 
+	@GET
+	@Path("/roles")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<RoleEntity> getRoles(){
+		return CommonUtils.get().getRoles();
+	}
 	
+	@GET
+	@Path("/channels")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<RoleEntity> getChannels(){
+		return CommonUtils.get().getChannels();
+	}
+	
+	@GET
+	@Path("/complextransactionproducts/{ctpid}/roles")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<RoleEntity> getChannelServices(@PathParam("ctpid") UUID pCTPIdKey){
+		return CommonUtils.get().getChannelServices(pCTPIdKey);
+	}
+	
+	@POST
+	@Path("/complextransactionproducts/{ctpid}/roles/{roleid}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String createProductRoleAccess(@PathParam("ctpid") UUID pCTPIdKey, @PathParam("roleid") UUID pRoleIdKey){
+		CommonUtils.get().createProductRoleAccess(pCTPIdKey, pRoleIdKey);
+		return "{\"status\" : \"Role Access created\"}";
+	}
+	
+	@GET
+	@Path("/customers")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<CustomerEntity> getCustomers(){
+		return CommonUtils.get().getCustomers();
+	}
+	
+	@GET
+	@Path("/customermandates")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<CustomerMandateEntity> getMandateList(){
+		return CommonUtils.get().getCustomerMandateList();
+	}
+
+	@GET
+	@Path("/customermandates/{cmid}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public CustomerMandateEntity getMandate(@PathParam("cmid") UUID pCMIdKey){
+		return CommonUtils.get().getCustomerMandate(pCMIdKey);
+	}
+
+	@POST
+	@Path("/customermandates/{cmid}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public CustomerMandateEntity createMandate(@PathParam("cmid") UUID pCMIdKey, CustomerMandateEntity pMandate){
+		return CommonUtils.get().createMandate(pMandate);
+	}
+
 }

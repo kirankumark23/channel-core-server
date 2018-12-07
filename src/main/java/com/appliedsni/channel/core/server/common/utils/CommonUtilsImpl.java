@@ -22,14 +22,50 @@ public class CommonUtilsImpl extends CommonUtils{
 
 	@Override
 	public String getData(int pComplexStep, int pSimpleStep) {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuffer queryString = new StringBuffer();
+		queryString.append(" select xdata from vw_simpletransactionstep ");
+		queryString.append(" where xidkey = :CTIdKey ");
+		queryString.append(" and xCTSSeqNo = :CTSSeqNo ");
+		queryString.append(" and xSTSSeqNo = :STSSeqNo ");
+		
+		SQLQuery query = mServerDao.getSessionFactory().getCurrentSession().createSQLQuery(queryString.toString());
+		query.setParameter("CTIdKey", CustomThreadLocal.get("CT").toString());
+		query.setParameter("CTSSeqNo", pComplexStep);
+		query.setParameter("STSSeqNo", pSimpleStep);
+		
+		String data = null;
+		try{
+			data = (String)query.list().get(0);
+		}catch(IndexOutOfBoundsException e){
+			throw new IndexOutOfBoundsException("No record found for CT : "+ CustomThreadLocal.get("CT").toString() 
+					+ ", pComplexStep : " + pComplexStep + ", pSimpleStep : " + pSimpleStep);
+		}
+		
+		return data;
 	}
 
 	@Override
 	public Status getResultStatus(int pComplexStep, int pSimpleStep) {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuffer queryString = new StringBuffer();
+		queryString.append(" select xresultstatus from vw_simpletransactionstep ");
+		queryString.append(" where xidkey = :CTIdKey ");
+		queryString.append(" and xCTSSeqNo = :CTSSeqNo ");
+		queryString.append(" and xSTSSeqNo = :STSSeqNo ");
+		
+		SQLQuery query = mServerDao.getSessionFactory().getCurrentSession().createSQLQuery(queryString.toString());
+		query.setParameter("CTIdKey", CustomThreadLocal.get("CT").toString());
+		query.setParameter("CTSSeqNo", pComplexStep);
+		query.setParameter("STSSeqNo", pSimpleStep);
+		
+		String status = null;
+		try{
+			status = (String)query.list().get(0);
+		}catch(IndexOutOfBoundsException e){
+			throw new IndexOutOfBoundsException("No record found for CT : "+ CustomThreadLocal.get("CT").toString() 
+					+ ", pComplexStep : " + pComplexStep + ", pSimpleStep : " + pSimpleStep);
+		}
+		
+		return Status.valueOf(status);
 	}
 
 	@Override

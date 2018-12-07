@@ -84,8 +84,11 @@
 		    		<value>com.appliedsni.channel.core.server.user.domain.RoleActionsEntity</value>  
 		    		<value>com.appliedsni.channel.core.server.user.domain.RoleMenuEntity</value> 
 		    		<value>com.appliedsni.channel.core.server.user.domain.UserRoleEntity</value> 
-		    		<value>com.appliedsni.channel.core.server.entity.AuditLogEntity</value>   
+		    		<value>com.appliedsni.channel.core.server.entity.AuditLogEntity</value>
 		    		
+		    		<value>com.appliedsni.channel.core.server.entity.ProductRoleAccessEntity</value>
+ 		    		<value>com.appliedsni.channel.core.server.entity.CustomerEntity</value>
+ 		    		<value>com.appliedsni.channel.core.server.entity.CustomerMandateEntity</value>		    		
 		    	</list>
 		    </property>
 		</bean>        

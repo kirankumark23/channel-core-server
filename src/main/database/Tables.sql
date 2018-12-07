@@ -153,8 +153,9 @@ create table xMenu(
 --drop table xRole;
 create table xRole(
 	xCompany			character varying(20),
-	xIdKey				character varying(200) primary key,
+	xIdKey				UUID primary key,
 	xName				character varying(200),
+	xChannel			boolean,
 	xversion 			integer NOT NULL,
 	xAdded				timestamp,
 	xAddedBy			UUID references xUser(xidKey),
@@ -210,15 +211,9 @@ create table xUserRole(
 	unique (xUser, xCompany, xBranch, xRole)
 );
 
-
-
-
-
-
 create table xUserSession(
 
 );
-
 
 create table xCompany(
 	xidkey 			uuid NOT NULL,
@@ -248,3 +243,55 @@ create table xAuditLog (
 	xUser 				character varying(50),
 	xlastupdate 		timestamp
 );
+
+create table xcustomer
+(
+	xIdKey			UUID primary key,
+	xNumber			integer NOT NULL,
+	xFName			character varying(20),
+	xLname			character varying(20),
+	xVersion 		integer NOT NULL,
+	xAdded			timestamp,
+	xAddedBy		UUID,
+	xLastUpdate 	timestamp null,
+	unique(xNumber)
+);
+
+
+create table xProductRoleAccess
+(
+	xIdKey				UUID primary key,	
+	xProduct			UUID references xcomplextransactionproduct(xidkey),
+	xRole				UUID references xrole(xidkey),
+	xversion 			integer NOT NULL,
+	xAdded				timestamp,
+	xAddedBy			UUID references xUser(xidKey),
+	xlastupdate 		timestamp null,
+	unique (xProduct, xRole)
+);
+
+create table xCustomerMandate
+(
+	xIdKey			UUID primary key,	
+	xCustomer		UUID references xcustomer(xidkey),
+	xAccount		UUID references xAccount (xidkey),
+	xversion 		integer NOT NULL,
+	xAdded			timestamp,
+	xAddedBy		UUID,
+	xlastupdate 	timestamp null,	
+	unique (xCustomer, xAccount)
+);
+
+create table xCustomerMandateService
+(
+	xIdKey			UUID primary key,
+	xMandate		UUID references xCustomerMandate(xidkey),
+	xChannel		UUID references xRole(xidkey),
+	xProduct		UUID references xcomplextransactionproduct(xidkey),
+	xVersion 		integer NOT NULL,
+	xAdded			timestamp,
+	xAddedBy		UUID references xuser(xidkey),
+	xLastUpdate 	timestamp null,	
+	unique (xMandate, xChannel, xProduct)
+);
+

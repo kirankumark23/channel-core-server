@@ -16,10 +16,14 @@ import com.appliedsni.channel.core.server.entity.ComplexTransactionEntity;
 import com.appliedsni.channel.core.server.entity.ComplexTransactionProductEntity;
 import com.appliedsni.channel.core.server.entity.ComplexTransactionProductStepEntity;
 import com.appliedsni.channel.core.server.entity.ComplexTransactionStepEntity;
+import com.appliedsni.channel.core.server.entity.CustomerEntity;
+import com.appliedsni.channel.core.server.entity.CustomerMandateEntity;
+import com.appliedsni.channel.core.server.entity.ProductRoleAccessEntity;
 import com.appliedsni.channel.core.server.entity.SimpleTransactionProductEntity;
 import com.appliedsni.channel.core.server.entity.SimpleTransactionProductStepEntity;
 import com.appliedsni.channel.core.server.entity.SimpleTransactionStepEntity;
 import com.appliedsni.channel.core.server.queue.SpringAMQPRabbitSender;
+import com.appliedsni.channel.core.server.user.domain.RoleEntity;
 
 import channel.client.dao.ServerDao;
 import channel.client.function.Status;
@@ -250,5 +254,112 @@ public class CommonUtils {
 		return stpsList;
 	}
 
+	
+	public List<RoleEntity> getRoles(){
+		List<Object> objList = mServerDao.find("from RoleEntity");
+		
+		List<RoleEntity> roleList = new ArrayList<RoleEntity>();
+		
+		for(Object obj : objList){
+			roleList.add((RoleEntity)obj);
+		}
+		
+		return roleList;		
+	}
 
+	public List<RoleEntity> getChannels(){
+		List<Object> objList = mServerDao.find("from RoleEntity where mChannel = true");
+		
+		List<RoleEntity> roleList = new ArrayList<RoleEntity>();
+		
+		for(Object obj : objList){
+			roleList.add((RoleEntity)obj);
+		}
+		
+		return roleList;		
+	}
+
+	public List<RoleEntity> getChannelServices(UUID pCTPIdKey){
+		List<Object> objList = mServerDao.find("select b from ProductRoleAccessEntity a inner join a.mRole b where b.mChannel = true and a.mComplexProduct.mIdKey = ?", pCTPIdKey);
+		
+		List<RoleEntity> roleList = new ArrayList<RoleEntity>();
+		
+		for(Object obj : objList){
+			roleList.add((RoleEntity)obj);
+		}
+		
+		return roleList;
+	}
+	
+	public void createProductRoleAccess(UUID pCTP, UUID pRole){
+		ComplexTransactionProductEntity ctp = (ComplexTransactionProductEntity)mServerDao.get(ComplexTransactionProductEntity.class, pCTP);
+		RoleEntity role = (RoleEntity)mServerDao.get(RoleEntity.class, pRole);
+		
+		ProductRoleAccessEntity pra = new ProductRoleAccessEntity();
+		pra.setComplexProduct(ctp);
+		pra.setRole(role);
+				
+		ChannelApplicationContext.get().getBean("transactionTemplate", TransactionTemplate.class).execute(new TransactionCallbackWithoutResult() {
+			@Override
+			protected void doInTransactionWithoutResult(TransactionStatus pStatus) {
+				try{
+					mServerDao.save(pra);
+				} catch(Exception e) {
+					LOGGER.error("Operation failed", e);
+					pStatus.setRollbackOnly();
+				}		
+			}
+		});								
+	}
+	
+	public List<CustomerEntity> getCustomers(){
+		List<Object> objList = mServerDao.find("from CustomerEntity");
+		
+		List<CustomerEntity> resultList = new ArrayList<CustomerEntity>();
+		
+		for(Object obj : objList){
+			resultList.add((CustomerEntity)obj);
+		}
+		
+		return resultList;
+	}
+	
+	public List<CustomerMandateEntity> getCustomerMandateList(){
+		List<Object> objList = mServerDao.find("from CustomerMandateEntity");
+		
+		List<CustomerMandateEntity> resultList = new ArrayList<CustomerMandateEntity>();
+		
+		for(Object obj : objList){
+			resultList.add((CustomerMandateEntity)obj);
+		}
+		
+		return resultList;
+	}
+
+	public CustomerMandateEntity getCustomerMandate(UUID pMandate){
+		return (CustomerMandateEntity)mServerDao.get(CustomerMandateEntity.class, pMandate);
+	}
+
+	public CustomerMandateEntity createMandate(CustomerMandateEntity pMandate){
+		ChannelApplicationContext.get().getBean("transactionTemplate", TransactionTemplate.class).execute(new TransactionCallbackWithoutResult() {
+			@Override
+			protected void doInTransactionWithoutResult(TransactionStatus pStatus) {
+				try{
+					CustomerMandateEntity mandate = getCustomerMandate(pMandate.getIdKey());
+					if(mandate == null){
+						mServerDao.save(pMandate);
+					} else {
+						//	TODO : Edit Mandate 
+					}
+				} catch(Exception e) {
+					LOGGER.error("Operation failed", e);
+					pStatus.setRollbackOnly();
+				}		
+			}
+		});
+		
+		return pMandate;
+	}
+	
+	
 }
