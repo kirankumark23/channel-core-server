@@ -5,6 +5,7 @@ package com.appliedsni.channel.core.server.user.dao;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -67,7 +68,9 @@ public class UserDaoImpl {
      * @return
      */
     public List<UserEntity> findAll() {
-        return null;
+         mServerDao.find("from UserEntity");
+         
+         return null;
     }
 
     /**
@@ -76,8 +79,8 @@ public class UserDaoImpl {
      * @param userId
      * @return
      */
-    public Optional<UserEntity> findById(Long userId) {
-        return null;
+    public UserEntity findById(UUID pUser) {
+        return (UserEntity)mServerDao.get(UserEntity.class, pUser);
     }
     
     /**
@@ -125,10 +128,8 @@ public class UserDaoImpl {
     @Transactional
     public UserEntity updateUser(UserEntity pUserEntity) {
     	
-		try {
-			
-			mServerDao.update(pUserEntity);
-            
+		try {			
+//			mServerDao.update(pUserEntity);            
 		} catch (HibernateException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
