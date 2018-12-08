@@ -3,19 +3,22 @@ package com.appliedsni.channel.core.server.user.dao;
 
 
 
+import java.util.List;
+import java.util.Optional;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.appliedsni.channel.core.server.security.service.PasswordEncoder;
+import com.appliedsni.channel.core.server.user.domain.RoleEntity;
 import com.appliedsni.channel.core.server.user.domain.UserEntity;
+import com.appliedsni.channel.core.server.user.domain.UserRoleEntity;
 
 import channel.client.dao.ServerDao;
-
-import java.util.List;
-import java.util.Optional;
 
 /**
  * Service that provides operations for {@link UserEntity}s.
@@ -76,4 +79,80 @@ public class UserDaoImpl {
     public Optional<UserEntity> findById(Long userId) {
         return null;
     }
+    
+    /**
+     * Find a user by username or email.
+     *
+     * @param identifier
+     * @return
+     */
+    @Transactional
+    public UserEntity addNewUser(UserEntity pUserEntity) {
+    	
+		try {
+			String password = pUserEntity.getPasswordhash();
+			String encryptedPassword = PasswordEncoder.hashPassword(password);
+			pUserEntity.setPasswordhash(encryptedPassword);
+			mServerDao.save(pUserEntity);
+
+		} catch (HibernateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			
+		}
+        return pUserEntity;
+    }
+    
+    @Transactional
+    public RoleEntity addNewRole(RoleEntity pRoleEntity) {
+    	
+		try {
+			
+			mServerDao.save(pRoleEntity);
+
+		} catch (HibernateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			
+		}
+        return pRoleEntity;
+    }
+    
+    @Transactional
+    public UserEntity updateUser(UserEntity pUserEntity) {
+    	
+		try {
+			
+			mServerDao.update(pUserEntity);
+            
+		} catch (HibernateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			
+		}
+        return pUserEntity;
+    }
+
+    @Transactional
+	public UserRoleEntity updateUserWithRole(UserRoleEntity pUserRoleEntity) {
+    	try {
+			
+			mServerDao.save(pUserRoleEntity);
+            
+		} catch (HibernateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			
+		}
+    	 return pUserRoleEntity;
+}
+   
 }
