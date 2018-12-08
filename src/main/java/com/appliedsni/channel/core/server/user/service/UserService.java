@@ -50,7 +50,7 @@ public class UserService {
 	    }
 	 
 	@Path("/updateUserWithRole")
-    @PUT
+    @POST
     @Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
     public UserRoleEntity updateUserWithRole(UserRoleEntity pUserEntity) {
