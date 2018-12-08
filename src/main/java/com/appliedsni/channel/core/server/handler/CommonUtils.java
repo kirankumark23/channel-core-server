@@ -18,6 +18,7 @@ import com.appliedsni.channel.core.server.entity.ComplexTransactionProductStepEn
 import com.appliedsni.channel.core.server.entity.ComplexTransactionStepEntity;
 import com.appliedsni.channel.core.server.entity.CustomerEntity;
 import com.appliedsni.channel.core.server.entity.CustomerMandateEntity;
+import com.appliedsni.channel.core.server.entity.CustomerMandateServiceEntity;
 import com.appliedsni.channel.core.server.entity.ProductRoleAccessEntity;
 import com.appliedsni.channel.core.server.entity.SimpleTransactionProductEntity;
 import com.appliedsni.channel.core.server.entity.SimpleTransactionProductStepEntity;
@@ -278,8 +279,20 @@ public class CommonUtils {
 		
 		return roleList;		
 	}
+	
+	public List<ComplexTransactionProductEntity> getChannelProductList(UUID pRole){
+		List<Object> objList = mServerDao.find("select a.mComplexProduct from ProductRoleAccessEntity a inner join a.mRole b where b.mChannel = true and b.mIdKey = ?", pRole);
+		
+		List<ComplexTransactionProductEntity> resultList = new ArrayList<ComplexTransactionProductEntity>();
+		
+		for(Object obj : objList){
+			resultList.add((ComplexTransactionProductEntity)obj);
+		}
+		
+		return resultList;
+	}
 
-	public List<RoleEntity> getChannelServices(UUID pCTPIdKey){
+	public List<RoleEntity> getProductRoles(UUID pCTPIdKey){
 		List<Object> objList = mServerDao.find("select b from ProductRoleAccessEntity a inner join a.mRole b where b.mChannel = true and a.mComplexProduct.mIdKey = ?", pCTPIdKey);
 		
 		List<RoleEntity> roleList = new ArrayList<RoleEntity>();
@@ -372,5 +385,43 @@ public class CommonUtils {
 		
 		return null;		
 	}
+	
+	public List<CustomerMandateServiceEntity> getCustomerMandateServiceList(UUID pMandate){
+		List<Object> objList = mServerDao.find("from CustomerMandateServiceEntity where mMandate.mIdKey = ?", pMandate);
+		
+		List<CustomerMandateServiceEntity> resultList = new ArrayList<CustomerMandateServiceEntity>();
+		
+		for(Object obj : objList){
+			resultList.add((CustomerMandateServiceEntity)obj);
+		}
+		
+		return resultList;
+	}
+	
+	public CustomerMandateServiceEntity getCustomerMandateService(UUID pMandate, UUID pService){
+		return (CustomerMandateServiceEntity)mServerDao.get(CustomerMandateServiceEntity.class, pService);
+	}
+
+	public CustomerMandateServiceEntity createMandateService(UUID pMandate, UUID pService, CustomerMandateServiceEntity pMandateService){
+		ChannelApplicationContext.get().getBean("transactionTemplate", TransactionTemplate.class).execute(new TransactionCallbackWithoutResult() {
+			@Override
+			protected void doInTransactionWithoutResult(TransactionStatus pStatus) {
+				try{
+					CustomerMandateServiceEntity mandateService = getCustomerMandateService(pMandate, pService);
+					if(mandateService == null){
+						mServerDao.save(pMandateService);
+					} else {
+						//	TODO : Edit Mandate 
+					}
+				} catch(Exception e) {
+					LOGGER.error("Operation failed", e);
+					pStatus.setRollbackOnly();
+				}		
+			}
+		});
+		
+		return pMandateService;
+	}
+
 	
 }

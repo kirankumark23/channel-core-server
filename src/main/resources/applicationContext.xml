@@ -88,7 +88,8 @@
 		    		
 		    		<value>com.appliedsni.channel.core.server.entity.ProductRoleAccessEntity</value>
  		    		<value>com.appliedsni.channel.core.server.entity.CustomerEntity</value>
- 		    		<value>com.appliedsni.channel.core.server.entity.CustomerMandateEntity</value>		    		
+ 		    		<value>com.appliedsni.channel.core.server.entity.CustomerMandateEntity</value>
+ 		    		<value>com.appliedsni.channel.core.server.entity.CustomerMandateServiceEntity</value>		    		
 		    	</list>
 		    </property>
 		</bean>        

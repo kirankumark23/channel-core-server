@@ -24,6 +24,7 @@ import com.appliedsni.channel.core.server.entity.ComplexTransactionProductStepEn
 import com.appliedsni.channel.core.server.entity.ComplexTransactionStepEntity;
 import com.appliedsni.channel.core.server.entity.CustomerEntity;
 import com.appliedsni.channel.core.server.entity.CustomerMandateEntity;
+import com.appliedsni.channel.core.server.entity.CustomerMandateServiceEntity;
 import com.appliedsni.channel.core.server.entity.ProductRoleAccessEntity;
 import com.appliedsni.channel.core.server.entity.SimpleTransactionProductEntity;
 import com.appliedsni.channel.core.server.entity.SimpleTransactionProductStepEntity;
@@ -358,11 +359,19 @@ public class TestService {
 	}
 	
 	@GET
+	@Path("/channels/{cid}/products")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<ComplexTransactionProductEntity> getChannelProductList(@PathParam("cid") UUID pRole){
+		return CommonUtils.get().getChannelProductList(pRole);
+	}
+
+	@GET
 	@Path("/complextransactionproducts/{ctpid}/roles")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public List<RoleEntity> getChannelServices(@PathParam("ctpid") UUID pCTPIdKey){
-		return CommonUtils.get().getChannelServices(pCTPIdKey);
+		return CommonUtils.get().getProductRoles(pCTPIdKey);
 	}
 	
 	@POST
@@ -412,6 +421,30 @@ public class TestService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public CustomerMandateEntity createMandate(@PathParam("cmid") UUID pCMIdKey, CustomerMandateEntity pMandate){
 		return CommonUtils.get().createMandate(pMandate);
+	}
+	
+	@GET
+	@Path("/customermandates/{cmid}/services")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<CustomerMandateServiceEntity> getMandateServiceList(@PathParam("cmid") UUID pCMIdKey){
+		return CommonUtils.get().getCustomerMandateServiceList(pCMIdKey);
+	}
+
+	@GET
+	@Path("/customermandates/{cmid}/services/{cmsid}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public CustomerMandateServiceEntity getMandateService(@PathParam("cmid") UUID pCMIdKey, @PathParam("cmsid") UUID pCMSIdKey){
+		return CommonUtils.get().getCustomerMandateService(pCMIdKey, pCMSIdKey);
+	}
+
+	@POST
+	@Path("/customermandates/{cmid}/services/{cmsid}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public CustomerMandateServiceEntity createMandateService(@PathParam("cmid") UUID pCMIdKey, @PathParam("cmsid") UUID pCMSIdKey, CustomerMandateServiceEntity pMandateService){
+		return CommonUtils.get().createMandateService(pCMIdKey, pCMSIdKey, pMandateService);
 	}
 
 }
