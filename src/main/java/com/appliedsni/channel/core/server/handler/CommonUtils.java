@@ -312,7 +312,7 @@ public class CommonUtils {
 		});								
 	}
 	
-	public List<CustomerEntity> getCustomers(){
+	public List<CustomerEntity> getCustomerList(){
 		List<Object> objList = mServerDao.find("from CustomerEntity");
 		
 		List<CustomerEntity> resultList = new ArrayList<CustomerEntity>();
@@ -361,5 +361,16 @@ public class CommonUtils {
 		return pMandate;
 	}
 	
+	public CustomerEntity getCustomer(String pCIF){
+		
+		try{
+			CustomerEntity customer = (CustomerEntity)mServerDao.find("from CustomerEntity where mNumber = ?", Integer.parseInt(pCIF)).get(0);
+			return customer;
+		}catch(Exception e){
+			LOGGER.error("Could not find CIF", e);
+		}
+		
+		return null;		
+	}
 	
 }

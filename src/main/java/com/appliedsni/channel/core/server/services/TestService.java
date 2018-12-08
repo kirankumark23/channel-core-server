@@ -378,9 +378,17 @@ public class TestService {
 	@Path("/customers")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public List<CustomerEntity> getCustomers(){
-		return CommonUtils.get().getCustomers();
+	public List<CustomerEntity> getCustomerList(){
+		return CommonUtils.get().getCustomerList();
 	}
+	
+	@GET
+	@Path("/customers/{cif}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public CustomerEntity getCustomer(@PathParam("cif") String pCIF){
+		return CommonUtils.get().getCustomer(pCIF);
+	}	
 	
 	@GET
 	@Path("/customermandates")
