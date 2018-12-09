@@ -367,6 +367,14 @@ public class TestService {
 	}
 
 	@GET
+	@Path("/allowedproducts")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<ComplexTransactionProductEntity> getAllowedProducts(){
+		return CommonUtils.get().getAllowdProducts();
+	}
+
+	@GET
 	@Path("/complextransactionproducts/{ctpid}/roles")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)

@@ -25,8 +25,11 @@ import com.appliedsni.channel.core.server.entity.SimpleTransactionProductStepEnt
 import com.appliedsni.channel.core.server.entity.SimpleTransactionStepEntity;
 import com.appliedsni.channel.core.server.queue.SpringAMQPRabbitSender;
 import com.appliedsni.channel.core.server.user.domain.RoleEntity;
+import com.appliedsni.channel.core.server.user.domain.UserRoleEntity;
 
 import channel.client.dao.ServerDao;
+import channel.client.function.CommonConstants;
+import channel.client.function.CustomThreadLocal;
 import channel.client.function.Status;
 
 public class CommonUtils {
@@ -421,6 +424,18 @@ public class CommonUtils {
 		});
 		
 		return pMandateService;
+	}
+	
+	public RoleEntity getUserRole(){
+		UUID user = UUID.fromString(CustomThreadLocal.get(CommonConstants.CURRENT_USER).toString());
+		return (RoleEntity)mServerDao.find("select a.mRole from UserRoleEntity a inner join a.mUserByUser b where b.mIdkey = ?", user).get(0);
+	}
+	
+	public List<ComplexTransactionProductEntity> getAllowdProducts(){
+		
+		RoleEntity role = getUserRole(); 
+		
+		return getChannelProductList(role.getIdKey());
 	}
 
 	
