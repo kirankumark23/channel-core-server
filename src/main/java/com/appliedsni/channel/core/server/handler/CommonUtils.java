@@ -404,10 +404,10 @@ public class CommonUtils {
 		return pMandate;
 	}
 	
-	public CustomerEntity getCustomer(String pCIF){
+	public CustomerEntity getCustomer(String pEmail){
 		
 		try{
-			CustomerEntity customer = (CustomerEntity)mServerDao.find("from CustomerEntity where mNumber = ?", Integer.parseInt(pCIF)).get(0);
+			CustomerEntity customer = (CustomerEntity)mServerDao.find("from CustomerEntity where mEmail = ?", pEmail).get(0);
 			return customer;
 		}catch(Exception e){
 			LOGGER.error("Could not find CIF", e);

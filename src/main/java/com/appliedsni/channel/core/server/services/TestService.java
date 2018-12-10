@@ -416,11 +416,11 @@ public class TestService {
 	}
 	
 	@GET
-	@Path("/customers/{cif}")
+	@Path("/customers/{email}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public CustomerEntity getCustomer(@PathParam("cif") String pCIF){
-		return CommonUtils.get().getCustomer(pCIF);
+	public CustomerEntity getCustomer(@PathParam("email") String pEmail){
+		return CommonUtils.get().getCustomer(pEmail);
 	}	
 		
 	@GET
