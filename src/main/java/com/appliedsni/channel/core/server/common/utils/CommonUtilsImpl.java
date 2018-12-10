@@ -1,10 +1,18 @@
 package com.appliedsni.channel.core.server.common.utils;
 
+import java.util.List;
+import java.util.UUID;
+
 import org.hibernate.SQLQuery;
 
 import com.appliedsni.channel.core.server.config.ChannelApplicationContext;
+import com.appliedsni.channel.core.server.entity.ComplexTransactionEntity;
+import com.appliedsni.channel.core.server.entity.ComplexTransactionProductEntity;
+import com.appliedsni.channel.core.server.entity.CustomerEntity;
+import com.appliedsni.channel.core.server.user.domain.RoleEntity;
 
 import channel.client.dao.ServerDao;
+import channel.client.function.CommonConstants;
 import channel.client.function.CustomThreadLocal;
 import channel.client.function.Status;
 import channel.client.function.common.CommonUtils;
@@ -128,5 +136,26 @@ public class CommonUtilsImpl extends CommonUtils{
 		String data = (String)dataObj;
 		return Status.valueOf(data);
 	}
+
+	@Override
+	public boolean checkMandate() {		
+		CustomerEntity customer = (CustomerEntity)mServerDao.get(CustomerEntity.class, UUID.fromString(CustomThreadLocal.get("CUSTOMER").toString()));
+		ComplexTransactionEntity ct = (ComplexTransactionEntity)mServerDao.get(ComplexTransactionEntity.class, UUID.fromString(CustomThreadLocal.get("CT").toString()));
+		RoleEntity role = getUserRole();
+		
+		List<Object> result =  mServerDao.find("from CustomerMandateServiceEntity a inner join a.mMandate b "
+				+ " where b.mCustomer = ? "
+				+ " and a.mProduct = ? "
+				+ " and a.mChannel = ? ", customer, ct.getProduct(), role);
+		
+		return result.size() > 0;
+	}
+
+	public RoleEntity getUserRole(){
+		UUID user = UUID.fromString(CustomThreadLocal.get(CommonConstants.CURRENT_USER).toString());
+		return (RoleEntity)mServerDao.find("select a.mRole from UserRoleEntity a inner join a.mUserByUser b where b.mIdkey = ?", user).get(0);
+	}
+
+	
 
 }
