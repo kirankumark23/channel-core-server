@@ -248,6 +248,7 @@ create table xcustomer
 (
 	xIdKey			UUID primary key,
 	xNumber			integer NOT NULL,
+	xEmail			character varying(50),
 	xFName			character varying(20),
 	xLname			character varying(20),
 	xVersion 		integer NOT NULL,

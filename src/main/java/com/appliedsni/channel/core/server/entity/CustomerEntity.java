@@ -43,6 +43,9 @@ public class CustomerEntity extends AbstractEntity implements Serializable{
 	@Column(name="xNumber")
 	private Integer mNumber;
 
+	@Column(name="xEmail")
+	private String mEmail;
+
 	@Column(name="xFName")
 	private String mFName;
 
@@ -95,6 +98,14 @@ public class CustomerEntity extends AbstractEntity implements Serializable{
 
 	public void setAdded(Date pAdded) {
 		mAdded = pAdded;
+	}
+
+	public String getEmail() {
+		return mEmail;
+	}
+
+	public void setEmail(String pEmail) {
+		mEmail = pEmail;
 	}
 
 }

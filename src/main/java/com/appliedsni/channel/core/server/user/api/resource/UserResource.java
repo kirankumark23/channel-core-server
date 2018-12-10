@@ -16,6 +16,7 @@ import com.appliedsni.channel.core.server.user.domain.UserEntity;
 import java.security.Principal;
 import java.util.HashSet;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -49,9 +50,9 @@ public class UserResource {
     @GET
     @Path("{userId}")
     @RolesAllowed({"ADMIN"})
-    public Response getUser(@PathParam("userId") Long userId) {
+    public Response getUser(@PathParam("userId") UUID userId) {
 
-        UserEntity user = mUserDao.findById(userId).orElseThrow(NotFoundException::new);
+        UserEntity user = mUserDao.findById(userId);
         QueryUserResult queryUserResult = toQueryUserResult(user);
         return Response.ok(queryUserResult).build();
     }

@@ -374,14 +374,22 @@ public class TestService {
 		return CommonUtils.get().getAllowdProducts();
 	}
 
+//	@GET
+//	@Path("/customer/{cid}/mandate/{mid}/allowedproducts")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public List<ComplexTransactionProductEntity> getAllowedCustomerProducts(@PathParam("cid") UUID pCustomer, @PathParam("mid") UUID pMandate){
+//		return CommonUtils.get().getAllowdProducts(pCustomer, pMandate);
+//	}
+
 	@GET
-	@Path("/customer/{cid}/mandate/{mid}/allowedproducts")
+	@Path("/customer/{cid}/allowedproducts")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public List<ComplexTransactionProductEntity> getAllowedCustomerProducts(@PathParam("cid") UUID pCustomer, @PathParam("mid") UUID pMandate){
-		return CommonUtils.get().getAllowdProducts(pCustomer, pMandate);
+		return CommonUtils.get().getAllowdProducts(pCustomer);
 	}
-
+	
 	@GET
 	@Path("/complextransactionproducts/{ctpid}/roles")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -408,11 +416,11 @@ public class TestService {
 	}
 	
 	@GET
-	@Path("/customers/{cif}")
+	@Path("/customers/{email}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public CustomerEntity getCustomer(@PathParam("cif") String pCIF){
-		return CommonUtils.get().getCustomer(pCIF);
+	public CustomerEntity getCustomer(@PathParam("email") String pEmail){
+		return CommonUtils.get().getCustomer(pEmail);
 	}	
 		
 	@GET
