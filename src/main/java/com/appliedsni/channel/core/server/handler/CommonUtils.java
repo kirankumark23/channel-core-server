@@ -302,11 +302,15 @@ public class CommonUtils {
 	 * @param pRole
 	 * @return List<ComplexTransactionProductEntity>
 	 */
-	public List<ComplexTransactionProductEntity> getAllowdProducts(UUID pCustomer, UUID pMandate){
+	public List<ComplexTransactionProductEntity> getAllowdProducts(UUID pCustomer){
 		
 		RoleEntity channelRole = getUserRole();
 		
-		List<Object> objList = mServerDao.find("select a.mProduct from CustomerMandateServiceEntity a inner join a.mMandate b where b.mIdKey = ? and a.mChannel = ?", pMandate, channelRole);
+		List<Object> objList = mServerDao.find(
+				" select a.mProduct "
+				+ " from CustomerMandateServiceEntity a inner join a.mMandate b "
+				+ " where b.mCustomer.mIdKey = ? "
+				+ " and a.mChannel = ? ", pCustomer, channelRole);
 		
 		List<ComplexTransactionProductEntity> resultList = new ArrayList<ComplexTransactionProductEntity>();
 		
