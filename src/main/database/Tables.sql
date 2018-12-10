@@ -203,7 +203,7 @@ create table xUserRole(
 	xUser			UUID references xUser(xIdkey),
 	xCompany		character varying(20),
 	xBranch			character varying(200),
-	xRole			character varying(200) references xRole(xIdKey),
+	xRole			UUID references xRole(xIdKey),
 	xversion 		integer NOT NULL,
 	xAdded			timestamp,
 	xAddedBy		UUID references xUser(xidKey),

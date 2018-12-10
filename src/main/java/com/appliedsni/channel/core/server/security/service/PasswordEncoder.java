@@ -18,7 +18,7 @@ public class PasswordEncoder {
      * @param plainTextPassword
      * @return
      */
-    public String hashPassword(String plainTextPassword) {
+    public static String hashPassword(String plainTextPassword) {
         String salt = BCrypt.gensalt();
         return BCrypt.hashpw(plainTextPassword, salt);
     }

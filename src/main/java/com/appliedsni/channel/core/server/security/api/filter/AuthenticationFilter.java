@@ -63,7 +63,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         AuthenticationTokenDetails authenticationTokenDetails = authenticationTokenService.parseToken(authenticationToken);
         UserEntity user = userDao.findByUsernameOrEmail(authenticationTokenDetails.getUsername());
         AuthenticatedUserDetails authenticatedUserDetails = new AuthenticatedUserDetails(user.getEmailaddress(), user.getRoleActionses());
-        CustomThreadLocal.add(CommonConstants.CURRENT_USER, user.getEmailaddress());
+        CustomThreadLocal.add(CommonConstants.CURRENT_USER, user.getIdkey().toString());
         boolean isSecure = requestContext.getSecurityContext().isSecure();
         SecurityContext securityContext = new TokenBasedSecurityContext(authenticatedUserDetails, authenticationTokenDetails, isSecure);
         requestContext.setSecurityContext(securityContext);
