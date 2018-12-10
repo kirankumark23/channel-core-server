@@ -295,6 +295,29 @@ public class CommonUtils {
 		return resultList;
 	}
 
+	/**
+	 * NOTE : To be used by Channel
+	 * <p>List of Products accessing to a customer through a channel
+	 * 
+	 * @param pRole
+	 * @return List<ComplexTransactionProductEntity>
+	 */
+	public List<ComplexTransactionProductEntity> getAllowdProducts(UUID pCustomer, UUID pMandate){
+		
+		RoleEntity channelRole = getUserRole();
+		
+		List<Object> objList = mServerDao.find("select a.mProduct from CustomerMandateServiceEntity a inner join a.mMandate b where b.mIdKey = ? and a.mChannel = ?", pMandate, channelRole);
+		
+		List<ComplexTransactionProductEntity> resultList = new ArrayList<ComplexTransactionProductEntity>();
+		
+		for(Object obj : objList){
+			resultList.add((ComplexTransactionProductEntity)obj);
+		}
+		
+		return resultList;
+	}
+	
+	
 	public List<RoleEntity> getProductRoles(UUID pCTPIdKey){
 		List<Object> objList = mServerDao.find("select b from ProductRoleAccessEntity a inner join a.mRole b where b.mChannel = true and a.mComplexProduct.mIdKey = ?", pCTPIdKey);
 		

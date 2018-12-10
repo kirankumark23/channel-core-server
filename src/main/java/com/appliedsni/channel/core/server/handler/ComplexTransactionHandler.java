@@ -105,6 +105,9 @@ public class ComplexTransactionHandler {
 			
 			LOGGER.warn("Complex Transaction Step : {} : {}", cts.getSeqNo(), cts.getExecutionStatus());
 		}
+		
+		//	Clean Thread Context Data
+		CustomThreadLocal.remove();
 	}
 
 		

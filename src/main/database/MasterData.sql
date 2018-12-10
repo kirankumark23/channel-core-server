@@ -36,6 +36,8 @@ insert into xCBSIntegration values ('fee3aa47-3e60-420e-9025-23600acef3d4', true
 
 /*	xUser */
 insert into xuser values ('464d5a07-5ee9-429b-852d-6a0e47bdc286', 'user@company.com', 0, 'User', 'User', false, '9999999999', '$2a$10$8zeuMun9s1Gb7oNcbL6gaulwRDVkFKAFpSu3AGyXrubH0oonR.aZK', 0, current_timestamp, null, current_timestamp);
+insert into xuser values ('464d5a09-5ee9-429b-852d-6a0e47bdc286', 'channel1@company.com', 0, 'Channel', 'One', false, '9999999999', '$2a$10$8zeuMun9s1Gb7oNcbL6gaulwRDVkFKAFpSu3AGyXrubH0oonR.aZK', 0, current_timestamp, null, current_timestamp);
+insert into xuser values ('464d5a10-5ee9-429b-852d-6a0e47bdc286', 'channel2@company.com', 0, 'Channel', 'Two', false, '9999999999', '$2a$10$8zeuMun9s1Gb7oNcbL6gaulwRDVkFKAFpSu3AGyXrubH0oonR.aZK', 0, current_timestamp, null, current_timestamp);
 
 /*	xcustomer */
 insert into xcustomer values ('aaa4b88a-9c61-4c0a-bba0-8a778f81a90d', '1000', 'Prashant', '', 0, null, null, current_timestamp);

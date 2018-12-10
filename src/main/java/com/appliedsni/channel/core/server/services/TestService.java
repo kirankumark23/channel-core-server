@@ -375,6 +375,14 @@ public class TestService {
 	}
 
 	@GET
+	@Path("/customer/{cid}/mandate/{mid}/allowedproducts")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<ComplexTransactionProductEntity> getAllowedCustomerProducts(@PathParam("cid") UUID pCustomer, @PathParam("mid") UUID pMandate){
+		return CommonUtils.get().getAllowdProducts(pCustomer, pMandate);
+	}
+
+	@GET
 	@Path("/complextransactionproducts/{ctpid}/roles")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -406,7 +414,7 @@ public class TestService {
 	public CustomerEntity getCustomer(@PathParam("cif") String pCIF){
 		return CommonUtils.get().getCustomer(pCIF);
 	}	
-	
+		
 	@GET
 	@Path("/customermandates")
 	@Produces(MediaType.APPLICATION_JSON)
