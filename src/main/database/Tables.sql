@@ -275,12 +275,11 @@ create table xCustomerMandate
 (
 	xIdKey			UUID primary key,	
 	xCustomer		UUID references xcustomer(xidkey),
-	xAccount		UUID references xAccount (xidkey),
 	xversion 		integer NOT NULL,
 	xAdded			timestamp,
 	xAddedBy		UUID,
 	xlastupdate 	timestamp null,	
-	unique (xCustomer, xAccount)
+	unique (xCustomer)
 );
 
 create table xCustomerMandateService
