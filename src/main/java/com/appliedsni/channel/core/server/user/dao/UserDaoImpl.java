@@ -3,6 +3,7 @@ package com.appliedsni.channel.core.server.user.dao;
 
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -129,7 +130,7 @@ public class UserDaoImpl {
     public UserEntity updateUser(UserEntity pUserEntity) {
     	
 		try {			
-//			mServerDao.update(pUserEntity);            
+			mServerDao.update(pUserEntity);
 		} catch (HibernateException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -154,6 +155,48 @@ public class UserDaoImpl {
 			
 		}
     	 return pUserRoleEntity;
-}
+    }
+    
+    @Transactional
+    public List<UserEntity> getAllUser() {
+    	List<Object> objList = mServerDao.find("from UserEntity order by mAdded");
+
+		List<UserEntity> userList = new ArrayList<UserEntity>();
+		
+		for(Object obj : objList){
+			
+			userList.add((UserEntity)obj);
+		}
+		
+		return userList;
+    }
+    
+    
+    @Transactional
+    public List<UserRoleEntity> getAllUserRole(UUID pIdKey) {
+  
+		
+		List<UserRoleEntity> userroles=null;
+    	Session session=null;
+		try {
+			session =mServerDao.getSessionFactory().openSession();
+			Query query=session.createQuery("from UserRoleEntity u WHERE u.mUserByUser = :identifier order by mAdded");
+			query.setParameter("identifier", pIdKey);
+			userroles = query.list();
+			if (userroles.isEmpty()) {
+			    return null;
+			}
+		} catch (HibernateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			if(session!=null)
+			{
+				session.close();
+			}
+		}
+        return userroles;
+    }
    
 }

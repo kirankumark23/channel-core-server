@@ -31,7 +31,7 @@ public class UserService {
     @Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)	
 	public List<UserEntity> getUserList(){
-		return userDaoImpl.findAll();
+		return userDaoImpl.getAllUser();
 	}
 
 	@GET
@@ -43,7 +43,7 @@ public class UserService {
 	}
 	  
 	@POST
-	@Path("/addUser")  
+	@Path("/users/{upid}")  
     @Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
     public UserEntity addUser(UserEntity pUserEntity) {
@@ -51,7 +51,7 @@ public class UserService {
     }
 
 	@POST
-	@Path("/addRole")  
+	@Path("/roles/{rpid}")  
     @Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
     public RoleEntity addRole(RoleEntity pRoleEntity) {
@@ -59,7 +59,7 @@ public class UserService {
     }
 	
     @PUT
-	@Path("/updateUser")
+	@Path("/users/{upid}/update")
     @Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
     public UserEntity updateUser(UserEntity pUserEntity) {
@@ -67,10 +67,19 @@ public class UserService {
     }
 	 
     @POST
-	@Path("/updateUserWithRole")
+	@Path("/users/{upid}/roles/{rpid}")
     @Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
     public UserRoleEntity updateUserWithRole(UserRoleEntity pUserEntity) {
 		return userDaoImpl.updateUserWithRole(pUserEntity);
+    }
+    
+    @GET
+    @Path("/userroles/{urpid}")
+    @Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+    public List<UserRoleEntity> getAllUserRoles(@PathParam("urpid") UUID pIdKey) {
+
+		return userDaoImpl.getAllUserRole(pIdKey);
     }
 }
