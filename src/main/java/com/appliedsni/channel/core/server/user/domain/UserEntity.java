@@ -65,23 +65,23 @@ public class UserEntity extends AbstractEntity implements java.io.Serializable {
 	@Column(name = "xadded", length = 29)
 	private Date mAdded;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "mUserByUser")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "mUserByUser")
 	private Set<UserRoleEntity> mUserrolesForuser = new HashSet<UserRoleEntity>(0);
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "mUser")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "mUser")
 	private Set<MenuEntity> mMenus = new HashSet<MenuEntity>(0);
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "mUserByUser")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "mUserByUser")
 	private Set<UserRoleEntity> mUserRolesForAddedBy = new HashSet<UserRoleEntity>(0);
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "mUser")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "mUser")
 	private Set<CompanyEntity> mCompanies = new HashSet<CompanyEntity>(0);
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "mUser")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "mUser")
 	private Set<BranchEntity> mBranches = new HashSet<BranchEntity>(0);
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "mUser")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "mUser")
 	private Set<RoleMenuEntity> mRolemenus = new HashSet<RoleMenuEntity>(0);
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "mUser")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "mUser")
 	private Set<RoleEntity> mRoles = new HashSet<RoleEntity>(0);
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "mUser")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "mUser")
 	private Set<RoleActionsEntity> mRoleActionses = new HashSet<RoleActionsEntity>(0);
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "mUser")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "mUser")
 	private Set<UserEntity> mUsers = new HashSet<UserEntity>(0);
 
 	public UserEntity() {
