@@ -166,7 +166,7 @@ create table xRole(
 create table xRoleMenu(
 	xCompany		character varying(20),
 	xIdKey			UUID primary key,
-	xRole			character varying(200) references xrole(xidkey),
+	xRole			UUID references xrole(xidkey),
 	xMenu			UUID references xmenu(xidkey),
 	xversion 		integer NOT NULL,
 	xAdded			timestamp,
