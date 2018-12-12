@@ -53,11 +53,12 @@ public class DataBaseSetup {
 		      String createSql = "CREATE SCHEMA public;";
 		      String grantRights = "GRANT ALL ON SCHEMA public TO postgres;";
 		      String grantRightsSql = "GRANT ALL ON SCHEMA public TO public;";
-		 
-		 
+		      String createpgcrypto = "CREATE EXTENSION pgcrypto;";
+		 		 
 		      stmt.executeUpdate(createSql);
 		      stmt.executeUpdate(grantRights);
 		      stmt.executeUpdate(grantRightsSql);
+		      stmt.executeUpdate(createpgcrypto);
 		      LOGGER.warn("schema  createded in given database...");
 			LOGGER.warn("Creating tables in given database...");
 

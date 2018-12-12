@@ -166,7 +166,7 @@ create table xRole(
 create table xRoleMenu(
 	xCompany		character varying(20),
 	xIdKey			UUID primary key,
-	xRole			character varying(200) references xrole(xidkey),
+	xRole			UUID references xrole(xidkey),
 	xMenu			UUID references xmenu(xidkey),
 	xversion 		integer NOT NULL,
 	xAdded			timestamp,
@@ -275,12 +275,11 @@ create table xCustomerMandate
 (
 	xIdKey			UUID primary key,	
 	xCustomer		UUID references xcustomer(xidkey),
-	xAccount		UUID references xAccount (xidkey),
 	xversion 		integer NOT NULL,
 	xAdded			timestamp,
 	xAddedBy		UUID,
 	xlastupdate 	timestamp null,	
-	unique (xCustomer, xAccount)
+	unique (xCustomer)
 );
 
 create table xCustomerMandateService
