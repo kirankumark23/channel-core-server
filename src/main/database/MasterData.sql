@@ -1,3 +1,13 @@
+/*	xCBSIntegration */
+insert into xCBSIntegration values ('fee3aa47-3e60-420e-9025-23600acef3d4', true);
+
+/*	xUser */
+INSERT INTO xuser (xidkey,xemailaddress,xfailloginattempts,xfirstname,xlastname,xlockuserindicator,xmobilenumber,xpasswordhash,xversion,xadded,xaddedby,xlastupdate) VALUES 
+('464d5a07-5ee9-429b-852d-6a0e47bdc286','staff@company.com',0,'Staff','Staff',false,'9999999999','$2a$10$8zeuMun9s1Gb7oNcbL6gaulwRDVkFKAFpSu3AGyXrubH0oonR.aZK',0,'2018-11-08 15:51:56.542',NULL,'2018-11-08 15:51:56.542')
+,('464d5a08-5ee9-429b-852d-6a0e47bdc286','channel1@company.com',0,'Channel','One',false,'9999999999','$2a$10$8zeuMun9s1Gb7oNcbL6gaulwRDVkFKAFpSu3AGyXrubH0oonR.aZK',0,'2018-11-08 15:51:56.542',NULL,'2018-11-08 15:51:56.542')
+,('464d5a09-5ee9-429b-852d-6a0e47bdc286','channel2@company.com',0,'Channel','Two',false,'9999999999','$2a$10$8zeuMun9s1Gb7oNcbL6gaulwRDVkFKAFpSu3AGyXrubH0oonR.aZK',0,'2018-12-10 12:31:59.944',NULL,'2018-12-10 12:31:59.944')
+;
+
 /*	xBranch		*/
 INSERT INTO xbranch (xcompany,xidkey,xname,xversion,xadded,xaddedby,xlastupdate) VALUES 
 ('COMP01','BRN001','Mumbai',0,'2018-12-12 14:17:45.173','464d5a07-5ee9-429b-852d-6a0e47bdc286','2018-12-12 14:17:45.173')
@@ -21,16 +31,6 @@ INSERT INTO xrolemenu (xcompany,xidkey,xrole,xmenu,xversion,xadded,xaddedby,xlas
 ('COMP01','8f48f22e-67ea-4053-9da9-b379ecced6eb','8f48f22e-67ea-4053-9da9-b379ecced6eb','1bc601c4-274e-432c-b623-bf92816aa10e',0,'2018-12-12 14:32:37.542','464d5a07-5ee9-429b-852d-6a0e47bdc286','2018-12-12 14:32:37.542')
 ,('COMP01','7fb52f8f-1d7e-4bc3-9faf-2660255ffc20','8f48f22e-67ea-4053-9da9-b379ecced6eb','1bc601c5-274e-432c-b623-bf92816aa10e',0,'2018-12-12 14:32:37.542','464d5a07-5ee9-429b-852d-6a0e47bdc286','2018-12-12 14:32:37.542')
 ,('COMP01','7fb52f1f-1d7e-4bc3-9faf-2660255ffc20','8f48f22e-67ea-4053-9da9-b379ecced6eb','1bc601c6-274e-432c-b623-bf92816aa10e',0,'2018-12-12 14:32:37.542','464d5a07-5ee9-429b-852d-6a0e47bdc286','2018-12-12 14:32:37.542')
-;
-
-/*	xCBSIntegration */
-insert into xCBSIntegration values ('fee3aa47-3e60-420e-9025-23600acef3d4', true);
-
-/*	xUser */
-INSERT INTO xuser (xidkey,xemailaddress,xfailloginattempts,xfirstname,xlastname,xlockuserindicator,xmobilenumber,xpasswordhash,xversion,xadded,xaddedby,xlastupdate) VALUES 
-('464d5a07-5ee9-429b-852d-6a0e47bdc286','staff@company.com',0,'Staff','Staff',false,'9999999999','$2a$10$8zeuMun9s1Gb7oNcbL6gaulwRDVkFKAFpSu3AGyXrubH0oonR.aZK',0,'2018-11-08 15:51:56.542',NULL,'2018-11-08 15:51:56.542')
-,('464d5a08-5ee9-429b-852d-6a0e47bdc286','channel1@company.com',0,'Channel','One',false,'9999999999','$2a$10$8zeuMun9s1Gb7oNcbL6gaulwRDVkFKAFpSu3AGyXrubH0oonR.aZK',0,'2018-11-08 15:51:56.542',NULL,'2018-11-08 15:51:56.542')
-,('464d5a09-5ee9-429b-852d-6a0e47bdc286','channel2@company.com',0,'Channel','Two',false,'9999999999','$2a$10$8zeuMun9s1Gb7oNcbL6gaulwRDVkFKAFpSu3AGyXrubH0oonR.aZK',0,'2018-12-10 12:31:59.944',NULL,'2018-12-10 12:31:59.944')
 ;
 
 /*	xUserRole */
