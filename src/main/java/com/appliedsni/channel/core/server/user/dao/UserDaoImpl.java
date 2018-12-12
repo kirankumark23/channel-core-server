@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.security.auth.callback.UnsupportedCallbackException;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -130,7 +132,8 @@ public class UserDaoImpl {
     public UserEntity updateUser(UserEntity pUserEntity) {
     	
 		try {			
-			mServerDao.update(pUserEntity);
+//			mServerDao.update(pUserEntity);
+			throw new UnsupportedOperationException();
 		} catch (HibernateException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
