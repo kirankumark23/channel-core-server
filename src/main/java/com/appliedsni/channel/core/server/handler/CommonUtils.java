@@ -120,6 +120,10 @@ public class CommonUtils {
 		return ctpList;
 	}
 		
+	public ProductRoleAccessEntity getProductRoleAccess(UUID pIdKey){
+		return (ProductRoleAccessEntity)mServerDao.get(ProductRoleAccessEntity.class, pIdKey);
+	}
+	
 	public void create(ComplexTransactionProductEntity pCTP){
 		ChannelApplicationContext.get().getBean("transactionTemplate", TransactionTemplate.class).execute(new TransactionCallbackWithoutResult() {
 			@Override
@@ -351,6 +355,30 @@ public class CommonUtils {
 					LOGGER.error("Operation failed", e);
 					pStatus.setRollbackOnly();
 				}		
+			}
+		});								
+	}
+	
+	/**
+	 * Delete operation for un-subscribed service.  ###
+	 * @param pAccessIdKey
+	 */
+	public void deleteProductRoleAccess(UUID pAccessIdKey){
+		ProductRoleAccessEntity productRoleAccessEntity = getProductRoleAccess(pAccessIdKey);
+		
+		ChannelApplicationContext.get().getBean("transactionTemplate", TransactionTemplate.class).execute(new TransactionCallbackWithoutResult() {
+			@Override
+			protected void doInTransactionWithoutResult(TransactionStatus pStatus) {
+				if( null != productRoleAccessEntity )
+				{
+					try{
+						mServerDao.delete(productRoleAccessEntity);
+					} catch(Exception e) {
+						LOGGER.error("Delete Product Role Access Operation failed", e);
+						pStatus.setRollbackOnly();
+					}	
+				}
+					
 			}
 		});								
 	}
